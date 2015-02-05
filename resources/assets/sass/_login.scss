@@ -1,0 +1,31 @@
+.login {
+	@include span(12 of 12);
+	main {
+		text-align: center;
+		md-toolbar {
+			h3 {
+				color: white;
+			}
+		}
+		form {
+			width: 200px;
+			margin: 10% auto 0;
+			* {
+				@include clearfix;
+			}
+			label {
+				float: left;
+			}
+		}
+		#resend {
+
+		}
+		#login-form {
+
+		}
+		#registration-form {
+
+		}
+	}
+
+}

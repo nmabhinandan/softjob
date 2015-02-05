@@ -1,0 +1,19 @@
+<section class="login">   
+     <main>
+        <md-toolbar class="md-whiteframe-z1">
+            <h3 class="md-toolbar-tools">Login</h3>
+        </md-toolbar>
+        <form id="login-form" name="LoginForm" novalidate>
+            <md-text-float label="User Name" ng-model="user.username" required></md-text-float>
+            <md-text-float label="Password" ng-model="user.password" type="password" required></md-text-float>
+            <md-button class="md-fab md-fab-bottom-right md-primary" aria-label="Login" ng-click="submit(user)"><span class="ion-checkmark-round"></span></md-button>
+        </form>
+         <a href="javascript:void(0)" id="resend">Did not receive confirmation email?</a>
+     </main>    
+    <script>
+        //alert(window.location.protocol + '//internal.' + window.location.hostname + ':' + window.location.port);
+//		$('.login').height(function(index, height) {
+//			return window.innerHeight - $(this).offset().top;
+//		});
+	</script>
+</section>`

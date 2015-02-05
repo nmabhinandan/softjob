@@ -1,0 +1,13 @@
+<div class="sj-projects-list">
+	<md-list>
+		<md-item ng-repeat="project in projects track by $index">
+			<md-item-content>
+				<div class="md-tile-content">
+					<h3>{{project.name}}</h3>
+										
+				</div>
+			</md-item-content>
+			<md-divider ng-if="!$last"></md-divider>
+		</md-item>
+	</md-list>	
+</div>

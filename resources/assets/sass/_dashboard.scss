@@ -1,0 +1,32 @@
+@include container(100%);
+
+#dashboard {
+	md-toolbar {
+		#toolbar-tools {
+			#title {
+
+			}
+			#profile {
+				vertical-align: middle;
+			}
+		}
+	}
+	#page {
+		#sidebar {
+			height: calc(100vh - 64px);
+			#sideMenuItem {
+				color: #111;
+				text-transform: capitalize;				
+			}			
+		}
+		#content {
+			@import "projects.scss";
+		}		
+	}
+	#ajaxLoad {	
+		display: none;					
+		bottom: 0;
+		right: 0;
+		position: absolute;		
+	}
+}

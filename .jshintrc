@@ -1,0 +1,14 @@
+{
+  "undef": true,
+  "unused": false,
+  "predef": [ "angular" ],
+  "browser": true,
+  "globals": {
+  	"angular": false,
+  	"$": false,
+  	"softjob": false,
+  	"sjControllers": false,  	
+  	"sjServices": false,
+  	"sjDirectives": false  	
+  }
+}

@@ -1,0 +1,97 @@
+body a {
+  text-decoration: none;
+  color: #0000ed;
+}
+body a:active {
+  color: #0000cc;
+}
+body #globalProgress {
+  top: auto;
+  right: 25px;
+  bottom: 25px;
+  left: auto;
+  position: fixed;
+}
+body .sj-projects-list h3:first-letter {
+  text-transform: capitalize;
+}
+body .sj-tag .tagInput .autocomplete {
+  margin: -26px 1px;
+  padding: 4px;
+}
+body .sj-user-avatar {
+  border-radius: 36px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+}
+body .sj-user-avatar img {
+  height: 100%;
+  width: 100%;
+}
+body #main {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+body #main:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+body #main .login {
+  width: 100%;
+  float: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+body #main .login main {
+  text-align: center;
+}
+body #main .login main md-toolbar h3 {
+  color: white;
+}
+body #main .login main form {
+  width: 200px;
+  margin: 10% auto 0;
+}
+body #main .login main form * {
+  overflow: hidden;
+  *zoom: 1;
+}
+body #main .login main form label {
+  float: left;
+}
+body #main:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+body #main #dashboard md-toolbar #toolbar-tools #profile {
+  vertical-align: middle;
+}
+body #main #dashboard #page #sidebar {
+  height: calc(100vh - 64px);
+}
+body #main #dashboard #page #sidebar #sideMenuItem {
+  color: #111;
+  text-transform: capitalize;
+}
+body #main #dashboard #page #content #projects .meta #user-projects {
+  -moz-animation: fadeIn 0.5s;
+  -webkit-animation: fadeIn 0.5s;
+  animation: fadeIn 0.5s;
+}
+body #main #dashboard #page #content #projects .meta #user-projects md-toolbar {
+  background-color: #607D8B;
+}
+body #main #dashboard #ajaxLoad {
+  display: none;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}

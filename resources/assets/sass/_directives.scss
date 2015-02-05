@@ -1,0 +1,11 @@
+.sj-user-avatar {
+	border-radius: 36px;
+	box-shadow: 0 0 5px rgba(0,0,0,.4);
+	width: 36px;
+	height: 36px;
+	overflow: hidden;
+	img {
+		height: 100%;
+		width: 100%;
+	}
+}
