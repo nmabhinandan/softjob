@@ -44,8 +44,6 @@ class CreateProjectModule extends Migration {
 
 			$table->increments('id');
 			$table->string('name')->unique();
-			$table->integer('color_id')->unsigned();
-			$table->foreign('color_id')->references('id')->on('tag_colors')->onDelete('cascade');
 			$table->timestamps();
 		});
 

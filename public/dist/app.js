@@ -61,7 +61,7 @@ sjServices.factory('AuthInterceptor', ['$window', '$q', function ($window, $q) {
 	service.request = function (config) {
 		var deferred = $q.defer();
 		if($window.localStorage.getItem('softjob.token') !== null) {
-			config.headers.Authorization = 'Bearer ' + $window.localStorage.getItem('softjob.token');				
+			config.headers.Authorization = 'Bearer ' + $window.localStorage.getItem('softjob.token');
 		}
 		return config;
 	};
@@ -81,7 +81,7 @@ sjServices.factory('Project', ['User', '$http', '$q', '$mdToast', 'softjobConfig
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
-			$mdToast.show($mdToast.simple().content(data));
+			$mdToast.show($mdToast.simple().content(data.message));
 			deferred.reject();			
 		});
 		
@@ -287,13 +287,14 @@ sjDirectives.directive('sjTag', [function(){
 	return {
 		scope: {
 			input: '=',			
+			tags: '='
 			// placeholder: '@',
 			// project: '=',
 			// task: '=',
 		}, // {} = isolate, true = child, false/undefined = no change
-		require: 'ngModel',
+		// require: 'ngModel',
 
-		controller: ['$scope', 'Project', 'User', 'Tag', function($scope, Project, User, Tag) {			
+		controller: ['$scope', 'Project', 'User', 'Tag', function($scope, Project, User, Tag) {
 		// 	var projectServerTags = [];
 		// 	var taskServerTags = [];	
 		// 	$scope.finalTags = [];
@@ -322,16 +323,16 @@ sjDirectives.directive('sjTag', [function(){
 		// 			$scope.tagSubmitted(newTag);
 		// 		}
 		// 	};			
-		// }],		
+		}],		
 		restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment		
 		templateUrl: 'directives/tags.html',
 		replace: true,
 		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-		link: function($scope, iElm, iAttrs, ngModel) {			
+		// link: function($scope, iElm, iAttrs, ngModel) {			
 			// $scope.$watch('tags', function(val) {
 			// 	ngModel.$setViewValue(val);				
 			// });			
-		}
+		// }
 	};
 }]);
 sjDirectives.directive('sjUserAvatar', [function () {
@@ -367,23 +368,23 @@ sjDirectives.directive('sjUserAvatar', [function () {
 softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThemingProvider', 'cfpLoadingBarProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, cfpLoadingBarProvider) {
 		'use strict';
 		$httpProvider.interceptors.push('AuthInterceptor');
-		$stateProvider.state('home', {
+		$stateProvider.state('dashboard', {
 			url: '/',
-			templateUrl: 'templates/home.html',
-			controller: 'HomeController'
+			templateUrl: 'templates/dashboard.html',
+			controller: 'DashboardController',
+			auth: true
+		}).state('404', {
+			url: '/404',
+			templateUrl: 'templates/404.html',			
+			auth: false
 		}).state('login', {
 			url: '/login',
 			templateUrl: 'templates/login.html',
 			controller: 'LoginController',
 			auth: false
-		}).state('dashboard', {
-			url: '/dashboard',
-			templateUrl: 'templates/dashboard.html',
-			controller: 'DashboardController',
-			auth: true
 		}).state('dashboard.projects', {			
-			url: '/projects',
-			templateUrl: '/templates/projects.html'
+			url: 'projects',
+			templateUrl: '/templates/projects.html',			
 		});
 
 		$urlRouterProvider.otherwise('/404');
@@ -398,7 +399,7 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 	}])
 	.run(['$rootScope', '$state', '$timeout', '$mdToast', 'User', function ($rootScope, $state, $timeout, $mdToast, User) {
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-			if(toState.auth) {
+			if(toState.auth != false) {
 				if(! User.isLoggedIn()) {
 					$timeout(function () {
 						$state.go('login');

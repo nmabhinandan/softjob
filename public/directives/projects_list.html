@@ -3,11 +3,19 @@
 		<md-item ng-repeat="project in projects track by $index">
 			<md-item-content>
 				<div class="md-tile-content">
-					<h3>{{project.name}}</h3>
-										
+					<span layout="row">
+						<h3><a ng-href="projects/{{project.id}}">{{project.name}}</a></h3>
+						<span 
+							class="project-owner hint--right" 
+							ng-if="project.owner_type=='user' && project.owner_id==user.id"
+							data-hint="Owner">
+							<i class="ion-ios-snowy"></i>							
+						</span>
+					</span>
+					<sj-tag input="false" tags="project.tags"></sj-tag>
 				</div>
 			</md-item-content>
 			<md-divider ng-if="!$last"></md-divider>
 		</md-item>
-	</md-list>	
+	</md-list>
 </div>

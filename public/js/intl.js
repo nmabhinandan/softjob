@@ -1,23 +1,23 @@
 softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThemingProvider', 'cfpLoadingBarProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $mdThemingProvider, cfpLoadingBarProvider) {
 		'use strict';
 		$httpProvider.interceptors.push('AuthInterceptor');
-		$stateProvider.state('home', {
+		$stateProvider.state('dashboard', {
 			url: '/',
-			templateUrl: 'templates/home.html',
-			controller: 'HomeController'
+			templateUrl: 'templates/dashboard.html',
+			controller: 'DashboardController',
+			auth: true
+		}).state('404', {
+			url: '/404',
+			templateUrl: 'templates/404.html',			
+			auth: false
 		}).state('login', {
 			url: '/login',
 			templateUrl: 'templates/login.html',
 			controller: 'LoginController',
 			auth: false
-		}).state('dashboard', {
-			url: '/dashboard',
-			templateUrl: 'templates/dashboard.html',
-			controller: 'DashboardController',
-			auth: true
 		}).state('dashboard.projects', {			
-			url: '/projects',
-			templateUrl: '/templates/projects.html'
+			url: 'projects',
+			templateUrl: '/templates/projects.html',			
 		});
 
 		$urlRouterProvider.otherwise('/404');
@@ -32,7 +32,7 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 	}])
 	.run(['$rootScope', '$state', '$timeout', '$mdToast', 'User', function ($rootScope, $state, $timeout, $mdToast, User) {
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-			if(toState.auth) {
+			if(toState.auth != false) {
 				if(! User.isLoggedIn()) {
 					$timeout(function () {
 						$state.go('login');

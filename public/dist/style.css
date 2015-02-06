@@ -15,9 +15,34 @@ body #globalProgress {
 body .sj-projects-list h3:first-letter {
   text-transform: capitalize;
 }
+body .sj-projects-list h3 a {
+  color: black;
+}
+body .sj-projects-list .project-owner {
+  color: #4CAF50;
+  padding: 0 5px;
+}
 body .sj-tag .tagInput .autocomplete {
   margin: -26px 1px;
   padding: 4px;
+}
+body .sj-tag .tagsList {
+  padding-top: 5px;
+  /* .tag:after{
+  	 
+  } */
+}
+body .sj-tag .tagsList .tag {
+  font-size: 12px;
+  display: inline;
+  margin: 2px;
+  padding: 2px 5px;
+  background-color: white;
+  border: 1px solid #b8b8b8;
+  border-radius: 4px;
+}
+body .sj-tag .tagsList .tag a {
+  color: #5e5e5e;
 }
 body .sj-user-avatar {
   border-radius: 36px;
@@ -75,7 +100,7 @@ body #main #dashboard md-toolbar #toolbar-tools #profile {
   vertical-align: middle;
 }
 body #main #dashboard #page #sidebar {
-  height: calc(100vh - 64px);
+  min-height: calc(100vh - 64px);
 }
 body #main #dashboard #page #sidebar #sideMenuItem {
   color: #111;

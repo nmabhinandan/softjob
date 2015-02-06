@@ -3,13 +3,14 @@ sjDirectives.directive('sjTag', [function(){
 	return {
 		scope: {
 			input: '=',			
+			tags: '='
 			// placeholder: '@',
 			// project: '=',
 			// task: '=',
 		}, // {} = isolate, true = child, false/undefined = no change
-		require: 'ngModel',
+		// require: 'ngModel',
 
-		controller: ['$scope', 'Project', 'User', 'Tag', function($scope, Project, User, Tag) {			
+		controller: ['$scope', 'Project', 'User', 'Tag', function($scope, Project, User, Tag) {
 		// 	var projectServerTags = [];
 		// 	var taskServerTags = [];	
 		// 	$scope.finalTags = [];
@@ -38,15 +39,15 @@ sjDirectives.directive('sjTag', [function(){
 		// 			$scope.tagSubmitted(newTag);
 		// 		}
 		// 	};			
-		// }],		
+		}],		
 		restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment		
 		templateUrl: 'directives/tags.html',
 		replace: true,
 		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-		link: function($scope, iElm, iAttrs, ngModel) {			
+		// link: function($scope, iElm, iAttrs, ngModel) {			
 			// $scope.$watch('tags', function(val) {
 			// 	ngModel.$setViewValue(val);				
 			// });			
-		}
+		// }
 	};
 }]);

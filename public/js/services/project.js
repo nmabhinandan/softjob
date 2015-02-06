@@ -8,7 +8,7 @@ sjServices.factory('Project', ['User', '$http', '$q', '$mdToast', 'softjobConfig
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
-			$mdToast.show($mdToast.simple().content(data));
+			$mdToast.show($mdToast.simple().content(data.message));
 			deferred.reject();			
 		});
 		

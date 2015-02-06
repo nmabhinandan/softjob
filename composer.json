@@ -15,7 +15,8 @@
 		"league/flysystem-rackspace": "~1.0",
 		"firebase/php-jwt": "~1.0",
 		"intervention/image": "~2.1",
-		"illuminate/redis": "~5.0"
+		"illuminate/redis": "~5.0",
+		"yzalis/identicon": "~1.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

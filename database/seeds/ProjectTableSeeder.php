@@ -14,7 +14,6 @@ class ProjectTableSeeder extends Seeder {
 		$faker = Faker::create();
 		DB::table('projects')->delete();
 		DB::table('project_user')->delete();
-		DB::table('project_tags')->delete();
 		DB::table('project_project_tag')->delete();
 
 		$user    = new User();
@@ -33,11 +32,11 @@ class ProjectTableSeeder extends Seeder {
 				'deadline'           => Carbon::now()->addDays($faker->randomElement([ 1, 2, 3, 4 ]))
 			]);
 			$project->users()->sync($userIds);
-			$project->tags()->sync($projectTagIds);
+			$project->tags()->sync([$index, ($index+1)]);
 			$project->save();
 		}
 		foreach (range(4, 6) as $index) {
-			Project::create([
+			$project = Project::create([
 				'id'                 => $index,
 				'name'               => $faker->bs,
 				'slug'               => $faker->slug,
@@ -47,10 +46,13 @@ class ProjectTableSeeder extends Seeder {
 				'owner_id'           => $faker->randomElement($userIds),
 				'project_manager_id' => $faker->randomElement($userIds),
 				'deadline'           => Carbon::now()->addDays($faker->randomElement([ 1, 2, 3, 4 ]))
-			])->users()->sync($userIds);
+			]);
+			$project->users()->sync($userIds);
+			$project->tags()->attach($index);
+			$project->save();
 		}
 		$index ++;
-		Project::create([
+		$project = Project::create([
 			'id'                 => $index,
 			'name'               => $faker->bs,
 			'slug'               => $faker->slug,
@@ -60,6 +62,9 @@ class ProjectTableSeeder extends Seeder {
 			'owner_id'           => 21,
 			'project_manager_id' => 21,
 			'deadline'           => Carbon::now()->addDays($faker->randomElement([ 1, 2, 3, 4 ]))
-		])->users()->sync($userIds);
+		]);
+		$project->users()->sync($userIds);
+		$project->tags()->sync($projectTagIds);
+		$project->save();
 	}
 }

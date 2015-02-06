@@ -36,7 +36,7 @@ class EloquentProjectRepo implements ProjectsRepoInterface{
 	 */
 	public function projectsOfUser( $userId )
 	{
-		return $this->user->find(21)->projects()->get();
+		return $this->user->find(21)->projects()->with('tags')->get();
 	}
 
 	/**

@@ -19,8 +19,17 @@ a {
 
 
 .sj-projects-list {		
-	h3:first-letter {
-		text-transform: capitalize;
+	h3 {
+		&:first-letter {
+			text-transform: capitalize;		
+		}
+		a {
+			color: black;		
+		}
+	}
+	.project-owner {
+		color: $md-green;
+		padding: 0 5px;		
 	}
 }
 
@@ -36,5 +45,31 @@ a {
 				
 			}
 		}
+	}
+	.tagsList {
+		padding-top:5px;
+		.tag {
+			font-size: 12px;
+			display: inline;
+			margin: 2px;
+			padding: 2px 5px;			
+			background-color: lighten( $md-grey, 55% );
+			border: 1px solid lighten( $md-grey, 10%);
+			border-radius: 4px;						
+			&:after {
+				// content: "\f128";
+				// font-family: "ionicons";
+				// cursor: pointer;
+				// color:$md-grey;				
+			}
+
+			a {
+				color: darken( $md-grey, 25% );
+			}
+		}
+
+		/* .tag:after{
+			 
+		} */
 	}
 }

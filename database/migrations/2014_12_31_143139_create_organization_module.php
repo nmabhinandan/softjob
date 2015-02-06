@@ -23,13 +23,6 @@ class CreateOrganizationModule extends Migration {
 			$table->timestamps();
 		});
 
-
-		Schema::create('tag_colors', function(Blueprint $table)
-		{
-			$table->increments('id');
-			$table->string('color', 7);
-			$table->timestamps();
-		});
 	}
 
 	/**

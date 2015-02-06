@@ -10,7 +10,7 @@ Route::group([ 'domain' => 'internal.softjob.app' ], function() {
 	Route::post('auth/resend','AuthController@resend');
 
 	Route::get('/test', function() {
-		
+
 	});
 
 });
@@ -22,8 +22,13 @@ Route::group(['domain' => 'internal.softjob.app', 'middleware' => 'jwt'], functi
 
 	Route::get('/ui/sidebar/items', 'SidebarItemsController@get');
 
-	Route::get('users/avatar/{id}', 'UserController@avatar');
+	Route::get('users/{id}/avatar', 'UserController@avatar');
 	Route::get('users/{id}/projects', 'ProjectsController@getProjectsOfUser');
+
+	Route::get('/projects', 'ProjectsController@getAllProjects');
+	Route::post('/projects', 'ProjectsController@createProject');
+	Route::get('/projects/{projectId}', 'ProjectsController@getProject');
+	Route::get('/projects/{projectId}/tags', 'ProjectsController@getProjectTags');
 
 	Route::get('/tags/projects/all', function() {
 		return [

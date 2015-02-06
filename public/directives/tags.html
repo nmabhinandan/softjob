@@ -7,7 +7,9 @@
 			
 		</div>
 	</div>
-	<div ng-if="! input">
-		no input
+	<div class="tagsList" ng-if="! input">
+		<div class="tag" ng-repeat="tag in tags">
+			<a ng-href="/projects/tags/{{tag.id}}">{{tag.name}}</a>
+		</div>
 	</div>
 </div>
