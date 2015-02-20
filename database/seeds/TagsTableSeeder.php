@@ -34,7 +34,7 @@ class TagsTableSeeder extends Seeder {
 		foreach (range(1, 6) as $index) {
 			\Softjob\ProjectTag::create([
 				'id' => $index,
-			    'name' => $faker->word
+			    'name' => $faker->word . $index
 			]);
 		}
 //		DB::table('project_project_tag')->delete();

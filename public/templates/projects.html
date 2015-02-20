@@ -11,14 +11,23 @@
 				<sj-projects-list user="loggedInUser"></sj-projects-list>
 			</md-card-content>
 		</md-card>
-		<md-card flex>
-			<md-toolbar>asdasd</md-toolbar>
+		<md-card id="user-projects-status" flex>
+			<md-toolbar>
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>Status</span>
+					<span flex></span>
+				</md-toolbar-tools>
+			</md-toolbar>
 			<md-card-content>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed necessitatibus, ipsum sint asperiores quisquam facilis, dolorum in odio accusantium iure dolor ad et ut cum! Atque, deleniti pariatur fuga corporis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque fugiat quos deserunt, repellendus laborum tempore, ex omnis debitis, labore consequuntur consectetur non illo perferendis! Laudantium fuga corporis recusandae voluptas dolores!				
+				<div>
+					<canvas id="bar" class="chart chart-bar" data="chart.data" options="chart.options" labels="chart.labels">
+						
+					</canvas> 
+				</div>
 			</md-card-content>
 		</md-card>
 	</div>
-	<div class="content" layout="column" flex>
+	<!-- <div class="content" layout="column" flex>
 		<md-card>
 			<md-toolbar>asdasd</md-toolbar>
 			<md-card-content>
@@ -31,5 +40,5 @@
 				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed necessitatibus, ipsum sint asperiores quisquam facilis, dolorum in odio accusantium iure dolor ad et ut cum! Atque, deleniti pariatur fuga corporis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque fugiat quos deserunt, repellendus laborum tempore, ex omnis debitis, labore consequuntur consectetur non illo perferendis! Laudantium fuga corporis recusandae voluptas dolores!
 			</md-card-content>
 		</md-card>
-	</div>	
+	</div>	 -->
 </md-content>

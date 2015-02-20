@@ -1,25 +1,139 @@
 <?php namespace Softjob\Http\Controllers;
 
 
+use Softjob\Commands\CalculateProjectsStatus;
+use Softjob\Commands\CalculateProjectsVelocity;
+use Softjob\Commands\getProjectBySlug;
 use Softjob\Commands\getProjectsOfUser;
-use Softjob\Http\Requests\GetProjectsOfUserRequest;
+use Softjob\Commands\getTasksOfProject;
+use Softjob\Contracts\Repositories\ProjectRepoInterface;
+
 
 class ProjectsController extends Controller {
 
-	public function getProjectsOfUser($userId)
+	/**
+	 * @var
+	 */
+	private $projectModel;
+
+
+	/**
+	 * @param ProjectRepoInterface $projectModel
+	 */
+	function __construct(ProjectRepoInterface $projectModel)
+	{
+		$this->projectModel = $projectModel;
+	}
+
+	public function getProject( $slug )
+	{
+		$validator = \Validator::make([
+			'slug' => $slug
+		], [
+			'slug' => 'required|string|exists:projects,slug'
+		]);
+		if ($validator->fails()) {
+			return \Response::json([
+				'status'  => 'error',
+				'message' => 'Invalid project slug'
+			], 400);
+		}
+
+		return $this->projectModel->getProjectBySlug($slug);
+	}
+
+	public function getProjectsOfUser( $userId )
 	{
 		$validator = \Validator::make([
 			'id' => $userId
-		],[
+		], [
 			'id' => 'required|numeric|exists:users,id'
 		]);
-		if($validator->fails()) {
+		if ($validator->fails()) {
 			return \Response::json([
-				'status' => 'error',
-			    'message' => 'Invalid user id'
-			], 400);
+				'status'  => 'error',
+				'message' => 'Invalid user id'
+			], 404);
 		}
-		return $this->dispatch(new getProjectsOfUser($userId));
+
+		return $this->projectModel->projectsOfUser($userId);
+	}
+
+	public function getProjectTasks( $projectId )
+	{
+		$validator = \Validator::make([
+			'id' => $projectId
+		], [
+			'id' => 'required|numeric|exists:projects,id'
+		]);
+
+		if ($validator->fails()) {
+			return \Response::json([
+				'status'  => 'error',
+				'message' => 'Invalid project id'
+			], 404);
+		}
+
+		return $this->projectModel->tasksOfProject($projectId);
+	}
+
+	public function createProject( )
+	{
+		
+	}
+
+	public function getProjectsStatusOfUser($userId)
+	{
+		$validator = \Validator::make([
+			'id' => $userId
+		], [
+			'id' => 'required|numeric|exists:users,id'
+		]);
+		if ($validator->fails()) {
+			return \Response::json([
+				'status'  => 'error',
+				'message' => 'Invalid user id'
+			], 404);
+		}
+
+		return $this->dispatch(new CalculateProjectsStatus($userId));
+	}
+
+
+	public function getAvailableProjectTasks( $projectId )
+	{
+		$validator = \Validator::make([
+			'id' => $projectId
+		], [
+			'id' => 'required|numeric|exists:projects,id'
+		]);
+
+		if ($validator->fails()) {
+			return \Response::json([
+				'status'  => 'error',
+				'message' => 'Invalid project id'
+			], 404);
+		}
+
+		return $this->projectModel->availableTasksOfProject($projectId);
+	}
+
+	public function getProjectVelocity($projectId)
+	{
+		$validator = \Validator::make([
+			'id' => $projectId
+		], [
+			'id' => 'required|numeric|exists:projects,id'
+		]);
+
+		if ($validator->fails()) {
+			return \Response::json([
+				'status'  => 'error',
+				'message' => 'Invalid project id'
+			], 404);
+		}
+
+		return $this->dispatch(new CalculateProjectsVelocity($projectId));
 	}
 
 }

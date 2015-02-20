@@ -32,8 +32,10 @@
     "angular-material": "*",
     "animate.css": "~3.2.0",
     "lodash": "~2.4.1",
-    "chartjs": "~1.0.1",
     "angular-loading-bar": "~0.6.0",
-    "hint.css": "~1.3.3"
+    "hint.css": "~1.3.3",
+    "Chart.js": "1.0.1-beta.4",
+    "angular-chart.js": "~0.5.1",
+    "moment": "~2.9.0"
   }
 }

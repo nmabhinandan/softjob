@@ -1,7 +1,7 @@
 <md-content>
 <md-list ng-repeat="item in sidebarItems">
-	<md-item ng-repeat="(key, value) in item" md-ink-ripple="#bbb">
-		<md-item-content  class="md-tile-content menu-item menu-sub-item md-menu-item" ng-click="navigateTo(value)">
+	<md-item ng-repeat="(key, value) in item">
+		<md-item-content  class="md-tile-content menu-item menu-sub-item md-menu-item" ng-click="navigateTo(value)" md-ink-ripple="#bbb">
 			<a href="javascript:void(0)" id="sideMenuItem" class="menu-item menu-sub-item md-menu-item">
 				{{key}}
 			</a>

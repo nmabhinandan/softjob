@@ -4,6 +4,7 @@ var softjob = angular.module('softjob', [
 	'angular-loading-bar',
 	'ngAnimate',
 	'ui.router',
+	'chart.js',
 	'sjServices',
 	'sjControllers',
 	'sjDirectives'

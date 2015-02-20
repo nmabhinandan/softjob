@@ -4,7 +4,7 @@
 			<md-item-content>
 				<div class="md-tile-content">
 					<span layout="row">
-						<h3><a ng-href="projects/{{project.id}}">{{project.name}}</a></h3>
+						<h3><a ui-sref="dashboard.projectPage({projectSlug:project.slug})">{{project.name}}</a></h3>
 						<span 
 							class="project-owner hint--right" 
 							ng-if="project.owner_type=='user' && project.owner_id==user.id"

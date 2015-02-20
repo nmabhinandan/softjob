@@ -1,10 +1,10 @@
 <?php  namespace Softjob\Repositories;
 
 
-use Softjob\Repositories\PermissionsRepoInterface;
+use Softjob\Repositories\PermissionRepoInterface;
 use Softjob\Permission;
 
-class EloquentPermissionRepo implements PermissionsRepoInterface {
+class EloquentPermissionRepo implements PermissionRepoInterface {
 
 
 	/**

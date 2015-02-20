@@ -1,11 +1,11 @@
 <?php  namespace Softjob\Repositories;
 
 
-use Softjob\Contracts\Repositories\ProjectsRepoInterface;
+use Softjob\Contracts\Repositories\ProjectRepoInterface;
 use Softjob\Project;
 use Softjob\User;
 
-class EloquentProjectRepo implements ProjectsRepoInterface{
+class EloquentProjectRepo implements ProjectRepoInterface{
 
 	/**
 	 * @var Project
@@ -16,6 +16,8 @@ class EloquentProjectRepo implements ProjectsRepoInterface{
 	 */
 	private $user;
 
+
+
 	/**
 	 * @param Project $project
 	 * @param User $user
@@ -24,6 +26,18 @@ class EloquentProjectRepo implements ProjectsRepoInterface{
 	{
 		$this->model = $project;
 		$this->user = $user;
+	}
+
+	/**
+	 * Get project based on project id
+	 *
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public function getProjectById( $id )
+	{
+		return $this->model->find($id);
 	}
 
 
@@ -36,7 +50,7 @@ class EloquentProjectRepo implements ProjectsRepoInterface{
 	 */
 	public function projectsOfUser( $userId )
 	{
-		return $this->user->find(21)->projects()->with('tags')->get();
+		return $this->user->find($userId)->projects()->with('tasks','tags')->get();
 	}
 
 	/**
@@ -50,4 +64,44 @@ class EloquentProjectRepo implements ProjectsRepoInterface{
 	{
 
 	}
+
+	/**
+	 * Return tasks of the project
+	 *
+	 * @param $projectId
+	 *
+	 * @return mixed
+	 */
+	public function tasksOfProject( $projectId )
+	{
+		return $this->model->find($projectId)->tasks()->get();
+	}
+
+	/**
+	 * Return the project by slug
+	 *
+	 * @param $slug
+	 *
+	 * @return mixed
+	 */
+	public function getProjectBySlug( $slug )
+	{
+		$result = $this->model->whereSlug($slug)->with('tasks')->get()->toArray();
+
+		return array_pop($result);
+	}
+
+
+	/**
+	 * Return tasks of the project which arent associated with any sprint cycles
+	 *
+	 * @param $projectId
+	 *
+	 * @return mixed
+	 */
+	public function availableTasksOfProject( $projectId )
+	{
+		return $this->model->find($projectId)->tasks()->whereNotIn('');
+	}
+
 }

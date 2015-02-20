@@ -1,0 +1,38 @@
+.projects-page {
+	.meta {
+		#velocity {
+			md-toolbar {
+				background-color: $md-cyan;
+			}
+		}
+		#deadline {
+			md-toolbar {
+				background-color: $md-red;
+			}
+			md-card-content {
+				color: grey;				
+				text-align: center;
+				i {
+					font-size: 2em;
+				}
+				span {
+					font-size: 1em;
+				}
+			}
+		}
+	}
+
+	.content {
+		#sprint-status {
+			md-toolbar {
+				background-color: $md-blue-grey;
+				a {
+					&:hover, &:active {
+						text-decoration: none;
+						color: white;
+					}
+				}
+			}
+		}
+	}
+}

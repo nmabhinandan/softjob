@@ -1,6 +1,7 @@
 @include container(100%);
 
 #dashboard {
+	@include container(100%);
 	md-toolbar {		
 		#toolbar-tools {
 			#title {
@@ -21,6 +22,7 @@
 		}
 		#content {
 			@import "projects.scss";
+			@import "projects_page.scss"
 		}
 	}
 	#ajaxLoad {	

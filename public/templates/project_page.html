@@ -1,0 +1,45 @@
+<md-content class="projects-page" layout="column">
+	<div class="meta" layout="row" flex>
+		<md-card id="velocity" flex>
+			<md-toolbar>
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>Project velocity</span>
+					<span flex></span>
+				</md-toolbar-tools>
+			</md-toolbar>
+			<md-card-content>				
+				<div>
+					<canvas id="line" class="chart chart-line" data="chart.data" labels="chart.labels" series="chart.series"></canvas> 
+				</div>
+			</md-card-content>
+		</md-card>
+		<md-card id="deadline" flex="20">
+			<md-toolbar>
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>Deadline</span>
+					<span flex></span>
+				</md-toolbar-tools>
+			</md-toolbar>
+			<md-card-content>
+				<i class="ion-android-alarm-clock"></i><br />
+				<span>{{deadline}}</span>
+			</md-card-content>
+		</md-card>
+	</div>
+	<div class="content" layout="row" flex>
+		<md-card id="sprint-status" flex>
+			<md-toolbar>
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>Sprints</span>
+					<span flex></span>
+					<span><a ui-sref="dashboard.sprintPage({projectId: project.id})">Edit sprints & tasks</a></span>
+				</md-toolbar-tools>
+			</md-toolbar>
+			<md-card-content ng-repeat="(sprintName, sprintValue) in sprints">
+				{{sprintName}} :
+				<md-progress-linear md-mode="determinate" value="{{sprintValue}}"></md-progress-linear>
+				<br />
+			</md-card-content>
+		</md-card>
+	</div>
+</md-content>

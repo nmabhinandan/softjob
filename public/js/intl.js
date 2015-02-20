@@ -8,7 +8,7 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			auth: true
 		}).state('404', {
 			url: '/404',
-			templateUrl: 'templates/404.html',			
+			templateUrl: 'templates/404.html',
 			auth: false
 		}).state('login', {
 			url: '/login',
@@ -17,12 +17,21 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			auth: false
 		}).state('dashboard.projects', {			
 			url: 'projects',
-			templateUrl: '/templates/projects.html',			
+			controller: 'ProjectListController',
+			templateUrl: '/templates/projects.html',
+		}).state('dashboard.projectPage', {
+			url: 'projects/{projectSlug}',
+			controller: 'ProjectsController',			
+			templateUrl: '/templates/project_page.html'
+		}).state('dashboard.sprintPage', {
+			url: 'projects/{projectId}/sprints',
+			controller: 'SprintsController',			
+			templateUrl: '/templates/sprint_page.html'
 		});
 
 		$urlRouterProvider.otherwise('/404');
 
-		$mdThemingProvider.theme('teal')
+		$mdThemingProvider.theme('teal')		
 			.primaryPalette('teal');
 
 		

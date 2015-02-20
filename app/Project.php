@@ -35,8 +35,8 @@ class Project extends Model {
 	{
 		if($this->owner_type == 'user') {
 			return User::find($this->owner_id);
-		} else if($this->owner_type == 'role') {
-			return Role::find($this->owner_id);
+		} else if($this->owner_type == 'group') {
+			return Group::find($this->owner_id);
 		} else {
 			$model = ucwords($this->owner_type);
 			$modelInstance = new $model;
@@ -47,5 +47,15 @@ class Project extends Model {
 	public function tags( )
 	{
 		return $this->belongsToMany('Softjob\ProjectTag');
+	}
+
+	public function sprints( )
+	{
+		return $this->hasMany('Softjob\Sprint');
+	}
+
+	public function tasks( )
+	{
+		return $this->hasMany('Softjob\Task');
 	}
 }

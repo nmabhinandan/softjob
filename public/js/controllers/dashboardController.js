@@ -1,7 +1,8 @@
-sjControllers.controller('DashboardController', ['$scope', '$state', 'Task', 'Auth', 'User', 'UI', function ($scope, $state, Task, Auth, User, UI) {
+sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state', 'Task', 'Auth', 'User', 'UI', function ($scope, $rootScope, $state, Task, Auth, User, UI) {
 	'use strict';
 
-	$scope.pageTitle = 'Dashboard';
+	$rootScope.pageTitle = 'Dashboard';
+	
 	UI.getSidebarItems().then(function(data) {
 		$scope.sidebarItems = data;
 	});

@@ -1,6 +1,6 @@
 <?php namespace Softjob\Contracts\Repositories;
 
-interface PermissionsRepoInterface {
+interface PermissionRepoInterface {
 
 	public function createOrUpdatePermission($permission);
 }

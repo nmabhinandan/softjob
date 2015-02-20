@@ -6,7 +6,6 @@ sjDirectives.directive('sjProjectsList', [ function(){
 		}, // {} = isolate, true = child, false/undefined = no change
 
 		controller: ['$scope', 'Project', 'User', function($scope, Project, User) {			
-			$scope.projects = 'jksdkjdkjdsfk';
 			Project.getProjects($scope.user.id).then(function(data) {				
 				$scope.projects = data;	
 			});			

@@ -7,7 +7,8 @@ class ModulesManager {
 
 	protected $modules = [
 		'User',
-	    'Project'
+	    'Project',
+	    'Product'
 	];
 
 	public function boot( )
@@ -71,7 +72,7 @@ class ModulesManager {
 	 */
 	private function actuallyRegisterPermissions( $permissions )
 	{
-		$repo = \App::make('\Softjob\Contracts\Repositories\PermissionsReoInterface');
+		$repo = \App::make('\Softjob\Contracts\Repositories\PermissionReoInterface');
 		if ( is_array( $permissions ) ) {
 			foreach ( $permissions as $permission ) {
 				$repo->createOrUpdatePermission($permission);

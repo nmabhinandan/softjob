@@ -18,7 +18,11 @@ class DatabaseSeeder extends Seeder {
 			'OrganizationTableSeeder',
 			'TagsTableSeeder',
 		    'UserTableSeeder',
-		    'ProjectTableSeeder'
+		    'ProjectsTableSeeder',
+		    'TasksTableSeeder',
+		    'SprintsTableSeeder',
+		    'WorkflowsTableSeeder',
+		    'WorkflowStagesTableSeeder'
 		];
 
 		foreach($seeds as $seed) {

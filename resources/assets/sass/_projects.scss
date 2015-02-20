@@ -11,6 +11,12 @@
 				
 			}
 		}
+		#user-projects-status {
+			@include animation(fadeIn .5s);		
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+		}
 	}
 	.content {
 

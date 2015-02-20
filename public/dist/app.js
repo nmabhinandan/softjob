@@ -4,6 +4,7 @@ var softjob = angular.module('softjob', [
 	'angular-loading-bar',
 	'ngAnimate',
 	'ui.router',
+	'chart.js',
 	'sjServices',
 	'sjControllers',
 	'sjDirectives'
@@ -88,6 +89,65 @@ sjServices.factory('Project', ['User', '$http', '$q', '$mdToast', 'softjobConfig
 		return deferred.promise;
 	};
 
+	instance.getProjectBySlug = function(slug) {
+		var deferred = $q.defer();
+		$http({
+			method: 'GET',
+			url: softjobConfig.APP_BACKEND + '/projects/' + slug
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject();
+		});
+		
+		return deferred.promise;
+	};
+
+	instance.getProjectsStatus = function (userId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'GET',
+			url: softjobConfig.APP_BACKEND + '/users/' + userId + '/projects/status'		
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject();			
+		});
+		
+		return deferred.promise;
+	};
+
+	instance.getProjectVelocity = function (projectId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'GET',
+			url: softjobConfig.APP_BACKEND + '/projects/' + projectId + '/velocity'		
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject();			
+		});
+		
+		return deferred.promise;
+	};
+
+	instance.getProjectSprintStatus = function (projectId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'GET',
+			url: softjobConfig.APP_BACKEND + '/projects/' + projectId + '/sprints/status'		
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject();			
+		});
+		
+		return deferred.promise;
+	};
 	return instance;
 }]);
 sjServices.service('Tag', ['$http', '$q', 'softjobConfig', function($http, $q, softjobConfig){
@@ -238,10 +298,11 @@ sjServices.factory('User', ['$q', '$window', 'softjobConfig', '$rootScope', '$ht
 	};
 	return service;
 }]);
-sjControllers.controller('DashboardController', ['$scope', '$state', 'Task', 'Auth', 'User', 'UI', function ($scope, $state, Task, Auth, User, UI) {
+sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state', 'Task', 'Auth', 'User', 'UI', function ($scope, $rootScope, $state, Task, Auth, User, UI) {
 	'use strict';
 
-	$scope.pageTitle = 'Dashboard';
+	$rootScope.pageTitle = 'Dashboard';
+	
 	UI.getSidebarItems().then(function(data) {
 		$scope.sidebarItems = data;
 	});
@@ -260,6 +321,84 @@ sjControllers.controller('LoginController', ['$scope', 'Auth', function ($scope,
 		Auth.login(user);
 	};
 }]);
+sjControllers.controller('ProjectListController', ['$scope', '$rootScope', 'Project', function($scope, $rootScope, Project){
+	$rootScope.pageTitle = 'Projects';
+	$scope.chart = {
+		labels: [],//['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
+		data: [		
+			// [65, 59, 80, 81, 56, 55, 40]    
+		],
+		options: {
+			responsive: true,
+			barShowStroke : false,
+			scaleShowVerticalLines: false,
+			barValueSpacing: 20,
+		}
+	}
+
+
+	Project.getProjectsStatus($rootScope.loggedInUser.id).then(function(data) {				
+		var statuses = [];
+		angular.forEach(data,function(value) {			
+			$scope.chart.labels.push(value.name.substring(0, 12).toUpperCase()+'...');
+			statuses.push(value.status);
+		});		
+		$scope.chart.data.push(statuses);
+		console.log($scope.chart.labels);
+		console.log($scope.chart.data);
+	});	
+
+}])
+sjControllers.controller('ProjectsController', ['$scope', '$rootScope', '$stateParams', 'Project', function($scope, $rootScope, $stateParams, Project) {
+
+	$scope.project = {};
+
+	$scope.chart = {
+		labels: [],
+		series: ['Ideal velocity', 'Current velocity'],
+		data: [],
+		options: {
+			responsive: true,											
+		}		
+	}
+
+
+
+	Project.getProjectBySlug($stateParams.projectSlug).then(function(data) {
+		$scope.project = data;
+		$scope.deadline = moment(data.deadline).calendar();
+		$rootScope.pageTitle = data.name;
+		
+		console.log(moment(data.created_at).calendar());
+		
+		for (var date = moment(data.created_at); date.isBefore(moment(data.deadline).add(1,'day')); date.add(1, 'day')) {
+			$scope.chart.labels.push(date.fromNow());
+		};
+
+		Project.getProjectVelocity(data.id).then(function(data) {				
+			var velocity = [];
+			var idealVelocity = [];
+			
+			angular.forEach(data.ideal_velocity,function(value) {				
+				idealVelocity.push(value);
+			});
+			$scope.chart.data.push(idealVelocity);
+			
+			angular.forEach(data.current_velocity,function(value) {
+				velocity.push(value);
+			});			
+			$scope.chart.data.push(velocity);						
+		});
+
+		Project.getProjectSprintStatus(data.id).then(function(data) {
+			$scope.sprints = data;
+		});
+	});	
+}]);
+sjControllers.controller('SprintsController', ['$scope', 'Project', function($scope, Project){
+	// $stateParams.projectId
+
+}]);
 sjDirectives.directive('sjProjectsList', [ function(){	
 	return {		
 		
@@ -268,7 +407,6 @@ sjDirectives.directive('sjProjectsList', [ function(){
 		}, // {} = isolate, true = child, false/undefined = no change
 
 		controller: ['$scope', 'Project', 'User', function($scope, Project, User) {			
-			$scope.projects = 'jksdkjdkjdsfk';
 			Project.getProjects($scope.user.id).then(function(data) {				
 				$scope.projects = data;	
 			});			
@@ -375,7 +513,7 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			auth: true
 		}).state('404', {
 			url: '/404',
-			templateUrl: 'templates/404.html',			
+			templateUrl: 'templates/404.html',
 			auth: false
 		}).state('login', {
 			url: '/login',
@@ -384,12 +522,21 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			auth: false
 		}).state('dashboard.projects', {			
 			url: 'projects',
-			templateUrl: '/templates/projects.html',			
+			controller: 'ProjectListController',
+			templateUrl: '/templates/projects.html',
+		}).state('dashboard.projectPage', {
+			url: 'projects/{projectSlug}',
+			controller: 'ProjectsController',			
+			templateUrl: '/templates/project_page.html'
+		}).state('dashboard.sprintPage', {
+			url: 'projects/{projectId}/sprints',
+			controller: 'SprintsController',			
+			templateUrl: '/templates/sprint_page.html'
 		});
 
 		$urlRouterProvider.otherwise('/404');
 
-		$mdThemingProvider.theme('teal')
+		$mdThemingProvider.theme('teal')		
 			.primaryPalette('teal');
 
 		

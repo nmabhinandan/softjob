@@ -6,7 +6,7 @@ use Softjob\Project;
 use Softjob\ProjectTag;
 use Softjob\User;
 
-class ProjectTableSeeder extends Seeder {
+class ProjectsTableSeeder extends Seeder {
 
 	public function run()
 	{

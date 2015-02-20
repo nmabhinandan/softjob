@@ -1,12 +1,9 @@
 <?php namespace Softjob\Commands;
 
-use Illuminate\Contracts\Bus\SelfHandling;
+use Softjob\Commands\Command;
 
-class getProjectsOfUser extends Command {
+class CalculateProjectsStatus extends Command {
 
-	/**
-	 * @var
-	 */
 	public $userId;
 
 	/**
@@ -14,8 +11,9 @@ class getProjectsOfUser extends Command {
 	 *
 	 * @param $userId
 	 */
-	public function __construct( $userId )
+	public function __construct($userId)
 	{
 		$this->userId = $userId;
 	}
+
 }

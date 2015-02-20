@@ -49,7 +49,8 @@ class ProjectModule implements Module, ExposesPermissionsInterface, ExposesSideb
 	public function sideBarItems()
 	{
 		return [
-			'Projects' => 'dashboard.projects'
+			'Projects' => 'dashboard.projects',
+		    'Workspace' => 'dashboard.workspace'
 		];
 	}
 }
