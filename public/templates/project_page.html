@@ -13,18 +13,21 @@
 				</div>
 			</md-card-content>
 		</md-card>
-		<md-card id="deadline" flex="20">
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Deadline</span>
-					<span flex></span>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content>
-				<i class="ion-android-alarm-clock"></i><br />
-				<span>{{deadline}}</span>
-			</md-card-content>
-		</md-card>
+		<div flex="20" layout="column">
+			<md-card id="deadline" flex>
+				<md-toolbar>
+					<md-toolbar-tools class="md-toolbar-tools">
+						<span>Deadline</span>
+						<span flex></span>
+					</md-toolbar-tools>
+				</md-toolbar>
+				<md-card-content>
+					<i class="ion-android-alarm-clock"></i><br />
+					<span>{{deadline}}</span>
+				</md-card-content>
+			</md-card>
+			<div flex></div>
+		</div>
 	</div>
 	<div class="content" layout="row" flex>
 		<md-card id="sprint-status" flex>
@@ -32,7 +35,7 @@
 				<md-toolbar-tools class="md-toolbar-tools">
 					<span>Sprints</span>
 					<span flex></span>
-					<span><a ui-sref="dashboard.sprintPage({projectId: project.id})">Edit sprints & tasks</a></span>
+					<span><md-button ui-sref="dashboard.sprintPage({projectId: project.id})">Edit sprints & tasks</md-button></span>
 				</md-toolbar-tools>
 			</md-toolbar>
 			<md-card-content ng-repeat="(sprintName, sprintValue) in sprints">

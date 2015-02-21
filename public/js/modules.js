@@ -5,6 +5,7 @@ var softjob = angular.module('softjob', [
 	'ngAnimate',
 	'ui.router',
 	'chart.js',
+	'ngDraggable',
 	'sjServices',
 	'sjControllers',
 	'sjDirectives'

@@ -33,25 +33,21 @@ Route::group(['domain' => 'internal.softjob.app', 'middleware' => 'jwt'], functi
 	Route::get('/projects', 'ProjectsController@getAllProjects');
 	Route::post('/projects', 'ProjectsController@createProject');
 	Route::get('/projects/{slug}', 'ProjectsController@getProject');
+	Route::get('/projects/id/{projectId}', 'ProjectsController@getProjectById');
 	Route::get('/projects/{projectId}/tasks', 'ProjectsController@getProjectTasks');
 	Route::get('/projects/{projectId}/velocity', 'ProjectsController@getProjectVelocity');
 	Route::get('/projects/{projectId}/tasks/available', 'ProjectsController@getAvailableProjectTasks');
 	Route::get('/projects/{projectId}/sprints', 'ProjectsController@getProjectSprints');
 	Route::get('/projects/{projectId}/tags', 'ProjectsController@getProjectTags');
 
+	Route::post('/tasks', 'TaskController@createTask');
+
 	Route::get('/projects/{projectId}/sprints/status', 'SprintsController@getSprintsStatusOfProject');
 	Route::get('/sprints/{sprint_id}', 'SprintsController@getSprint');
 
 
 	Route::get('/tags/projects/all', function() {
-		return [
-			'asdf',
-			'asdfghjh',
-			'zxcv',
-			'zxccvbb',
-			'qwert',
-			'qweterert'
-		];
+
 	});
 });
 

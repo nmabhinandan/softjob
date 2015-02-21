@@ -155,6 +155,26 @@ body #main #dashboard #page #content .projects-page .content #sprint-status md-t
   text-decoration: none;
   color: white;
 }
+body #main #dashboard #page #content .sprints-page .meta #tasks md-toolbar {
+  background-color: #607D8B;
+}
+body #main #dashboard #page #content .sprints-page .meta #tasks md-card-content .task {
+  text-transform: capitalize;
+  outline: none;
+}
+body #main #dashboard #page #content .sprints-page .meta #sprints md-toolbar {
+  background-color: #607D8B;
+}
+body #main #dashboard #page #content .sprints-page .meta #sprints md-card-content .sprint {
+  text-transform: capitalize;
+}
+body #main #dashboard #page #content .sprints-page .content #sprint-status md-toolbar {
+  background-color: #607D8B;
+}
+body #main #dashboard #page #content .sprints-page .content #sprint-status md-toolbar a:hover, body #main #dashboard #page #content .sprints-page .content #sprint-status md-toolbar a:active {
+  text-decoration: none;
+  color: white;
+}
 body #main #dashboard #ajaxLoad {
   display: none;
   bottom: 0;

@@ -1,4 +1,4 @@
-sjControllers.controller('ProjectsController', ['$scope', '$rootScope', '$stateParams', 'Project', function($scope, $rootScope, $stateParams, Project) {
+sjControllers.controller('ProjectsController', ['$scope', '$rootScope', '$stateParams', '$mdDialog', 'Project', function($scope, $rootScope, $stateParams, $mdDialog, Project) {
 
 	$scope.project = {};
 
@@ -18,7 +18,6 @@ sjControllers.controller('ProjectsController', ['$scope', '$rootScope', '$stateP
 		$scope.deadline = moment(data.deadline).calendar();
 		$rootScope.pageTitle = data.name;
 		
-		console.log(moment(data.created_at).calendar());
 		
 		for (var date = moment(data.created_at); date.isBefore(moment(data.deadline).add(1,'day')); date.add(1, 'day')) {
 			$scope.chart.labels.push(date.fromNow());

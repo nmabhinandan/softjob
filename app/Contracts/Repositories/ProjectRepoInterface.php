@@ -4,6 +4,16 @@ interface ProjectRepoInterface {
 
 
 	/**
+	 * Create project
+	 *
+	 * @param $data
+	 *
+	 * @return mixed
+	 */
+	public function createProject( $data );
+
+
+	/**
 	 * Get project based on project id
 	 *
 	 * @param $id
@@ -57,4 +67,13 @@ interface ProjectRepoInterface {
 	 * @return mixed
 	 */
 	public function availableTasksOfProject( $projectId );
+
+	/**
+	 * Return the sprints of the project
+	 *
+	 * @param $projectId
+	 *
+	 * @return mixed
+	 */
+	public function sprintsOfProject( $projectId );
 }

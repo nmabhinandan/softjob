@@ -1,4 +1,4 @@
-sjServices.factory('Project', ['User', '$http', '$q', '$mdToast', 'softjobConfig', function(User, $http, $q, $mdToast, softjobConfig){
+sjServices.factory('Project', ['User', '$http', '$q', '$state', '$mdToast', 'softjobConfig', function(User, $http, $q, $state, $mdToast, softjobConfig){
 	var instance = {};
 	instance.getProjects = function (userId) {
 		var deferred = $q.defer();
@@ -10,6 +10,21 @@ sjServices.factory('Project', ['User', '$http', '$q', '$mdToast', 'softjobConfig
 		}).error(function (data,status,headers,config) {
 			$mdToast.show($mdToast.simple().content(data.message));
 			deferred.reject();			
+		});
+
+		return deferred.promise;
+	};
+
+	instance.getProjectById = function(projectId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'GET',
+			url: softjobConfig.APP_BACKEND + '/projects/id/' + projectId
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject();
 		});
 		
 		return deferred.promise;
@@ -73,6 +88,19 @@ sjServices.factory('Project', ['User', '$http', '$q', '$mdToast', 'softjobConfig
 		});
 		
 		return deferred.promise;
+	};
+
+	instance.createProject = function (formData) {
+		$http({
+			method: 'post',
+			url: softjobConfig.APP_BACKEND + '/projects',
+			data: formData,
+			headers: { 'Content-Type': 'application/json' }
+		}).success(function (data, status, headers, config) {			
+			$state.go('dashboard.projects');
+		}).error(function (data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+		});
 	};
 	return instance;
 }]);

@@ -1,10 +1,9 @@
-sjControllers.controller('ProjectListController', ['$scope', '$rootScope', 'Project', function($scope, $rootScope, Project){
+sjControllers.controller('ProjectListController', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'Project', 
+	function($scope, $rootScope, $mdDialog, $mdToast, Project){
 	$rootScope.pageTitle = 'Projects';
 	$scope.chart = {
-		labels: [],//['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
-		data: [		
-			// [65, 59, 80, 81, 56, 55, 40]    
-		],
+		labels: [],
+		data: [],
 		options: {
 			responsive: true,
 			barShowStroke : false,
@@ -20,9 +19,36 @@ sjControllers.controller('ProjectListController', ['$scope', '$rootScope', 'Proj
 			$scope.chart.labels.push(value.name.substring(0, 12).toUpperCase()+'...');
 			statuses.push(value.status);
 		});		
-		$scope.chart.data.push(statuses);
-		console.log($scope.chart.labels);
-		console.log($scope.chart.data);
+		$scope.chart.data.push(statuses);		
 	});	
 
-}])
+	$scope.createProject = function(ev) {
+		$mdDialog.show({			
+			controller: ['$scope','$mdDialog','$rootScope', function($scope,$mdDialog,$rootScope) {				
+				$scope.cancel = function() {					
+					$mdDialog.cancel();					
+				}
+
+				$scope.submit = function(data) {
+					data.owner_type = 'user';
+					data.owner_id = $rootScope.loggedInUser.id;
+					data.organization_id = $rootScope.loggedInUser.organization_id;
+					data.project_manager_id = $rootScope.loggedInUser.id;
+					console.log(data);
+					$mdDialog.hide(data);
+				}
+
+				$scope.makeSlug = function(str) {
+					$scope.project.slug = str.toLowerCase()
+											.replace(/[^\w ]+/g,'')
+											.replace(/ +/g,'-');
+				}; 
+			}],
+      		templateUrl: 'templates/forms/create_project.html',
+      		targetEvent: ev,
+		}).then(function(data) {
+			Project.createProject(data);
+			$mdToast.show($mdToast.simple().content("New project is created"));		
+		});
+	};
+}]);

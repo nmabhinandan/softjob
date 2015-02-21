@@ -2,7 +2,7 @@
 
 use Softjob\Http\Requests\Request;
 
-class CreateProjectRequest extends Request {
+class CreateTaskRequest extends Request {
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -22,12 +22,10 @@ class CreateProjectRequest extends Request {
 	public function rules()
 	{
 		return [
-			'name' => 'string|required',
-		    'slug' => 'string|required',
-		    'owner_type' => 'required|string',
-		    'owner_id' => 'required|numeric',
-		    'organization_id' => 'required|numeric',
-		    'project_manager_id' => 'required'
+			'name' => 'required|unique:tasks',
+			'slug' => 'required|unique:tasks',
+		    'description' => 'max:255',
+		    'complexity_point' => 'required|numeric'
 		];
 	}
 
@@ -38,5 +36,4 @@ class CreateProjectRequest extends Request {
 			'message' => 'Invalid input'
 		],400);
 	}
-
 }

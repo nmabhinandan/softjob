@@ -5,6 +5,7 @@ var softjob = angular.module('softjob', [
 	'ngAnimate',
 	'ui.router',
 	'chart.js',
+	'ngDraggable',
 	'sjServices',
 	'sjControllers',
 	'sjDirectives'
@@ -72,7 +73,7 @@ sjServices.factory('AuthInterceptor', ['$window', '$q', function ($window, $q) {
 	};
 	return service;
 }]);
-sjServices.factory('Project', ['User', '$http', '$q', '$mdToast', 'softjobConfig', function(User, $http, $q, $mdToast, softjobConfig){
+sjServices.factory('Project', ['User', '$http', '$q', '$state', '$mdToast', 'softjobConfig', function(User, $http, $q, $state, $mdToast, softjobConfig){
 	var instance = {};
 	instance.getProjects = function (userId) {
 		var deferred = $q.defer();
@@ -84,6 +85,21 @@ sjServices.factory('Project', ['User', '$http', '$q', '$mdToast', 'softjobConfig
 		}).error(function (data,status,headers,config) {
 			$mdToast.show($mdToast.simple().content(data.message));
 			deferred.reject();			
+		});
+
+		return deferred.promise;
+	};
+
+	instance.getProjectById = function(projectId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'GET',
+			url: softjobConfig.APP_BACKEND + '/projects/id/' + projectId
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject();
 		});
 		
 		return deferred.promise;
@@ -148,7 +164,42 @@ sjServices.factory('Project', ['User', '$http', '$q', '$mdToast', 'softjobConfig
 		
 		return deferred.promise;
 	};
+
+	instance.createProject = function (formData) {
+		$http({
+			method: 'post',
+			url: softjobConfig.APP_BACKEND + '/projects',
+			data: formData,
+			headers: { 'Content-Type': 'application/json' }
+		}).success(function (data, status, headers, config) {			
+			$state.go('dashboard.projects');
+		}).error(function (data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+		});
+	};
 	return instance;
+}]);
+sjServices.factory('Sprint', ['$http', '$q', '$mdToast', 'softjobConfig', 'User', function ($http, $q, $mdToast, softjobConfig, User) {
+	'use strict';
+	var service = {};
+	
+	service.getSprintsOfProject = function (projectId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'GET',
+			url: softjobConfig.APP_BACKEND + '/projects/' + projectId + '/sprints'
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject();			
+		});
+
+		return deferred.promise;
+	};
+
+	
+	return service;
 }]);
 sjServices.service('Tag', ['$http', '$q', 'softjobConfig', function($http, $q, softjobConfig){
 	
@@ -171,12 +222,37 @@ sjServices.service('Tag', ['$http', '$q', 'softjobConfig', function($http, $q, s
 
 	return serviceInstance;
 }]);
-sjServices.factory('Task', ['$http', 'softjobConfig', 'User', function ($http, softjobConfig, User) {
+sjServices.factory('Task', ['$http', '$q', 'softjobConfig', 'User', function ($http, $q, softjobConfig, User) {
 	'use strict';
 	var service = {};
-		service.getTasks = function () {
-		return ['Task1', 'Task2'];
+	
+	service.getTasksOfProject = function (projectId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'GET',
+			url: softjobConfig.APP_BACKEND + '/projects/' + projectId + '/tasks'
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject();			
+		});
+
+		return deferred.promise;
 	};
+
+	service.createTask = function(formData) {
+		$http({
+			method: 'post',
+			url: softjobConfig.APP_BACKEND + '/tasks',
+			data: formData,
+			headers: { 'Content-Type': 'application/json' }
+		}).success(function (data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content('Task has been created'));
+		}).error(function (data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+		});
+	}
 	return service;
 }]);
 sjServices.factory('UI', ['$http', 'softjobConfig', '$q', function($http, softjobConfig, $q){
@@ -298,6 +374,7 @@ sjServices.factory('User', ['$q', '$window', 'softjobConfig', '$rootScope', '$ht
 	};
 	return service;
 }]);
+
 sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state', 'Task', 'Auth', 'User', 'UI', function ($scope, $rootScope, $state, Task, Auth, User, UI) {
 	'use strict';
 
@@ -321,13 +398,12 @@ sjControllers.controller('LoginController', ['$scope', 'Auth', function ($scope,
 		Auth.login(user);
 	};
 }]);
-sjControllers.controller('ProjectListController', ['$scope', '$rootScope', 'Project', function($scope, $rootScope, Project){
+sjControllers.controller('ProjectListController', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'Project', 
+	function($scope, $rootScope, $mdDialog, $mdToast, Project){
 	$rootScope.pageTitle = 'Projects';
 	$scope.chart = {
-		labels: [],//['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
-		data: [		
-			// [65, 59, 80, 81, 56, 55, 40]    
-		],
+		labels: [],
+		data: [],
 		options: {
 			responsive: true,
 			barShowStroke : false,
@@ -343,13 +419,40 @@ sjControllers.controller('ProjectListController', ['$scope', '$rootScope', 'Proj
 			$scope.chart.labels.push(value.name.substring(0, 12).toUpperCase()+'...');
 			statuses.push(value.status);
 		});		
-		$scope.chart.data.push(statuses);
-		console.log($scope.chart.labels);
-		console.log($scope.chart.data);
+		$scope.chart.data.push(statuses);		
 	});	
 
-}])
-sjControllers.controller('ProjectsController', ['$scope', '$rootScope', '$stateParams', 'Project', function($scope, $rootScope, $stateParams, Project) {
+	$scope.createProject = function(ev) {
+		$mdDialog.show({			
+			controller: ['$scope','$mdDialog','$rootScope', function($scope,$mdDialog,$rootScope) {				
+				$scope.cancel = function() {					
+					$mdDialog.cancel();					
+				}
+
+				$scope.submit = function(data) {
+					data.owner_type = 'user';
+					data.owner_id = $rootScope.loggedInUser.id;
+					data.organization_id = $rootScope.loggedInUser.organization_id;
+					data.project_manager_id = $rootScope.loggedInUser.id;
+					console.log(data);
+					$mdDialog.hide(data);
+				}
+
+				$scope.makeSlug = function(str) {
+					$scope.project.slug = str.toLowerCase()
+											.replace(/[^\w ]+/g,'')
+											.replace(/ +/g,'-');
+				}; 
+			}],
+      		templateUrl: 'templates/forms/create_project.html',
+      		targetEvent: ev,
+		}).then(function(data) {
+			Project.createProject(data);
+			$mdToast.show($mdToast.simple().content("New project is created"));		
+		});
+	};
+}]);
+sjControllers.controller('ProjectsController', ['$scope', '$rootScope', '$stateParams', '$mdDialog', 'Project', function($scope, $rootScope, $stateParams, $mdDialog, Project) {
 
 	$scope.project = {};
 
@@ -369,7 +472,6 @@ sjControllers.controller('ProjectsController', ['$scope', '$rootScope', '$stateP
 		$scope.deadline = moment(data.deadline).calendar();
 		$rootScope.pageTitle = data.name;
 		
-		console.log(moment(data.created_at).calendar());
 		
 		for (var date = moment(data.created_at); date.isBefore(moment(data.deadline).add(1,'day')); date.add(1, 'day')) {
 			$scope.chart.labels.push(date.fromNow());
@@ -395,9 +497,94 @@ sjControllers.controller('ProjectsController', ['$scope', '$rootScope', '$stateP
 		});
 	});	
 }]);
-sjControllers.controller('SprintsController', ['$scope', 'Project', function($scope, Project){
-	// $stateParams.projectId
+sjControllers.controller('SprintsController', ['$scope', '$stateParams', '$mdDialog', 'Project', 'Task', 'Sprint',
+ function($scope, $stateParams, $mdDialog, Project, Task, Sprint){	 	
 
+ 	var backlogChecks = 0;
+ 	$scope.selectedBacklogTasks = [];
+	
+	Project.getProjectById($stateParams.projectId).then(function(data) {
+		$scope.project = data;
+		
+		$scope.pageTitle = data.name;
+		getTasksOfProject();
+		getSprintsOfProject()
+	});
+
+	function getTasksOfProject() {
+		Task.getTasksOfProject($scope.project.id).then(function(data) {
+			var freeTasks = [];
+			var allTasks = [];
+			angular.forEach(data,function(value) {
+				allTasks.push(value);
+				if(value.sprint_id === null) {
+					freeTasks.push(value);
+				}
+				$scope.project.tasks = allTasks;
+				$scope.project.freeTasks = freeTasks;
+			});			
+		});
+	}
+
+	function getSprintsOfProject() {
+		Sprint.getSprintsOfProject($scope.project.id).then(function(data) {
+			$scope.sprints = data;						
+			angular.forEach($scope.sprints, function(sprint) {
+				var totalTasks = 0;
+				angular.forEach(sprint.tasks,function(task) {
+					totalTasks += 1;
+				});				
+			});
+			console.log($scope.sprints);
+		});		
+	}
+
+	$scope.backlogChanged = function(taskId, state) {		
+		if(state) {
+			backlogChecks += 1;
+			$scope.selectedBacklogTasks.push(taskId);
+		} else {
+			backlogChecks -= 1;
+			var indx = $scope.selectedBacklogTasks.indexOf(taskId);
+			if(indx > -1) {
+				$scope.selectedBacklogTasks.splice(indx,1);
+			}
+		}		
+	};
+
+	$scope.isBacklogChecked = function() {
+		return (backlogChecks > 0) ? true : false;
+	};
+
+	$scope.createTask = function(ev) {
+		$mdDialog.show({
+			locals: {
+				project: $scope.project
+			},
+			controller: ['$scope','$mdDialog', 'project', function($scope,$mdDialog,project) {
+				$scope.tasks = project.tasks;				
+				$scope.cancel = function() {					
+					$mdDialog.cancel();					
+				}
+
+				$scope.submit = function(data) {
+					data.Project_id = project.id;
+					$mdDialog.hide(data);
+				}
+
+				$scope.makeSlug = function(str) {
+					$scope.task.slug = str.toLowerCase()
+											.replace(/[^\w ]+/g,'')
+											.replace(/ +/g,'-');
+				}; 
+			}],
+      		templateUrl: 'templates/forms/create_task.html',
+      		targetEvent: ev
+		}).then(function(data) {
+			Task.createTask(data);
+			getTasksOfProject();
+		});
+	};
 }]);
 sjDirectives.directive('sjProjectsList', [ function(){	
 	return {		
@@ -536,8 +723,8 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 
 		$urlRouterProvider.otherwise('/404');
 
-		$mdThemingProvider.theme('teal')		
-			.primaryPalette('teal');
+		$mdThemingProvider.theme('indigo')		
+			.primaryPalette('indigo');
 
 		
 		cfpLoadingBarProvider.loadingBarColor = '#BFFF00';

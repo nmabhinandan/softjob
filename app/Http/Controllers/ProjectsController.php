@@ -7,6 +7,7 @@ use Softjob\Commands\getProjectBySlug;
 use Softjob\Commands\getProjectsOfUser;
 use Softjob\Commands\getTasksOfProject;
 use Softjob\Contracts\Repositories\ProjectRepoInterface;
+use Softjob\Http\Requests\CreateProjectRequest;
 
 
 class ProjectsController extends Controller {
@@ -40,6 +41,24 @@ class ProjectsController extends Controller {
 		}
 
 		return $this->projectModel->getProjectBySlug($slug);
+	}
+
+	public function getProjectById( $projectId )
+	{
+		$validator = \Validator::make([
+			'id' => $projectId
+		], [
+			'id' => 'required|numeric|exists:projects,id'
+		]);
+
+		if ($validator->fails()) {
+			return \Response::json([
+				'status'  => 'error',
+				'message' => 'Invalid project id'
+			], 404);
+		}
+
+		return $this->projectModel->getProjectById($projectId);
 	}
 
 	public function getProjectsOfUser( $userId )
@@ -77,9 +96,9 @@ class ProjectsController extends Controller {
 		return $this->projectModel->tasksOfProject($projectId);
 	}
 
-	public function createProject( )
+	public function createProject(CreateProjectRequest $request)
 	{
-		
+		$this->projectModel->createProject($request->all());
 	}
 
 	public function getProjectsStatusOfUser($userId)
@@ -134,6 +153,24 @@ class ProjectsController extends Controller {
 		}
 
 		return $this->dispatch(new CalculateProjectsVelocity($projectId));
+	}
+
+	public function getProjectSprints( $projectId )
+	{
+		$validator = \Validator::make([
+			'id' => $projectId
+		], [
+			'id' => 'required|numeric|exists:projects,id'
+		]);
+
+		if ($validator->fails()) {
+			return \Response::json([
+				'status'  => 'error',
+				'message' => 'Invalid project id'
+			], 404);
+		}
+
+		return $this->projectModel->sprintsOfProject($projectId);
 	}
 
 }

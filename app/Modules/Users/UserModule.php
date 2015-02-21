@@ -14,7 +14,8 @@ class UserModule implements Module, ExposesSidebarItems{
 	public function sideBarItems()
 	{
 		return [
-			'Dashboard' => 'dashboard'
+			'Dashboard' => 'dashboard',
+			'Admin' => 'admin'
 //			'Settings' => 'dashboard.settings'
 		];
 	}

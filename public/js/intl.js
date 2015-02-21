@@ -31,8 +31,8 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 
 		$urlRouterProvider.otherwise('/404');
 
-		$mdThemingProvider.theme('teal')		
-			.primaryPalette('teal');
+		$mdThemingProvider.theme('indigo')		
+			.primaryPalette('indigo');
 
 		
 		cfpLoadingBarProvider.loadingBarColor = '#BFFF00';

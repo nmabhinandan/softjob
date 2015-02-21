@@ -24,7 +24,7 @@
 		})();
 	</script>
 </head>
-<body md-theme="teal">
+<body md-theme="indigo">
 
 	<main id="main" ui-view></main>
 <!--	<md-progress-circular id="globalProgress" md-mode="indeterminate"></md-progress-circular>-->

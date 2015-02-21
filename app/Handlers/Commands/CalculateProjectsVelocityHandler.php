@@ -44,6 +44,7 @@ class CalculateProjectsVelocityHandler {
 			$totalComplexity += $task->complexity_point;
 		}
 		$idealVelFactor = $totalComplexity / ($duration+1);
+
 		for($i=$totalComplexity;$i>=0;$i = $i-$idealVelFactor) {
 			array_push($status['ideal_velocity'], $i);
 		}

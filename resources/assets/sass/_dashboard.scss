@@ -22,7 +22,8 @@
 		}
 		#content {
 			@import "projects.scss";
-			@import "projects_page.scss"
+			@import "projects_page.scss";
+			@import "sprint_page.scss";
 		}
 	}
 	#ajaxLoad {	

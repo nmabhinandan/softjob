@@ -104,4 +104,27 @@ class EloquentProjectRepo implements ProjectRepoInterface{
 		return $this->model->find($projectId)->tasks()->whereNotIn('');
 	}
 
+	/**
+	 * Return the sprints of the project
+	 *
+	 * @param $projectId
+	 *
+	 * @return mixed
+	 */
+	public function sprintsOfProject( $projectId )
+	{
+		return $this->model->find($projectId)->sprints()->with('tasks')->get();
+	}
+
+	/**
+	 * Create project
+	 *
+	 * @param $data
+	 *
+	 * @return mixed
+	 */
+	public function createProject( $data )
+	{
+		$this->model->create($data);
+	}
 }

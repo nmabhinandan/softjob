@@ -1,0 +1,45 @@
+.sprints-page {
+	.meta {
+		#tasks {
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+			md-card-content {
+				// cursor: -webkit-grab;
+				// &:active {
+				// 	cursor: -webkit-grabbing;
+				// }
+				.task {
+					text-transform: capitalize;
+					outline: none;					
+				}
+			}
+
+
+		}
+		#sprints {
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+			md-card-content {				
+				.sprint {
+					text-transform: capitalize;
+				}
+			}
+		}
+	}
+
+	.content {
+		#sprint-status {
+			md-toolbar {
+				background-color: $md-blue-grey;
+				a {
+					&:hover, &:active {
+						text-decoration: none;
+						color: white;
+					}
+				}
+			}
+		}
+	}
+}

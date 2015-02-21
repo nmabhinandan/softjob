@@ -2,4 +2,5 @@
 
 interface TaskRepoInterface {
 
+	public function createTask($task);
 }
