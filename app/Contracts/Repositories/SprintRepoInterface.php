@@ -19,4 +19,39 @@ interface SprintRepoInterface {
 	 * @return mixed
 	 */
 	public function getSprintsOfProject($projectId);
+
+	/**
+	 * Create a new sprint
+	 *
+	 * @param $sprint
+	 *
+	 * @return mixed
+	 */
+	public function createSprint($sprint);
+
+	/**
+	 * Get all workflows
+	 *
+	 * @return mixed
+	 */
+	public function getWorkflows();
+
+
+	/**
+	 * Get a single workflow stage
+	 *
+	 * @param $workflowStageId
+	 *
+	 * @return mixed
+	 */
+	public function getWorkflowStageById($workflowStageId);
+
+	/**
+	 * Get all stages of the workflow
+	 *
+	 * @param $workflowId
+	 *
+	 * @return mixed
+	 */
+	public function getWorkflowStages($workflowId);
 }

@@ -1,8 +1,18 @@
 <main id="dashboard">
     <md-toolbar class="md-whiteframe-z1">        
         <div id="toolbar-tools" class="md-toolbar-tools">
-            <span id="title" style="text-tranform: capitalize" flex>
+            <md-button class="md-primary" ng-click="togSideNav()" style="color:white; font-size: inherit;" hide-gt-md flex="5" aria-label="Toggle Sidebar">
+                <i class="ion-android-menu"></i>
+            </md-button>
+            <span id="title" style="text-tranform: capitalize">
                 {{ pageTitle }}
+            </span>
+            <span flex></span>
+            <span id="msg-icon">
+                <i class="ion-android-chat"></i>                
+            </span>
+            <span id="notif-icon">
+                <i class="ion-android-notifications"></i>
             </span>
             <span id="profile">
                 <sj-user-avatar user="loggedInUser"></sj-user-avatar>
@@ -11,10 +21,52 @@
     </md-toolbar>        
     <div id="page" layout="row">    
         <md-sidenav id="sidebar" class="md-sidenav-left md-whiteframe-z1"
-                md-component-id="left" md-is-locked-open="$media('gt-sm')" ng-include="'templates/sidebar.html'" flex="10">
+                md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-include="'templates/sidebar.html'" flex="10">
         </md-sidenav>
         <div id="content" ui-view flex>
-                
+            <div id="user-dashboard" layout="row" layout-sm="column">
+
+                <md-card id="" flex>
+                    
+                </md-card>
+                <md-card id="todo" flex>
+                    <md-toolbar>                    
+                        <md-toolbar-tools class="md-toolbar-tools">
+                            <span>Todo</span>
+                            <span flex></span>
+                            <md-button ng-click="clearTodos($event)" aria-label="Create Todo Item">
+                                Clear Completed
+                            </md-button>
+                        </md-toolbar-tools>
+                    </md-toolbar>
+                    <md-card-content>
+                        <md-list>
+                            <md-item ng-repeat="todo in todos">
+                                <md-item-content class="todo">                                    
+                                    <div class="md-tile-content md-padding">
+                                        <md-checkbox ng-model="checkedTodo" ng-disabled="todo.done" ng-change="userSelected(todo.id, checkedTodo)" aria-label="Chcek todo as completed">
+                                            <h3 ng-class="{'doneTodo': todo.done}">{{todo.name}}</h3>
+                                        </md-checkbox>
+                                        <md-input-container ng-if="$last">
+                                            <label>Add New Todo</label>
+                                            <input ng-model="newTodo" ui-keypress="{13:'addNewTodo($event, newTodo)'}">
+                                        </md-input-container>
+                                    </div>
+                                </md-item-content>
+                                <md-divider md-inset ng-if="!$last"></md-divider>                                
+                            </md-item>
+                            <div style="font-size: 72pt; text-align: center; color: grey" ng-if="!todos.length">                                
+                                <i class="ion-coffee"></i>                                
+                                <span style="font-size: 14pt">All done!</span>
+                            </div>
+                            <md-input-container ng-if="!todos.length">
+                                <label>Add New Todo</label>
+                                <input ng-model="newTodo" ui-keypress="{13:'addNewTodo($event, newTodo)'}">
+                            </md-input-container>     
+                        </md-list>
+                    </md-card-content>
+                </md-card>
+            </div>
         </div>                
     </div>         
 </main>

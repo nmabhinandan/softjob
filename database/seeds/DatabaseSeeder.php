@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder {
 		$seeds = [
 			'OrganizationTableSeeder',
 			'TagsTableSeeder',
+			'RoleTableSeeder',
 		    'UserTableSeeder',
 		    'ProjectsTableSeeder',
 		    'TasksTableSeeder',

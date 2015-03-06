@@ -1,0 +1,15 @@
+#user-dashboard {
+	#todo {
+		md-toolbar {			
+			background-color: $md-blue-grey;
+		}
+
+		md-card-content {
+			background-color: rgb(255,255,250);
+			.doneTodo {				
+				color: grey;
+				text-decoration: line-through;
+			}
+		}
+	}
+}

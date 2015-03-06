@@ -1,8 +1,10 @@
 <?php  namespace Softjob\Repositories;
 
 
+use Carbon\Carbon;
 use Softjob\Contracts\Repositories\ProjectRepoInterface;
 use Softjob\Project;
+use Softjob\ProjectTag;
 use Softjob\User;
 
 class EloquentProjectRepo implements ProjectRepoInterface{
@@ -37,7 +39,7 @@ class EloquentProjectRepo implements ProjectRepoInterface{
 	 */
 	public function getProjectById( $id )
 	{
-		return $this->model->find($id);
+		return $this->model->with('users')->find($id);
 	}
 
 
@@ -125,6 +127,50 @@ class EloquentProjectRepo implements ProjectRepoInterface{
 	 */
 	public function createProject( $data )
 	{
-		$this->model->create($data);
+
+		$proj = $this->model->create([
+			'name' => $data['name'],
+		    'slug' => $data['slug'],
+		    'description' => $data['description'],
+		    'owner_type' => $data['owner_type'],
+		    'owner_id' => $data['owner_id'],
+		    'organization_id' => $data['organization_id'],
+		    'deadline' => Carbon::parse($data['deadline']),
+		    'project_manager_id' => $data['project_manager_id']
+		]);
+
+		if($data['owner_type'] == 'user') {
+			$proj->users()->attach($data['owner_id']);
+		}
+
+		if(is_array($data['tags'])) {
+			foreach ($data['tags'] as $tag) {
+				$t = ProjectTag::updateOrCreate([
+					'name' => trim($tag)
+				]);
+
+				$proj->tags()->attach($t->id);
+			}
+
+		}
+
+		$proj->save();
+	}
+
+	/**
+	 * Add users to the request
+	 *
+	 * @param $data
+	 *
+	 * @return mixed
+	 */
+	public function addUsers( $data )
+	{
+		$p = $this->model->find($data['id']);
+		foreach ($data['users'] as $user) {
+			$p->users()->attach($user['id']);
+		}
+		$p->save();
+
 	}
 }

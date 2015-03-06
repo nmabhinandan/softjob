@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use Softjob\Commands\CalculateProjectsVelocity;
 use Softjob\Contracts\Repositories\ProjectRepoInterface;
+use Softjob\Contracts\Repositories\SprintRepoInterface;
 use Softjob\Project;
 
 class CalculateProjectsVelocityHandler {
@@ -11,16 +12,21 @@ class CalculateProjectsVelocityHandler {
 	 * @var ProjectRepoInterface
 	 */
 	private $projectRepo;
+	/**
+	 * @var SprintRepoInterface
+	 */
+	private $sprintRepo;
 
 	/**
 	 * Create the command handler.
 	 *
 	 * @param ProjectRepoInterface $projectRepo
+	 * @param SprintRepoInterface $sprintRepo
 	 */
-	public function __construct( ProjectRepoInterface $projectRepo )
+	public function __construct( ProjectRepoInterface $projectRepo, SprintRepoInterface $sprintRepo)
 	{
-		//
 		$this->projectRepo = $projectRepo;
+		$this->sprintRepo = $sprintRepo;
 	}
 
 	/**
@@ -32,37 +38,23 @@ class CalculateProjectsVelocityHandler {
 	 */
 	public function handle( CalculateProjectsVelocity $command )
 	{
-		$project                    = $this->projectRepo->getProjectById($command->projectId);
-		$tasks                      = $project->tasks()->get();
-		$totalComplexity            = 0;
-		$status                     = [ ];
-		$status['current_velocity'] = [ ];
-		$status['ideal_velocity'] = [ ];
-		$dates = [];
-		$duration = Carbon::parse($project->deadline)->diffInDays(Carbon::parse($project->created_at));
-		foreach ($tasks as $task) {
-			$totalComplexity += $task->complexity_point;
-		}
-		$idealVelFactor = $totalComplexity / ($duration+1);
+		$sprints = $this->projectRepo->getProjectById($command->projectId)->sprints()->get()->toArray();
+		$result = [];
 
-		for($i=$totalComplexity;$i>=0;$i = $i-$idealVelFactor) {
-			array_push($status['ideal_velocity'], $i);
-		}
-
-		for($i=0;$i<$duration;$i++) {
-			array_push($dates, Carbon::parse($project->created_at)->addDays($i)->toDateTimeString());
-		}
-		foreach ($dates as $date) {
-			$t = $task->where('completed_at','=',$date)->get()->toArray() != [] ? $task->where('completed_at','=',$date)->get()->toArray() : [['complexity_point' => 0]];
-			$vel = 0;
-			foreach ($t as $tsk) {
-				$vel += $tsk['complexity_point'];
-//				array_push($status['current_velocity'], $tsk['complexity_point']);
+		foreach ($sprints as $sprint) {
+			$s = $this->sprintRepo->getSprint($sprint['id']);
+			$t = $s->tasks()->get();
+			$totalComplexity = 0;
+			$solvedComplexity = 0;
+			foreach ($t as $task) {
+				$totalComplexity += $task['complexity_point'];
+				$solvedComplexity += ($task['task_status'] == 1) ? $task['complexity_point'] : 0;
 			}
-			array_push($status['current_velocity'], $vel);
+			$sprint['total_complexity'] = $totalComplexity;
+			$sprint['solved_complexity'] = $solvedComplexity;
+			$result[] = $sprint;
 		}
-
-		return $status;
+		return $result;
 	}
 
 }

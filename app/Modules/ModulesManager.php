@@ -1,6 +1,7 @@
 <?php  namespace Softjob\Modules;
 
 
+use Softjob\Contracts\Modules\ExposesPermissionsInterface;
 use Softjob\Contracts\Modules\ExposesSidebarItems;
 
 class ModulesManager {
@@ -8,7 +9,9 @@ class ModulesManager {
 	protected $modules = [
 		'User',
 	    'Project',
-	    'Product'
+	    'Product',
+	    'Task',
+	    'Sprint'
 	];
 
 	public function boot( )
@@ -24,7 +27,7 @@ class ModulesManager {
 	 */
 	public function getSideBarItems( )
 	{
-		$sideBarItems = array();
+		$sideBarItems = [];
 		foreach($this->modules as $module) {
 			$moduleInstance = $this->getModuleInstance($module);
 			if(in_array('Softjob\Contracts\Modules\ExposesSidebarItems', class_implements($moduleInstance))) {
@@ -60,8 +63,12 @@ class ModulesManager {
 	{
 		foreach($this->modules as $module) {
 			$moduleInstance = $this->getModuleInstance( $module );
-			$permissions = $moduleInstance->setPermissions();
-			$this->actuallyRegisterPermissions( $permissions );
+			if($moduleInstance instanceof ExposesPermissionsInterface) {
+				$permissions = $moduleInstance->setPermissions();
+				if(isset($permissions)) {
+					$this->actuallyRegisterPermissions( $permissions );
+				}
+			}
 		}
 	}
 
@@ -72,13 +79,14 @@ class ModulesManager {
 	 */
 	private function actuallyRegisterPermissions( $permissions )
 	{
-		$repo = \App::make('\Softjob\Contracts\Repositories\PermissionReoInterface');
+		$repo = \App::make('\Softjob\Contracts\Repositories\PermissionRepoInterface');
 		if ( is_array( $permissions ) ) {
 			foreach ( $permissions as $permission ) {
 				$repo->createOrUpdatePermission($permission);
 			}
 		} else {
 			$repo->createOrUpdatePermission($permissions);
+
 		}
 	}
 
@@ -89,7 +97,7 @@ class ModulesManager {
 	 */
 	private function getModuleInstance( $module )
 	{
-		$klass = __NAMESPACE__ . '\\' . $module . 's' . '\\' . $module . 'Module';
+		$klass = __NAMESPACE__ . '\\' . $module . 'Module';
 		$moduleInstance = new $klass;
 
 		return $moduleInstance;

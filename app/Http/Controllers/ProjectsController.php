@@ -7,6 +7,7 @@ use Softjob\Commands\getProjectBySlug;
 use Softjob\Commands\getProjectsOfUser;
 use Softjob\Commands\getTasksOfProject;
 use Softjob\Contracts\Repositories\ProjectRepoInterface;
+use Softjob\Http\Requests\AddUsersToProjectRequest;
 use Softjob\Http\Requests\CreateProjectRequest;
 
 
@@ -171,6 +172,11 @@ class ProjectsController extends Controller {
 		}
 
 		return $this->projectModel->sprintsOfProject($projectId);
+	}
+
+	public function addUsersToProject(AddUsersToProjectRequest $request)
+	{
+		$this->projectModel->addUsers($request->all());
 	}
 
 }

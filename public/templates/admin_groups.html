@@ -1,0 +1,37 @@
+<md-content id="admin_groups" layout="column">
+	<div class="meta" layout="row" flex>
+		<div flex id="groups">
+			<md-toolbar class="md-padding">
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>Groups</span>
+					<span flex></span>
+					<md-button class="md-fab md-accent" ng-click="createGroup($event)" aria-label="Create Group">
+						<i class="ion-plus-round"></i>
+	        		</md-button>
+				</md-toolbar-tools>
+			</md-toolbar>
+			<md-card-content>
+				<md-input-container>
+						<label>Filter</label>
+						<input type="text" ng-model="groupFilter"> 
+				</md-input-container>							
+				<md-content>
+					<md-list>
+						<md-item ng-repeat="group in groups | filter: groupFilter">							
+							<md-item-content>
+								<div class="group" class="md-tile-content md-padding">								
+									<a ui-sref="dashboard.groupPage({groupId: group.id})"><h4>{{group.name}}</h4></a>
+									<span flex></span>									
+									<span class="description">
+										{{group.description}}
+									</span>								
+								</div>
+							</md-item-content>
+							<md-divider ng-if="!$last"></md-divider>
+						</md-item>
+					</md-list>
+				</md-content>
+			</md-card-content>		
+		</div>
+	</div>
+</md-content>

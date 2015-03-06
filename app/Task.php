@@ -15,4 +15,9 @@ class Task extends Model {
 	{
 		return $this->belongsTo('Softjob\Sprint');
 	}
+
+	public function workflowStage( )
+	{
+		return $this->belongsTo('Softjob\WorkflowStage');
+	}
 }

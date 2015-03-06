@@ -1,0 +1,185 @@
+#admin {
+	.meta {
+		#users {
+			md-toolbar {
+				background-color: $md-deep-purple;
+			}
+			md-content {
+				max-height: 50vh;				
+				overflow-y: scroll;
+				md-list {
+					md-item-content {
+						.face {
+							margin: 15px;
+						}
+						.user {
+							margin-left: 15px;
+							a {
+								color: black;
+								&:hover, &:active {
+									text-decoration: none;
+								} 
+							}
+							.group {
+								border: 1px solid #eee;
+								border-radius: 4px;
+								margin: 5px 10px;
+								padding: 2px;
+								background-color: rgb(254,254,254);
+							}
+							margin-bottom: 5px;
+						}
+					}
+				}
+			}
+		}
+	}
+	.content {
+
+	}
+}
+
+#user_page {
+	.meta {
+		md-card {
+			md-toolbar {
+				background-color: $md-amber;				
+			}
+			md-card-content {
+				.avatar {
+
+				}
+			}
+		}
+	}
+	.content {
+		#groups {
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+		}
+		#permissions {
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+		}
+	}
+}
+
+#admin_roles {
+	.meta {
+		#roles {
+			md-toolbar {
+				background-color: $md-pink;				
+			}
+			md-content {
+				padding-left: 10px;
+				md-item {
+					md-item-content {
+						margin: 15px;
+						padding: 5px;
+						a {
+							color: black;
+						}
+					}
+				}
+			}
+		}
+	}
+	.content {
+
+	}
+}
+
+#role_page {
+	.meta {
+		md-card {
+			md-toolbar {
+				background-color: $md-pink;				
+			}
+			md-content {
+				padding-left: 10px;
+				md-item {
+					md-item-content {
+						margin: 15px;
+						padding: 5px;
+						a {
+							color: black;
+						}
+					}
+				}
+			}
+		}
+	}
+	.content {
+		#users {
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+		}
+		#permissions {
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+		}
+	}
+}
+
+#admin_groups {
+	.meta {
+		#groups {
+			md-toolbar {
+				background-color: $md-deep-orange;				
+			}
+			md-content {
+				padding-left: 10px;
+				md-item {
+					md-item-content {
+						margin: 15px;
+						padding: 5px;
+						a {
+							color: black;
+						}
+					}
+				}
+			}
+		}
+	}
+	.content {
+
+	}
+}
+
+#group_page {
+	.meta {
+		md-card {
+			md-toolbar {
+				background-color: $md-deep-orange;				
+			}
+			md-content {
+				padding-left: 10px;
+				md-item {
+					md-item-content {
+						margin: 15px;
+						padding: 5px;
+						a {
+							color: black;
+						}
+					}
+				}
+			}
+		}
+	}
+	.content {
+		#users {
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+		}
+		#projects {
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+		}
+	}
+}

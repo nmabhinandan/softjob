@@ -3,6 +3,7 @@
 // Composer: "fzaninotto/faker": "v1.4.0"
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Softjob\Role;
 
 class UserTableSeeder extends Seeder {
 
@@ -12,6 +13,7 @@ class UserTableSeeder extends Seeder {
 		DB::table('users')->delete();
 		$organization = new Softjob\Organization;
 		$organizationIds = $organization->lists('id');
+		$roleIds = Role::lists('id');
 		foreach(range(1, 20) as $index) {
 			Softjob\User::create([
 				'id' => $index,
@@ -21,7 +23,8 @@ class UserTableSeeder extends Seeder {
 			    'password' => Hash::make('protected'),
 			    'first_name' => $faker->firstName,
 			    'last_name' => $faker->lastName,
-			    'avatar' => 'default.jpg'
+			    'avatar' => 'default.jpg',
+				'role_id' => $faker->randomElement($roleIds)
 			]);
 		}
 		Softjob\User::create([
@@ -32,7 +35,8 @@ class UserTableSeeder extends Seeder {
 			'password' => Hash::make('protected'),
 			'first_name' => 'Abhinandan',
 		    'last_name' => 'NM',
-		    'avatar' => 'default.jpg'
+		    'avatar' => 'default.jpg',
+			'role_id' => $faker->randomElement($roleIds)
 		]);
 	}
 }

@@ -1,4 +1,4 @@
-sjServices.factory('Task', ['$http', '$q', 'softjobConfig', 'User', function ($http, $q, softjobConfig, User) {
+sjServices.factory('Task', ['$http', '$q', '$mdToast', 'softjobConfig', 'User', function ($http, $q, $mdToast, softjobConfig, User) {
 	'use strict';
 	var service = {};
 	

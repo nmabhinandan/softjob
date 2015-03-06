@@ -1,5 +1,6 @@
 <?php namespace Softjob\Http\Requests;
 
+use Illuminate\Http\Response;
 use Softjob\Http\Requests\Request;
 
 class CreateProjectRequest extends Request {
@@ -23,11 +24,12 @@ class CreateProjectRequest extends Request {
 	{
 		return [
 			'name' => 'string|required',
-		    'slug' => 'string|required',
+		    'slug' => 'string|required|unique:projects,slug',
 		    'owner_type' => 'required|string',
 		    'owner_id' => 'required|numeric',
-		    'organization_id' => 'required|numeric',
-		    'project_manager_id' => 'required'
+		    'organization_id' => 'required|numeric|exists:organizations,id',
+		    'project_manager_id' => 'required|numeric|exists:users,id',
+		    'deadline' => 'required'
 		];
 	}
 

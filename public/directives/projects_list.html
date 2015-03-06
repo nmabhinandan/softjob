@@ -12,7 +12,12 @@
 							<i class="ion-ios-snowy"></i>							
 						</span>
 					</span>
-					<sj-tag input="false" tags="project.tags"></sj-tag>
+
+					<div class="tagsList">
+						<span class="tag" ng-repeat="tag in project.tags">
+							<a href="#">{{tag.name}}</a>
+						</span>
+					</div>
 				</div>
 			</md-item-content>
 			<md-divider ng-if="!$last"></md-divider>

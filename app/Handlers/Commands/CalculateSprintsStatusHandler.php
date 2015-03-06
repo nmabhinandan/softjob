@@ -32,7 +32,7 @@ class CalculateSprintsStatusHandler {
 	 */
 	public function handle(CalculateSprintsStatus $command)
 	{
-		$sprints = Project::find(7)->sprints();
+		$sprints = Project::find($command->projectId)->sprints();
 		$status = [];
 		foreach ($sprints->with('tasks')->get()->toArray() as $sprint) {
 			$totalComplexity = 0;
@@ -43,7 +43,9 @@ class CalculateSprintsStatusHandler {
 					$solvedComplexity += $task['complexity_point'];
 				}
 			}
-			$status[$sprint['name']] = floor(($solvedComplexity/$totalComplexity)*100);
+			if($totalComplexity != 0) {
+				$status[$sprint['name']] = floor(($solvedComplexity/$totalComplexity)*100);
+			}
 		}
 
 		return $status;

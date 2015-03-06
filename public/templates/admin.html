@@ -1,0 +1,18 @@
+<md-content id="admin" layout="column">
+	<div class="meta" layout="row" layout-sm="column" flex>		
+		<div id="users" flex ng-include="'templates/admin_users.html'">		
+		</div>
+	</div>
+	
+	<md-content class="content" layout="row" layout-sm="column" layout-align="center center">
+		<md-card flex>
+			<md-button class="md-raised" ui-sref="dashboard.roles">Edit Roles</md-button>
+		</md-card>
+		<md-card flex>
+			<md-button class="md-raised" ui-sref="dashboard.groups">Edit Groups</md-button>
+		</md-card>
+		<md-card flex>
+			<md-button class="md-raised" href="#/admin/mail">Mail settings</md-button>
+		</md-card>
+</md-content>
+

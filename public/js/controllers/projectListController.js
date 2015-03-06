@@ -1,5 +1,5 @@
-sjControllers.controller('ProjectListController', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'Project', 
-	function($scope, $rootScope, $mdDialog, $mdToast, Project){
+sjControllers.controller('ProjectListController', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'Project', '$state', 
+	function($scope, $rootScope, $mdDialog, $mdToast, Project, $state){
 	$rootScope.pageTitle = 'Projects';
 	$scope.chart = {
 		labels: [],
@@ -9,6 +9,7 @@ sjControllers.controller('ProjectListController', ['$scope', '$rootScope', '$mdD
 			barShowStroke : false,
 			scaleShowVerticalLines: false,
 			barValueSpacing: 20,
+			maintainAspectRatio: true,
 		}
 	}
 
@@ -33,22 +34,24 @@ sjControllers.controller('ProjectListController', ['$scope', '$rootScope', '$mdD
 					data.owner_type = 'user';
 					data.owner_id = $rootScope.loggedInUser.id;
 					data.organization_id = $rootScope.loggedInUser.organization_id;
-					data.project_manager_id = $rootScope.loggedInUser.id;
-					console.log(data);
+					data.project_manager_id = $rootScope.loggedInUser.id;					
+					data.tags = $scope.tagstring.split(/\s*,\s*/);										
 					$mdDialog.hide(data);
 				}
 
 				$scope.makeSlug = function(str) {
-					$scope.project.slug = str.toLowerCase()
+					if(str) {
+						$scope.project.slug = str.toLowerCase()
 											.replace(/[^\w ]+/g,'')
 											.replace(/ +/g,'-');
+					}
 				}; 
 			}],
       		templateUrl: 'templates/forms/create_project.html',
       		targetEvent: ev,
-		}).then(function(data) {
-			Project.createProject(data);
-			$mdToast.show($mdToast.simple().content("New project is created"));		
+		}).then(function(data) {			
+			Project.createProject(data);			
+			$state.go($state.current, {}, {reload: true});			
 		});
 	};
 }]);

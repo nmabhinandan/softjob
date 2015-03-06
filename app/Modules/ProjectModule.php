@@ -1,4 +1,4 @@
-<?php namespace Softjob\Modules\Projects;
+<?php namespace Softjob\Modules;
 
 use Softjob\Contracts\Modules\ExposesPermissionsInterface;
 use Softjob\Contracts\Modules\ExposesSidebarItems;
@@ -14,31 +14,11 @@ class ProjectModule implements Module, ExposesPermissionsInterface, ExposesSideb
 	 */
 	public function setPermissions()
 	{
-		// TODO: Implement setPermissions() method.
-	}
-
-	/**
-	 * Check whether the user has the permission or not
-	 *
-	 * @param $permission
-	 *
-	 * @return bool
-	 */
-	public function checkUserPermission( $permission )
-	{
-		// TODO: Implement checkUserPermission() method.
-	}
-
-	/**
-	 * Check whether the role has the permission or not
-	 *
-	 * @param $permission
-	 *
-	 * @return bool
-	 */
-	public function checkRolePermission( $permission )
-	{
-		// TODO: Implement checkRolePermission() method.
+		return [
+			'project.create',
+		    'project.edit',
+		    'sprint.create'
+		];
 	}
 
 	/**

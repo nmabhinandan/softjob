@@ -1,5 +1,5 @@
 <md-content class="projects-page" layout="column">
-	<div class="meta" layout="row" flex>
+	<div class="meta" layout="row" flex layout-sm="column">
 		<md-card id="velocity" flex>
 			<md-toolbar>
 				<md-toolbar-tools class="md-toolbar-tools">
@@ -9,11 +9,11 @@
 			</md-toolbar>
 			<md-card-content>				
 				<div>
-					<canvas id="line" class="chart chart-line" data="chart.data" labels="chart.labels" series="chart.series"></canvas> 
+					<canvas id="bar" legend="true" options="chart.options" class="chart chart-bar" data="chart.chartData" labels="chart.labels" series="chart.series"></canvas> 
 				</div>
 			</md-card-content>
 		</md-card>
-		<div flex="20" layout="column">
+		<div flex="20" layout="column" flex-sm="100">
 			<md-card id="deadline" flex>
 				<md-toolbar>
 					<md-toolbar-tools class="md-toolbar-tools">
@@ -26,10 +26,22 @@
 					<span>{{deadline}}</span>
 				</md-card-content>
 			</md-card>
-			<div flex></div>
+			<md-card id="manager" flex>
+				<md-toolbar>
+					<md-toolbar-tools class="md-toolbar-tools">
+						<span>Project Manager</span>
+						<span flex></span>
+						<md-button ng-click="editUsers($event)">Edit Users</md-button>
+					</md-toolbar-tools>
+				</md-toolbar>
+				<md-card-content>						
+					<img class="md-whiteframe-z1" title="{{project_manager.first_name}} {{project_manager.last_name}}" ng-src="img/avatars/{{project_manager.avatar}}" alt="avatar">
+					<a ui-sref="dashboard.userPage({userId: project_manager.id})">{{project_manager.first_name}} {{project_manager.last_name}}</a>
+				</md-card-content>
+			</md-card>
 		</div>
 	</div>
-	<div class="content" layout="row" flex>
+	<div class="content" layout="row" flex layout-sm="column">
 		<md-card id="sprint-status" flex>
 			<md-toolbar>
 				<md-toolbar-tools class="md-toolbar-tools">

@@ -3,18 +3,14 @@
 /**
  * Login isn't required
  */
-Route::group([ 'domain' => 'internal.softjob.app' ], function() {
+Route::group([ 'domain' => 'internal.' . preg_replace('#^https?://#', '', Config::get('app.url')) ], function() {
 
 	Route::post('auth/login','AuthController@login');
 	Route::get('auth/logout','AuthController@logout');
 	Route::post('auth/resend','AuthController@resend');
 
 	Route::get('/test', function() {
-//		return \Softjob\Project::find(7)->sprints()->with('tasks')->get();
-		$sprints = \Softjob\Project::find(7)->sprints();
-		return $sprints->with('tasks','workflow.stages')->get();
-
-
+		dump(\Softjob\User::find(21)->todos()->get());
 	});
 
 });
@@ -22,14 +18,29 @@ Route::group([ 'domain' => 'internal.softjob.app' ], function() {
 /**
  * Login is required
  */
-Route::group(['domain' => 'internal.softjob.app', 'middleware' => 'jwt'], function() {
+Route::group(['domain' => 'internal.' . preg_replace('#^https?://#', '', Config::get('app.url')), 'middleware' => 'jwt'], function() {
 
 	Route::get('/ui/sidebar/items', 'SidebarItemsController@get');
 
-	Route::get('users/{id}/avatar', 'UserController@avatar');
+	Route::post('users', 'UserController@createUser');
+	Route::patch('users/edit', 'UserController@editUser');
+	Route::get('users/all', 'UserController@getAllUsers');
+	Route::get('users/all/raw', 'UserController@getRawUsers');
+	Route::get('users/{userId}', 'UserController@getUser');
+
+	Route::get('todos/of/{userId}/', 'UserController@getTodos');
+	Route::get('todos/clear', 'UserController@clearTodos');
+	Route::post('todos', 'UserController@createTodo');
+	Route::patch('todos', 'UserController@completeTodo');
+
+	Route::get('permissions', 'PermissionsController@getAllPermissions');
+	Route::post('permissions', 'PermissionsConhtrooller@setPermission');
+	Route::get('permissions/{permission}', 'PermissionsController@checkPermission');
+
 	Route::get('users/{id}/projects', 'ProjectsController@getProjectsOfUser');
 	Route::get('users/{id}/projects/status', 'ProjectsController@getProjectsStatusOfUser');
 
+	Route::post('/project/addusers', 'ProjectsController@addUsersToProject');
 	Route::get('/projects', 'ProjectsController@getAllProjects');
 	Route::post('/projects', 'ProjectsController@createProject');
 	Route::get('/projects/{slug}', 'ProjectsController@getProject');
@@ -41,14 +52,30 @@ Route::group(['domain' => 'internal.softjob.app', 'middleware' => 'jwt'], functi
 	Route::get('/projects/{projectId}/tags', 'ProjectsController@getProjectTags');
 
 	Route::post('/tasks', 'TaskController@createTask');
+	Route::post('/tasks/tranfer', 'TaskController@tranferTask');
 
 	Route::get('/projects/{projectId}/sprints/status', 'SprintsController@getSprintsStatusOfProject');
 	Route::get('/sprints/{sprint_id}', 'SprintsController@getSprint');
+	Route::post('/sprints', 'SprintsController@createSprint');
+	Route::get('/sprints/{sprintId}/burndown', 'SprintsController@getSprintBurndown');
+
+	Route::get('workflows/all', 'SprintsController@getAllWorkflows');
+	Route::get('workflows/{workflowId}/stages', 'SprintsController@getWorkflowStages');
 
 
-	Route::get('/tags/projects/all', function() {
+	Route::get('roles/all', 'RolesController@getAllRoles');
+	Route::get('roles/{roleId}', 'RolesController@getRole');
+	Route::post('roles', 'RolesController@setRole');
+	Route::patch('roles/edit', 'RolesController@updateRole');
+	Route::delete('roles/{roleId}', 'RolesController@deleteRole');
 
-	});
+	Route::get('groups/all', 'GroupsController@getAllGroups');
+	Route::get('groups/{groupId}', 'GroupsController@getGroup');
+	Route::post('groups', 'GroupsController@setGroup');
+	Route::patch('groups/edit', 'GroupsController@updateGroup');
+	Route::get('groups/{groupId}/addableusers', 'GroupsController@usersNotInGroup');
+	Route::post('groups/users', 'GroupsController@addUsers');
+	Route::delete('groups/{groupId}', 'GroupsController@deleteGroup');
 });
 
 /**

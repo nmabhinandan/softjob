@@ -1,5 +1,6 @@
 <?php namespace Softjob\Http\Requests;
 
+use Illuminate\Http\Response;
 use Softjob\Http\Requests\Request;
 
 class CreateTaskRequest extends Request {

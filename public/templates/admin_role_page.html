@@ -1,0 +1,70 @@
+<md-content id="role_page" layout="column">
+	<div class="meta" layout="row" layout-sm="column" flex>
+		<md-card flex flex>
+			<md-toolbar>
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>{{role.name}}</span>
+					<span flex></span>
+					<span id="deleteRole">
+						<md-button class="ion-android-delete" ng-click="deleteRole($event)"></md-button>
+					</span>
+					<md-button ng-click="editRole($event)">Edit</md-button>
+				</md-toolbar-tools>
+			</md-toolbar>
+			<md-card-content>
+				<label for="">Description: </label>
+				{{role.description}}
+			</md-card-content>
+		</md-card>
+	</div>
+	<div class="content" layout="row" flex>
+		<md-card id="users" flex flex>
+			<md-toolbar>
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>Users</span>
+					<span flex></span>
+				</md-toolbar-tools>
+			</md-toolbar>
+			<md-card-content>
+				<md-list>
+					<md-item ng-repeat="user in role.users">							
+						<md-item-content class="roleUser">
+							<div class="md-tile-left">
+								<sj-user-avatar class="face" user="user"></sj-user-avatar>
+							</div>
+							<div class="md-tile-content md-padding">
+								<a href="#"><h5>{{user.first_name}} {{user.last_name}}</h5></a>
+								<span flex></span>
+							</div>							
+						</md-item-content>						
+						<md-divider md-inset ng-if="!$last"></md-divider>
+					</md-item>
+				</md-list>
+			</md-card-content>
+		</md-card>
+		<md-card id="permissions" flex flex>
+			<md-toolbar>
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>Permissions</span>
+					<span flex></span>
+				</md-toolbar-tools>
+			</md-toolbar>
+			<md-card-content>
+				<!-- <md-list>
+					<md-item ng-repeat="user in role.users">							
+						<md-item-content class="roleUser">
+							<div class="md-tile-left">
+								<sj-user-avatar class="face" user="user"></sj-user-avatar>
+							</div>
+							<div class="md-tile-content md-padding">
+								<a href="#"><h5>{{user.first_name}} {{user.first_name}}</h5></a>
+								<span flex></span>
+							</div>							
+						</md-item-content>						
+						<md-divider md-inset ng-if="!$last"></md-divider>
+					</md-item>
+				</md-list> -->
+			</md-card-content>
+		</md-card>		
+	</div>
+</md-content>

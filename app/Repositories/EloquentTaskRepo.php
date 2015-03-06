@@ -22,8 +22,14 @@ class EloquentTaskRepo implements TaskRepoInterface {
 		$this->model = $model;
 	}
 
+
 	public function createTask( $task )
 	{
 		$this->model->create($task);
+	}
+
+	public function findTaskById( $taskId )
+	{
+		return $this->model->find($taskId);
 	}
 }

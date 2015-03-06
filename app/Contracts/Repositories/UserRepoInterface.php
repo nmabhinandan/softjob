@@ -3,6 +3,14 @@
 
 interface UserRepoInterface {
 
+
+	/**
+	 * Get all users sorted by roles
+	 *
+	 * @return mixed
+	 */
+	public function allUsers();
+
 	/**
 	 * Get a User by its id
 	 *
@@ -12,6 +20,14 @@ interface UserRepoInterface {
 	 */
 	public function getUser($id);
 
+	/**
+	 * Create a user
+	 *
+	 * @param $user
+	 *
+	 * @return mixed
+	 */
+	public function createUser($user);
 	/**
 	 * Get a User by its username
 	 *
@@ -39,4 +55,51 @@ interface UserRepoInterface {
 	 * @return mixed
 	 */
 	public function getAvatar($id);
+
+	/**
+	 * Edit the user
+	 *
+	 * @param $user
+	 *
+	 * @return mixed
+	 */
+	public function editUser($user);
+
+
+	/**
+	 * Get all users in raw format
+	 *
+	 * @return mixed
+	 */
+	public function rawUsers();
+
+	/**
+	 * Get todos of the user
+	 *
+	 * @return mixed
+	 */
+	public function getTodos($userId);
+
+	/**
+	 * Store a todoitem to the database
+	 *
+	 * @return mixed
+	 */
+	public function storeTodos($todo);
+
+	/**
+	 * Mark the todoItem as copleted
+	 *
+	 * @param $todoId
+	 *
+	 * @return mixed
+	 */
+	public function completeTodo($todoId);
+
+	/**
+	 * Clear completed todos of the user
+	 *
+	 * @return mixed
+	 */
+	public function clearTodos();
 } 

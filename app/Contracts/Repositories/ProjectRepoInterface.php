@@ -76,4 +76,13 @@ interface ProjectRepoInterface {
 	 * @return mixed
 	 */
 	public function sprintsOfProject( $projectId );
+
+	/**
+	 * Add users to the request
+	 *
+	 * @param $data
+	 *
+	 * @return mixed
+	 */
+	public function addUsers($data);
 }

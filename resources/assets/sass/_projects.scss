@@ -4,17 +4,38 @@
 			@include animation(fadeIn .5s);
 			
 			md-toolbar {
-				background-color: $md-blue-grey;
+				background-color: $md-green;
 			}
 
 			.sj-projects-list {
-				
+				.tagsList {
+					padding-top:5px;
+					.tag {
+						font-size: 12px;						
+						margin: 2px;
+						display: inline;
+						padding: 2px 5px;			
+						background-color: lighten( $md-grey, 55% );
+						border: 1px solid lighten( $md-grey, 10%);
+						border-radius: 4px;						
+						&:after {
+							// content: "\f128";
+							// font-family: "ionicons";
+							// cursor: pointer;
+							// color:$md-grey;				
+						}
+
+						a {
+							color: darken( $md-grey, 25% );
+						}
+					}
+				}
 			}
 		}
 		#user-projects-status {
 			@include animation(fadeIn .5s);		
 			md-toolbar {
-				background-color: $md-blue-grey;
+				background-color: $md-green;
 			}
 		}
 	}

@@ -37,7 +37,7 @@
 				<md-toolbar-tools class="md-toolbar-tools">
 					<span>Sprints</span>
 					<span flex></span>					
-					<md-button class="md-fab md-accent" aria-label="Create Sprint" ng-show="isBacklogChecked()">
+					<md-button ng-click="createSprint($event)" class="md-fab md-accent" aria-label="Create Sprint" ng-show="isBacklogChecked()">
 	            		<i class="ion-plus-round"></i> 
 	        		</md-button>
 				</md-toolbar-tools>
@@ -50,9 +50,10 @@
 				<div ng-repeat="sprint in sprints | filter: sprintFilter">					
 					<md-card class="sprint" class="md-tile-content">
 						<md-card-content>
-							<h2>{{sprint.name}}</h2>
+							<a ui-sref="dashboard.sprint({sprintId: sprint.id})"><h2>{{sprint.name}}</h2></a>
 							<!-- <md-divider></md-divider> -->
 							<!-- Tasks: {{}} -->
+							<label for="">Deadline: </label><span>{{sprint.deadline | date}}</span>
 						</md-card-content>
 					</md-card>					
 				</div>									

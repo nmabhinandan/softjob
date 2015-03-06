@@ -20,6 +20,17 @@
 				}
 			}
 		}
+		#manager {
+			md-toolbar {
+				background-color: $md-amber;
+			}
+
+			md-card-content {
+				color: grey;				
+				text-align: center;
+				margin: 0 auto;				
+			}
+		}
 	}
 
 	.content {

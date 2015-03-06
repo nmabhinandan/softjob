@@ -1,0 +1,35 @@
+<md-content id="sprint_page" layout="column">
+	<div class="meta" layout="row" layout-sm="column" flex>
+		<md-card flex flex>
+			<md-toolbar>
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>{{sprint.name}}</span>
+					<span flex></span>					
+					<md-button ng-click="editSprint($event)" aria-label="Edit User">Edit</md-button>
+				</md-toolbar-tools>
+			</md-toolbar>
+			<md-card-content layout="row">
+				<div flex>
+					<label for="">Project: </label>
+					<a ui-sref="dashboard.projectPage({projectSlug: project.slug})">{{project.name}}</a>
+				</div>
+				<div flex>
+					<label for="">Deadline: </label>					
+					{{sprint.deadline | date}}
+				</div>
+			</md-card-content>
+		</md-card>
+	</div>
+	<div class="content" layout="row" flex>
+		<md-card flex id="burndown">
+			<md-toolbar>
+				<md-toolbar-tools class="md-toolbar-tools">
+					<span>Burndown Chart</span>
+					<span flex></span>
+				</md-toolbar-tools>
+			</md-toolbar>
+			<md-card-content>
+				<canvas id="line" class="chart chart-line" data="chart.data" labels="chart.labels" series="chart.series"></canvas>
+			</md-card-content>
+		</md-card>		
+</md-content>

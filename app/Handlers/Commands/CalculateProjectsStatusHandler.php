@@ -45,7 +45,7 @@ class CalculateProjectsStatusHandler {
 
 			array_push($status, [
 				"name"   => $project['name'],
-				"status" => floor(($currentComplexity / $totalComplexity) * 100)
+				"status" => ($totalComplexity != 0) ? floor(($currentComplexity / $totalComplexity) * 100) : 0
 			]);
 
 		}

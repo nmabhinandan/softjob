@@ -22,7 +22,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'email', 'password'];
+	protected $guarded = ['id'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -38,7 +38,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function role( )
 	{
-		return $this->belongsToMany('Softjob\Role');
+		return $this->belongsTo('Softjob\Role');
 	}
 
 	/**
@@ -56,9 +56,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function group( )
+	public function groups()
 	{
-		return $this->belongsTo('Softjob\Group');
+		return $this->belongsToMany('Softjob\Group');
 	}
 
 	/**
@@ -89,6 +89,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public function managesProjects( )
 	{
 		return Project::where('project_manager_id', '=', $this->id)->get();
+	}
+
+	public function todos()
+	{
+		return $this->hasMany('Softjob\UserTodo');
+	}
+
+	public function permissions()
+	{
+		return $this->belongsToMany('Softjob\Permission');
 	}
 
 }

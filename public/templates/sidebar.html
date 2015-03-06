@@ -2,7 +2,7 @@
 <md-list ng-repeat="item in sidebarItems">
 	<md-item ng-repeat="(key, value) in item">
 		<md-item-content  class="md-tile-content menu-item menu-sub-item md-menu-item" ng-click="navigateTo(value)" md-ink-ripple="#bbb">
-			<a href="javascript:void(0)" id="sideMenuItem" class="menu-item menu-sub-item md-menu-item">
+			<a href="javascript:void(0)" id="sideMenuItem" class="menu-item menu-sub-item md-menu-item" aria-label="Navigate to {{key}}">
 				{{key}}
 			</a>
 		</md-item-content>								

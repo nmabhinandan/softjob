@@ -34,7 +34,7 @@ class CreateTaskModule extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->unsignedInteger('sprint_id')->index();
-			$table->foreign('sprint_id')->references('id')->on('sprints');
+			$table->foreign('sprint_id')->references('id')->on('sprints')->onDelete('cascade');
 			$table->timestamps();
 		});
 
@@ -58,7 +58,11 @@ class CreateTaskModule extends Migration {
 			$table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 			$table->unsignedInteger('sprint_id')->index()->nullable();
 			$table->foreign('sprint_id')->references('id')->on('sprints')->onDelete('cascade');
+			$table->unsignedInteger('workflow_stage_id')->index()->nullable();
+			$table->foreign('workflow_stage_id')->references('id')->on('workflow_stages')->onDelete('cascade');
 			$table->unsignedInteger('complexity_point')->index();
+			$table->unsignedInteger('completed_by')->index()->nullable();
+			$table->foreign('completed_by')->references('id')->on('users');
 			$table->tinyInteger('task_status', false, true)->index();
 			$table->timestamp('completed_at');
 			$table->timestamps();

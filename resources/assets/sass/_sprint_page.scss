@@ -43,3 +43,23 @@
 		}
 	}
 }
+
+#sprint_page {
+	.meta {
+		md-card {
+			md-toolbar {
+				background-color: $md-lime;				
+			}
+			md-card-content {
+				text-transform: capitalize;
+			}
+		}
+	}
+	.content {
+		#burndown {
+			md-toolbar {
+				background-color: $md-blue-grey;
+			}
+		}
+	}
+}

@@ -37,6 +37,7 @@
     "Chart.js": "1.0.1-beta.4",
     "angular-chart.js": "~0.5.1",
     "moment": "~2.9.0",
-    "ngDraggable": "~0.0.31"
+    "ngDraggable": "~0.0.31",
+    "angular-ui-utils": "bower-keypress"
   }
 }

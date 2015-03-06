@@ -3,4 +3,6 @@
 interface TaskRepoInterface {
 
 	public function createTask($task);
+
+	public function findTaskById($taskId);
 }

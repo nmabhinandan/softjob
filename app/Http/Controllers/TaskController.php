@@ -1,12 +1,14 @@
 <?php namespace Softjob\Http\Controllers;
 
 use Illuminate\Http\Response;
+use Softjob\Commands\TranferTask;
 use Softjob\Contracts\Repositories\TaskRepoInterface;
 use Softjob\Http\Requests;
 use Softjob\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Softjob\Http\Requests\CreateTaskRequest;
+use Softjob\Http\Requests\TranferTaskRequest;
 
 class TaskController extends Controller {
 
@@ -39,5 +41,15 @@ class TaskController extends Controller {
 			    'message' => 'Server problem'
 			], 500);
 		}
+	}
+
+	/**
+	 * @param TranferTaskRequest $request
+	 *
+	 * @return mixed
+	 */
+	public function tranferTask( TranferTaskRequest $request)
+	{
+		return $this->dispatch(new TranferTask($request->all()));
 	}
 }

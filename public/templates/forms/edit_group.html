@@ -1,0 +1,30 @@
+<md-dialog class="edit-group">
+	<md-content>
+		<h3>Edit {{group.name}}</h3>
+		<form novalidate layout="column" name="editGroupForm">
+			<div layout="row" flex>
+				<md-input-container>
+	  				<label>Name</label>
+	  				<input type="text" ng-model="group.name" required>
+	  				<div ng-messages="createProjectForm.description.$error">
+	  					<div ng-message="required">This is required</div>
+	  				</div>
+				</md-input-container>								
+			</div>
+			<div layout="column" flex>
+				<md-input-container>
+			        <label>Description</label>
+			        <textarea ng-model="group.description" columns="1" md-maxlength="150" required></textarea>
+			        <div ng-messages="createProjectForm.description.$error">
+	  					<div ng-message="required">This is required</div>
+	  				</div>  
+				</md-input-container>				
+			</div>			
+		</form>
+	</md-content>
+	<div class="md-actions" layout="row">
+		<md-button ng-click="cancel()">Cancel</md-button>
+		<span flex></span>
+		<md-button class="md-raised md-primary" ng-click="submit(group)">Save</md-button>
+	</div>
+</md-dialog>

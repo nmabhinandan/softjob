@@ -25,9 +25,16 @@
 			        <div ng-messages="createProjectForm.description.$error">
 	  					<div ng-message="required">This is required</div>
 	  				</div>  
-				</md-input-container>				
+				</md-input-container>	
+				<md-input-container>
+	  				<label>Tags</label>
+	  				<input type="text" ng-model="tagstring" required>
+	  				<div ng-messages="createProjectForm.description.$error">
+	  					<div ng-message="required">This is required</div>
+	  				</div>
+				</md-input-container>			
 				<md-input-container>	  	
-					<label>Submission Date</label>
+					<label>Deadline</label>
 					<input type="date" ng-model="project.deadline">
 	  				<div ng-messages="createProjectForm.description.$error">
 	  					<div ng-message="required">This is required</div>

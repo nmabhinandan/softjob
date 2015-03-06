@@ -27,9 +27,53 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			url: 'projects/{projectId}/sprints',
 			controller: 'SprintsController',			
 			templateUrl: '/templates/sprint_page.html'
+		}).state('dashboard.sprint', {
+			url: 'sprints/{sprintId}',
+			controller: 'SprintController',			
+			templateUrl: '/templates/sprint.html'
+		}).state('dashboard.admin', {
+			url: 'admin',
+			controller: 'AdminController',			
+			templateUrl: '/templates/admin.html'
+		}).state('dashboard.userPage', {
+			url: 'users/{userId}',
+			controller: 'UserController',
+			templateUrl: '/templates/admin_user_page.html'
+		}).state('dashboard.roles', {
+			url: 'admin/roles',		
+			controller: 'AdminRolesController',
+			templateUrl: '/templates/admin_roles.html'
+		}).state('dashboard.rolePage', {
+			url: 'roles/{roleId}',
+			controller: 'RoleController',
+			templateUrl: '/templates/admin_role_page.html'
+		}).state('dashboard.groups', {
+			url: 'admin/groups',		
+			controller: 'AdminGroupsController',
+			templateUrl: '/templates/admin_groups.html'
+		}).state('dashboard.groupPage', {
+			url: 'groups/{groupId}',
+			controller: 'GroupController',
+			templateUrl: '/templates/admin_group_page.html'
+		}).state('dashboard.workspace', {
+			url: 'workspace',
+			params: {
+				sprintId: {value: null}
+			},
+			controller: 'WorkspaceController',
+			templateUrl: '/templates/workspace.html'
+		}).state('dashboard.issues', {
+			url: 'issues/{productId}',
+			params: {
+				productId: {value: null}
+			},
+			controller: 'IssuesController',
+			templateUrl: '/templates/issues.html'
 		});
 
-		$urlRouterProvider.otherwise('/404');
+		
+
+		$urlRouterProvider.otherwise('404');
 
 		$mdThemingProvider.theme('indigo')		
 			.primaryPalette('indigo');

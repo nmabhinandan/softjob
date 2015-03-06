@@ -1,9 +1,9 @@
-sjControllers.controller('SprintsController', ['$scope', '$stateParams', '$mdDialog', 'Project', 'Task', 'Sprint',
- function($scope, $stateParams, $mdDialog, Project, Task, Sprint){	 	
+sjControllers.controller('SprintsController', ['$scope', '$stateParams', '$mdDialog', '$state', 'Project', 'Task', 'Sprint',
+ function($scope, $stateParams, $mdDialog, $state, Project, Task, Sprint){	 	
 
  	var backlogChecks = 0;
- 	$scope.selectedBacklogTasks = [];
-	
+ 	$scope.selectedBacklogTasks = [];	
+
 	Project.getProjectById($stateParams.projectId).then(function(data) {
 		$scope.project = data;
 		
@@ -11,6 +11,8 @@ sjControllers.controller('SprintsController', ['$scope', '$stateParams', '$mdDia
 		getTasksOfProject();
 		getSprintsOfProject()
 	});
+
+	
 
 	function getTasksOfProject() {
 		Task.getTasksOfProject($scope.project.id).then(function(data) {
@@ -29,14 +31,15 @@ sjControllers.controller('SprintsController', ['$scope', '$stateParams', '$mdDia
 
 	function getSprintsOfProject() {
 		Sprint.getSprintsOfProject($scope.project.id).then(function(data) {
-			$scope.sprints = data;						
-			angular.forEach($scope.sprints, function(sprint) {
+			$scope.sprints = [];
+			angular.forEach(data, function(sprint) {
 				var totalTasks = 0;
+				sprint.deadline = new Date(sprint.deadline.replace(/-/g,"/"));
+				$scope.sprints.push(sprint);
 				angular.forEach(sprint.tasks,function(task) {
 					totalTasks += 1;
 				});				
-			});
-			console.log($scope.sprints);
+			});			
 		});		
 	}
 
@@ -52,6 +55,44 @@ sjControllers.controller('SprintsController', ['$scope', '$stateParams', '$mdDia
 			}
 		}		
 	};
+
+	$scope.createSprint = function(ev) {
+		$mdDialog.show({
+			locals: {
+				project: $scope.project,
+				backlog: $scope.selectedBacklogTasks
+			},
+			controller: ['$scope','$mdDialog', 'project', 'backlog', 'Sprint', function($scope,$mdDialog,project,backlog,Sprint) {				
+
+				$scope.tasks = project.tasks;
+				$scope.backlogTasks = backlog;				
+				$scope.workflows = [];
+				
+
+				$scope.cancel = function() {					
+					$mdDialog.cancel();					
+				}
+
+				$scope.submit = function(data) {
+					data.project_id = project.id;
+					data.tasks = $scope.backlogTasks;
+					$mdDialog.hide(data);
+				}
+
+				$scope.makeSlug = function(str) {
+					$scope.task.slug = str.toLowerCase()
+											.replace(/[^\w ]+/g,'')
+											.replace(/ +/g,'-');
+				}; 
+			}],
+      		templateUrl: 'templates/forms/create_sprint.html',
+      		targetEvent: ev
+		}).then(function(data) {
+			console.log(data);
+			Sprint.createSprint(data);			
+			$state.go($state.current, {}, {reload: true});
+		});
+	}
 
 	$scope.isBacklogChecked = function() {
 		return (backlogChecks > 0) ? true : false;
@@ -82,8 +123,8 @@ sjControllers.controller('SprintsController', ['$scope', '$stateParams', '$mdDia
       		templateUrl: 'templates/forms/create_task.html',
       		targetEvent: ev
 		}).then(function(data) {
-			Task.createTask(data);
-			getTasksOfProject();
+			Task.createTask(data);			
+			$state.go($state.current, {}, {reload: true});
 		});
 	};
 }]);

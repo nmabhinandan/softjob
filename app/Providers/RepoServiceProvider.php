@@ -13,7 +13,9 @@ class RepoServiceProvider extends ServiceProvider{
 		    'Permission',
 		    'Project',
 		    'Task',
-		    'Sprint'
+		    'Sprint',
+		    'Role',
+		    'Group'
 		];
 
 		foreach($repositories as $repo) {

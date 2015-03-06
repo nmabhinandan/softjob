@@ -146,6 +146,7 @@ return [
 		'Softjob\Providers\RouteServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 		'\Softjob\Providers\RepoServiceProvider',
+		'\Softjob\Providers\ModulesProvider',
 
 
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',

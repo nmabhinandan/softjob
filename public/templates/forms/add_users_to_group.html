@@ -1,0 +1,31 @@
+<md-dialog class="edit-group">
+	<md-content>
+		<h3>Edit {{group.name}}</h3>
+		<form novalidate layout="column" name="editGroupForm">
+			<md-input-container flex>
+						<label>Filter</label>
+						<input type="text" ng-model="userFilter">
+				</md-input-container>				
+				<md-list>				
+					<md-item ng-repeat="user in userList | filter: userFilter">
+						<md-item-content>
+							<div class="user" class="md-tile-content">
+								<span layout="row">
+									<md-checkbox ng-model="selectedUser" ng-change="userSelected(user.id, selectedUser)" aria-label="Checkbox">
+										<h3>{{user.frist_name}} {{user.last_name}}</h3>
+									</md-checkbox>
+								</span>
+							</div>
+						</md-item-content>
+						<md-divider ng-if="!$last"></md-divider>						
+					</md-item>					
+				</md-list>		
+
+		</form>
+	</md-content>
+	<div class="md-actions" layout="row">
+		<md-button ng-click="cancel()">Cancel</md-button>
+		<span flex></span>
+		<md-button class="md-raised md-primary" ng-click="submit(selectedUser)">Save</md-button>
+	</div>
+</md-dialog>

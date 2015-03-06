@@ -10,9 +10,11 @@ class ModulesProvider extends ServiceProvider {
 	 *
 	 * @param ModulesManager $manager
 	 */
-	public function boot( ModulesManager $manager ) {
-
-		$manager->boot();
+	public function boot( ModulesManager $manager )
+	{
+		if(! $this->app->runningInConsole()) {
+			$manager->boot();
+		}
 	}
 
 	/**
@@ -23,5 +25,4 @@ class ModulesProvider extends ServiceProvider {
 	public function register() {
 
 	}
-
 }

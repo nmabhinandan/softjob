@@ -97,7 +97,20 @@ sjServices.factory('Project', ['User', '$http', '$q', '$state', '$mdToast', 'sof
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
 		}).success(function (data, status, headers, config) {			
-			$state.go('dashboard.projects');
+			$mdToast.show($mdToast.simple().content("New project is created"));			
+		}).error(function (data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+		});
+	};
+
+	instance.addUserToProject = function (formData) {
+		$http({
+			method: 'post',
+			url: softjobConfig.APP_BACKEND + '/project/addusers',
+			data: formData,
+			headers: { 'Content-Type': 'application/json' }
+		}).success(function (data, status, headers, config) {			
+			$mdToast.show($mdToast.simple().content("Users added successfully"));			
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
 		});

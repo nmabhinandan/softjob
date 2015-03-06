@@ -48,6 +48,7 @@ class JwtCheck {
 
 		$auth = new AuthService();
 		$auth->setUser($data->iss);
+
 		return true;
 	}
 

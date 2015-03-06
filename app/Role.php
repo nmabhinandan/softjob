@@ -4,8 +4,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model {
 
+	protected $guarded = ['id'];
+
 	public function users( )
 	{
-		$this->belongsToMany('User');
+		return $this->hasMany('Softjob\User');
 	}
 }

@@ -5,17 +5,25 @@
 	md-toolbar {		
 		#toolbar-tools {
 			#title {
-				
+					
 			}
 			#profile {
 				vertical-align: middle;
+			}
+
+			#msg-icon, #notif-icon {
+				margin: 0 10px;
 			}
 		}
 	}
 	#page {
 		#sidebar {			
+			background-color: rgb(253,253,253);			
 			min-height: calc(100vh - 64px);
-			#sideMenuItem {
+			md-content {
+				background-color: rgb(253,253,253);			
+			}
+			#sideMenuItem {				
 				color: #111;
 				text-transform: capitalize;				
 			}			
@@ -24,6 +32,9 @@
 			@import "projects.scss";
 			@import "projects_page.scss";
 			@import "sprint_page.scss";
+			@import "admin_page.scss";
+			@import "workspace.scss";
+			@import "user_dashboard.scss";
 		}
 	}
 	#ajaxLoad {	
