@@ -5,8 +5,8 @@
 				<md-toolbar-tools class="md-toolbar-tools">
 					<span>Groups</span>
 					<span flex></span>
-					<md-button class="md-fab md-accent" ng-click="createGroup($event)" aria-label="Create Group">
-						<i class="ion-plus-round"></i>
+					<md-button ng-disabled="! checkPermission('group.create')" class="md-fab md-accent" ng-click="createGroup($event)" aria-label="Create Group">
+						<md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
 	        		</md-button>
 				</md-toolbar-tools>
 			</md-toolbar>

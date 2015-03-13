@@ -10,6 +10,14 @@
 				color: grey;
 				text-decoration: line-through;
 			}
+			#allDone {
+				text-align: center;
+				color: grey;				
+				md-icon {
+					width: 10em;
+					height: 10em;
+				}
+			}
 		}
 	}
 }

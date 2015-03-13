@@ -15,6 +15,14 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			templateUrl: 'templates/login.html',
 			controller: 'LoginController',
 			auth: false
+		}).state('logout', {
+			url: '/logout',			
+			controller: ['$scope', '$state', '$mdBottomSheet', 'User', function($scope, $state, $mdBottomSheet, User) {
+				User.removeUser();
+				$state.go('login');
+				$mdBottomSheet.hide();
+			}],
+			auth: true
 		}).state('dashboard.projects', {			
 			url: 'projects',
 			controller: 'ProjectListController',
@@ -83,7 +91,7 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 		cfpLoadingBarProvider.includeSpinner = false;
 		cfpLoadingBarProvider.parentSelector = 'body';
 	}])
-	.run(['$rootScope', '$state', '$timeout', '$mdToast', 'User', function ($rootScope, $state, $timeout, $mdToast, User) {
+	.run(['$rootScope', '$state', '$timeout', '$mdToast', 'User', 'Permission', function ($rootScope, $state, $timeout, $mdToast, User, Permission) {
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
 			if(toState.auth != false) {
 				if(! User.isLoggedIn()) {
@@ -97,7 +105,7 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 				if(User.isLoggedIn()) {
 					$timeout(function () {
 						$state.go('dashboard');
-						//$mdToast.show($mdToast.simple().content('You are already logged in.'));
+						$mdToast.show($mdToast.simple().content('You are already logged in.'));
 					});
 				}
 			}
@@ -105,6 +113,10 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 
 		if(User.isLoggedIn()) {
 			$rootScope.loggedInUser = User.getUser();
+		}
+
+		$rootScope.checkPermission = function(perm) {			
+			return Permission.checkPermission(perm);
 		}
 	}])
 	.constant('softjobConfig', {

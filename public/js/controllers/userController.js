@@ -1,15 +1,32 @@
-sjControllers.controller('UserController', ['$scope', '$rootScope', '$stateParams', '$mdDialog', 'User',
- function($scope, $rootScope, $stateParams, $mdDialog, User){
-	
+sjControllers.controller('UserController', ['$scope', '$rootScope', '$stateParams', '$mdDialog', 'User', 'Permission', 
+ function($scope, $rootScope, $stateParams, $mdDialog, User, Permission){
+
 	function loadUser() {
 		User.getUserById($stateParams.userId).then(function(data) {
 			$scope.user = data;
 			User.getRole(data.role_id).then(function(data) {
 				$scope.user_role = data;
-			});		
+			});
+			Permission.getUserPermissions($scope.user.id).then(function(perms) {
+				$scope.permissions = perms;
+			})
 		});
 	}
 	loadUser();
+
+	$scope.editPermission = function(perm, grant) {
+		Permission.setPermission({
+			permission: perm,
+			userId: $scope.user.id,
+			granted: grant
+		}).then(function(status) {
+			Permission.getUserPermissions($scope.user.id).then(function(perms) {
+				Permission.cachePermissions(perms);
+			});			
+			
+			loadRole();		
+		});
+	}
 
 	$scope.editUser = function(ev) {
 		$mdDialog.show({
@@ -38,7 +55,6 @@ sjControllers.controller('UserController', ['$scope', '$rootScope', '$stateParam
       		templateUrl: 'templates/forms/edit_user.html',
       		targetEvent: ev
 		}).then(function(data) {			
-			console.log(data);
 			User.editUser(data);
 			$state.go($state.current, {}, {reload: true});
 		});

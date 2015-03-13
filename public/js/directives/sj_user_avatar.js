@@ -8,21 +8,27 @@ sjDirectives.directive('sjUserAvatar', [function () {
 		controller: ['$scope', '$mdBottomSheet', function ($scope, $mdBottomSheet) {
 
 			$scope.showOptions = function () {
+				
 				$mdBottomSheet.show({
 					templateUrl: 'directives/user_avatar.options.html',
-					controller: ['$scope', 'User', function ($scope, User) {
+					locals: {
+						user: $scope.user
+					},
+					controller: ['$scope', '$rootScope', 'user', function ($scope, $rootScope, user) {
 						$scope.optionItems = [
 							{
-								name: 'Profile Settings',
-								icon: 'ion-gear-b'
-							},
-							{
-								name: 'Logout',
-								icon: 'ion-gear-b'
-							}
+								name: 'Profile',
+								link: '#/users/' + user.id
+							},							
 						];
+						if(user.id == $rootScope.loggedInUser.id) {
+							$scope.optionItems.push({
+								name: 'Logout',
+								link: '#/logout'
+							});
+						}
 					}]
-				});
+				});				
 			};
 		}],
 		templateUrl: 'directives/user_avatar.html'

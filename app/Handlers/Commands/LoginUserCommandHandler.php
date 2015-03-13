@@ -6,6 +6,7 @@ use Softjob\Commands\LoginUserCommand;
 use Illuminate\Queue\InteractsWithQueue;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
+use Softjob\Contracts\Repositories\PermissionRepoInterface;
 use Softjob\Contracts\Repositories\UserRepoInterface;
 
 class LoginUserCommandHandler {
@@ -14,16 +15,21 @@ class LoginUserCommandHandler {
 	 * @var UserRepoInterface
 	 */
 	private $userRepo;
+	/**
+	 * @var PermissionRepoInterface
+	 */
+	private $permissionRepo;
 
 	/**
 	 * Create the command handler.
 	 *
 	 * @param UserRepoInterface $userRepo
+	 * @param PermissionRepoInterface $permissionRepo
 	 */
-	public function __construct(UserRepoInterface $userRepo)
+	public function __construct(UserRepoInterface $userRepo, PermissionRepoInterface $permissionRepo)
 	{
-		//
 		$this->userRepo = $userRepo;
+		$this->permissionRepo = $permissionRepo;
 	}
 
 	/**
@@ -39,6 +45,7 @@ class LoginUserCommandHandler {
 		}
 
 		$user = $this->userRepo->getUserByUsername($command->username);
+		$permissions = $this->permissionRepo->getUserPermissions($user->id);
 		$data = [
 			'sub' => 'User',
 			'iss' => $user->id,
@@ -48,7 +55,8 @@ class LoginUserCommandHandler {
 
 		return [
 			'token' => \JWT::encode($data, \Config::get('app.key')),
-		    'user' => $user
+		    'user' => $user,
+		    'permissions' => $permissions
 		];
 	}
 

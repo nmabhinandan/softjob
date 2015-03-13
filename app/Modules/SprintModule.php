@@ -13,8 +13,6 @@ class SprintModule implements ExposesPermissionsInterface {
 	 */
 	public function setPermissions()
 	{
-		return [
-			'sprint.create'
-		];
+
 	}
 }

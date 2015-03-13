@@ -6,9 +6,11 @@
 					<span>{{group.name}}</span>
 					<span flex></span>
 					<span id="deleteGroup">
-						<md-button aria-label="Delete Group" class="ion-android-delete" ng-click="deleteGroup($event)"></md-button>
+						<md-button ng-disabled="! checkPermission('group.edit')" aria-label="Delete Group" ng-click="deleteGroup($event)">
+							<md-icon md-svg-src="img/icons/ic_delete_48px.svg"></md-icon>
+						</md-button>
 					</span>
-					<md-button ng-click="editGroup($event)">Edit</md-button>
+					<md-button ng-disabled="! checkPermission('group.edit')" ng-click="editGroup($event)" aria-label="Edit Group">Edit</md-button>
 				</md-toolbar-tools>
 			</md-toolbar>
 			<md-card-content>
@@ -24,7 +26,7 @@
 					<span>Users</span>
 					<span flex></span>
 					<md-button class="md-fab md-accent" ng-click="addUser($event)" aria-label="Add users to the group">
-	            		<i class="ion-plus-round"></i>
+	            		<md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
 					</md-button>
 				</md-toolbar-tools>
 			</md-toolbar>
@@ -36,7 +38,7 @@
 								<sj-user-avatar class="face" user="user"></sj-user-avatar>
 							</div>
 							<div class="md-tile-content md-padding">
-								<a href="#"><h5>{{user.first_name}} {{user.last_name}}</h5></a>
+								<a ui-sref="dashboard.userPage({userId: user.id})"><h5>{{user.first_name}} {{user.last_name}}</h5></a>
 								<span flex></span>
 							</div>							
 						</md-item-content>						
@@ -52,8 +54,7 @@
 					<span flex></span>
 				</md-toolbar-tools>
 			</md-toolbar>
-			<md-card-content>
-				<!-- <md-list>
+				<md-list>
 					<md-item ng-repeat="user in group.users">							
 						<md-item-content class="groupUser">
 							<div class="md-tile-left">
@@ -66,8 +67,8 @@
 						</md-item-content>						
 						<md-divider md-inset ng-if="!$last"></md-divider>
 					</md-item>
-				</md-list> -->
+				</md-list>
 			</md-card-content>
-		</md-card>		
+		</md-card>
 	</div>
 </md-content>

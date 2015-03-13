@@ -13,9 +13,6 @@ class TaskModule implements Module, ExposesPermissionsInterface {
 	 */
 	public function setPermissions()
 	{
-		return [
-			'task.create',
-		    'task.edit'
-		];
+
 	}
 }

@@ -65,9 +65,7 @@ var jshint = require('gulp-jshint');
  			.pipe(jshint.reporter('jshint-stylish'));
  	};
  	gulp.src(files)
- 		.pipe(concat('app.js', {newLine: '\r\n'}))
- 		// .pipe(jshint('.jshintrc'))
-   //      .pipe(jshint.reporter('jshint-stylish'))
+ 		.pipe(concat('app.js', {newLine: '\r\n'})) 		
  		// .pipe(uglify())
  		.pipe(gulp.dest('./public/dist'))
  		.pipe(notify("js compiled"));
@@ -94,6 +92,7 @@ gulp.task('bower', function(){
 	return gulp.src(mainFiles)
 		.pipe(jsFilter)
 		.pipe(concat('lib.js'))
+		// .pipe(uglify())
 		.pipe(gulp.dest('./public/dist'))
 		.pipe(jsFilter.restore())
 		.pipe(filterByExtension('css'))

@@ -10,7 +10,40 @@ Route::group([ 'domain' => 'internal.' . preg_replace('#^https?://#', '', Config
 	Route::post('auth/resend','AuthController@resend');
 
 	Route::get('/test', function() {
-		dump(\Softjob\User::find(21)->todos()->get());
+		return 'test';
+	});
+
+	Route::get('/resetapp', function() {
+		\Illuminate\Database\Eloquent\Model::unguard();
+		DB::table('organizations')->delete();
+		Softjob\Organization::create([
+			'id'    => 1,
+			'name'  => 'Organization One',
+			'slug'  => 'org1',
+			'email' => null,
+			'logo'  => 'default'
+		]);
+		DB::table('users')->delete();
+		Softjob\User::create([
+			'id' => 21,
+			'organization_id' => 1,
+			'email' => 'admin@email.com',
+			'username' => 'admin',
+			'password' => Hash::make('secret'),
+			'first_name' => 'TestFirstName',
+			'last_name' => 'TestLastName',
+			'avatar' => 'default.jpg',
+			'role_id' => 1
+		]);
+		Db::table('roles')->delete();
+		Role::create([
+			'id' => 1,
+			'name' => 'AdminRole',
+			'description' => 'Admin Role description'
+		]);
+		$p = \Softjob\Permission::where('permission', '=' ,'role.edit')->get()->toArray();
+		$p = array_pop($p);
+		\Softjob\Role::find(1)->permissions()->attach($p['id']);
 	});
 
 });
@@ -33,8 +66,9 @@ Route::group(['domain' => 'internal.' . preg_replace('#^https?://#', '', Config:
 	Route::post('todos', 'UserController@createTodo');
 	Route::patch('todos', 'UserController@completeTodo');
 
-	Route::get('permissions', 'PermissionsController@getAllPermissions');
-	Route::post('permissions', 'PermissionsConhtrooller@setPermission');
+	Route::get('permissions/of/user/{userId}', 'PermissionsController@getUserPermissions');
+	Route::get('permissions/of/role/{roleId}', 'PermissionsController@getRolePermissions');
+	Route::post('permissions', 'PermissionsController@editPermission');
 	Route::get('permissions/{permission}', 'PermissionsController@checkPermission');
 
 	Route::get('users/{id}/projects', 'ProjectsController@getProjectsOfUser');
@@ -76,6 +110,9 @@ Route::group(['domain' => 'internal.' . preg_replace('#^https?://#', '', Config:
 	Route::get('groups/{groupId}/addableusers', 'GroupsController@usersNotInGroup');
 	Route::post('groups/users', 'GroupsController@addUsers');
 	Route::delete('groups/{groupId}', 'GroupsController@deleteGroup');
+
+	Route::get('settings/{setting}', 'SettingsController@getSetting');
+	Route::post('settings', 'SettingsController@setSetting');
 });
 
 /**

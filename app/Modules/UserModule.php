@@ -16,8 +16,7 @@ class UserModule implements Module, ExposesSidebarItems, ExposesPermissionsInter
 	{
 		return [
 			'Dashboard' => 'dashboard',
-			'Admin' => 'dashboard.admin'
-//			'Settings' => 'dashboard.settings'
+			'System' => 'dashboard.admin'
 		];
 	}
 
@@ -32,9 +31,10 @@ class UserModule implements Module, ExposesSidebarItems, ExposesPermissionsInter
 			'user.create',
 		    'user.edit',
 		    'role.create',
-		    'role.delete',
+		    'role.edit',
 		    'group.create',
-		    'group.delete'
+		    'group.edit',
+		    'system.settings'
 		];
 	}
 }

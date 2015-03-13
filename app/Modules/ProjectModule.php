@@ -16,8 +16,7 @@ class ProjectModule implements Module, ExposesPermissionsInterface, ExposesSideb
 	{
 		return [
 			'project.create',
-		    'project.edit',
-		    'sprint.create'
+		    'project.edit'
 		];
 	}
 

@@ -42,9 +42,9 @@
 								<md-card-content layout="row">
 									<span flex><a href="#">{{task.name}}</a></span>
 									<md-button ng-hide="isLast(task.task_status)" class="md-accent" ng-click="tranferTask(stage.id, task.id)" aria-label="Tranfer Task">										
-					            		<i class="ion-android-send"></i>
+					            		<md-icon md-svg-src="img/icons/ic_chevron_right_48px.svg"></md-icon>	
 					        		</md-button>
-					        		<i ng-show="isLast(task.task_status)" class="ion-android-done" style="color: green"></i>
+					        		<md-icon ng-show="isLast(task.task_status)" md-svg-src="img/icons/ic_check_48px.svg" style="color: green"></md-icon>
 								</md-card-content>
 							</md-card>
 						</md-card-content>	

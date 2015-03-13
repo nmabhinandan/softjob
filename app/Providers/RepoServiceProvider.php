@@ -9,6 +9,7 @@ class RepoServiceProvider extends ServiceProvider{
 	{
 
 		$repositories = [
+			'Setting',
 			'User',
 		    'Permission',
 		    'Project',

@@ -69,7 +69,7 @@ class EloquentSprintRepo implements SprintRepoInterface{
 			'name' => $sprint['name'] . ' - Workflow',
 		    'sprint_id' => $s->id,
 		]);
-		$stages = ['Todo', 'In Progress', 'Done'];
+		$stages = ['Backlog', 'In Progress', 'Done'];
 		foreach (range(0,2) as $key) {
 			WorkflowStage::create([
 				'name' => $stages[$key],

@@ -6,8 +6,6 @@
 	<title>Softjob : {{ pageTitle }}</title>
 	<link rel="stylesheet" href="dist/lib.css"/>	
 
-
-	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
 	<link rel="stylesheet" href="dist/style.css">
 	<script type="text/javascript">
 		WebFontConfig = {
@@ -27,7 +25,6 @@
 <body md-theme="indigo">
 
 	<main id="main" ui-view></main>
-<!--	<md-progress-circular id="globalProgress" md-mode="indeterminate"></md-progress-circular>-->
 	<script src="dist/lib.js"></script>
 	
 	<script src="js/misc.js"></script>

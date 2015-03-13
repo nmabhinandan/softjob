@@ -15,8 +15,8 @@ var softjob = angular.module('softjob', [
 var sjServices = angular.module('sjServices', []);
 var sjDirectives = angular.module('sjDirectives', []);
 var sjControllers = angular.module('sjControllers', []);
-sjServices.factory('Auth', ['$http', '$window', '$q', '$rootScope', 'softjobConfig', 'User', '$mdToast', '$state',
-	function($http, $window, $q, $rootScope, softjobConfig, User, $mdToast, $state) {
+sjServices.factory('Auth', ['$http', '$window', '$q', '$rootScope', 'softjobConfig', 'User', 'Permission', '$mdToast', '$state',
+	function($http, $window, $q, $rootScope, softjobConfig, User, Permission, $mdToast, $state) {
 	'use strict';
 
 	var service = {};
@@ -30,7 +30,8 @@ sjServices.factory('Auth', ['$http', '$window', '$q', '$rootScope', 'softjobConf
 		}).success(function (data, status, headers, config) {
 			User.setToken(data.data.token);
 			User.setUser(data.data.user);
-			$rootScope.organization = data.data.organization;
+			Permission.cachePermissions(data.data.permissions);
+			$rootScope.organization = data.data.organization;			
 			$state.go('dashboard');
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -73,6 +74,84 @@ sjServices.factory('AuthInterceptor', ['$window', '$q', function ($window, $q) {
 		return response;
 	};
 	return service;
+}]);
+sjServices.factory('Permission', ['$http', '$state', '$rootScope', '$mdToast', '$window', '$q', 'softjobConfig',
+ function($http, $state, $rootScope, $mdToast, $window, $q, softjobConfig){
+	var userPermissions = null;
+
+	var instance = {};
+
+	instance.getUserPermissions = function(userId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'get',
+			url: softjobConfig.APP_BACKEND + '/permissions/of/user/' + userId
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	instance.getRolePermissions = function(roleId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'get',
+			url: softjobConfig.APP_BACKEND + '/permissions/of/role/' + roleId
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	instance.setPermission = function(formData) {
+		var deferred = $q.defer();
+		$http({
+			method: 'post',
+			url: softjobConfig.APP_BACKEND + '/permissions',
+			data: formData, 
+			headers: { 'Content-Type': 'application/json' }
+		}).success(function(data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content("Permissions chaned"));
+			deferred.resolve(status);
+		}).error(function(data,status,headers,config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject(status);
+		});
+		return deferred.promise;
+	};
+
+	instance.checkPermission = function(permission) {
+
+		if(userPermissions == null) {			
+			if($window.localStorage.getItem('softjob.permissions') === null) {				
+				instance.getUserPermissions().then(function(data) {
+
+					instance.cachePermissions(data);
+					return instance.checkPermission(permission);
+				});
+			} else {				
+				userPermissions = JSON.parse($window.localStorage.getItem('softjob.permissions'));
+			}			
+		}
+		var flag = false;
+		angular.forEach(userPermissions, function(perm) {			
+			if(perm.permission === permission && perm.granted === true) {
+				flag = true;
+			}
+		});
+		return flag;
+	}
+
+	instance.cachePermissions = function(perms) {
+		userPermissions = perms;
+		$window.localStorage.setItem('softjob.permissions', JSON.stringify(perms));
+	}
+
+	return instance;
 }]);
 sjServices.factory('Project', ['User', '$http', '$q', '$state', '$mdToast', 'softjobConfig', function(User, $http, $q, $state, $mdToast, softjobConfig){
 	var instance = {};
@@ -415,6 +494,8 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		$rootScope.loggedInUser = null;
 		userToken = null;
 		$window.localStorage.removeItem('softjob.user');
+		$window.localStorage.removeItem('softjob.token');
+		$window.localStorage.removeItem('softjob.permissions');
 	};
 
 	service.getUserById = function(id) {
@@ -1143,16 +1224,23 @@ sjControllers.controller('ProjectsController', ['$scope', '$rootScope', '$stateP
 		});
 	});	
 }]);
-sjControllers.controller('RoleController', ['$scope', '$stateParams', '$state', '$rootScope', '$mdDialog', 'User', 
-	function($scope, $stateParams, $state, $rootScope, $mdDialog, User){
+sjControllers.controller('RoleController', ['$scope', '$stateParams', '$state', '$rootScope', '$mdDialog', 'User', 'Permission', 
+	function($scope, $stateParams, $state, $rootScope, $mdDialog, User, Permission){
 	$rootScope.pageTitle = 'Role'
-	
+	$rootScope.permissions = {};
+
 	function loadRole() {
 		User.getRole($stateParams.roleId).then(function(data) {
 			$scope.role = data;
+
+			Permission.getRolePermissions(data.id).then(function(roles) {
+				$scope.permissions = roles;
+			});
 		});
 	}
 	loadRole();
+
+	
 
 	$scope.editRole = function(ev) {
 		$mdDialog.show({
@@ -1178,6 +1266,21 @@ sjControllers.controller('RoleController', ['$scope', '$stateParams', '$state', 
 			loadRole();
 		});
 	};
+
+	$scope.editPermission = function(perm, grant) {
+		Permission.setPermission({
+			permission: perm,
+			roleId: $scope.role.id,
+			granted: grant
+		}).then(function(status) {
+			console.log(status);
+			Permission.getUserPermissions($rootScope.loggedInUser.id).then(function(perms) {				
+				console.log(perms);
+				Permission.cachePermissions(perms);
+			});
+			loadRole();			
+		});
+	}
 
 	$scope.deleteRole = function(ev) {
 		var confirm = $mdDialog.confirm()
@@ -1372,18 +1475,35 @@ sjControllers.controller('SprintsController', ['$scope', '$stateParams', '$mdDia
 		});
 	};
 }]);
-sjControllers.controller('UserController', ['$scope', '$rootScope', '$stateParams', '$mdDialog', 'User',
- function($scope, $rootScope, $stateParams, $mdDialog, User){
-	
+sjControllers.controller('UserController', ['$scope', '$rootScope', '$stateParams', '$mdDialog', 'User', 'Permission', 
+ function($scope, $rootScope, $stateParams, $mdDialog, User, Permission){
+
 	function loadUser() {
 		User.getUserById($stateParams.userId).then(function(data) {
 			$scope.user = data;
 			User.getRole(data.role_id).then(function(data) {
 				$scope.user_role = data;
-			});		
+			});
+			Permission.getUserPermissions($scope.user.id).then(function(perms) {
+				$scope.permissions = perms;
+			})
 		});
 	}
 	loadUser();
+
+	$scope.editPermission = function(perm, grant) {
+		Permission.setPermission({
+			permission: perm,
+			userId: $scope.user.id,
+			granted: grant
+		}).then(function(status) {
+			Permission.getUserPermissions($scope.user.id).then(function(perms) {
+				Permission.cachePermissions(perms);
+			});			
+			
+			loadRole();		
+		});
+	}
 
 	$scope.editUser = function(ev) {
 		$mdDialog.show({
@@ -1412,7 +1532,6 @@ sjControllers.controller('UserController', ['$scope', '$rootScope', '$stateParam
       		templateUrl: 'templates/forms/edit_user.html',
       		targetEvent: ev
 		}).then(function(data) {			
-			console.log(data);
 			User.editUser(data);
 			$state.go($state.current, {}, {reload: true});
 		});
@@ -1497,21 +1616,27 @@ sjDirectives.directive('sjUserAvatar', [function () {
 		controller: ['$scope', '$mdBottomSheet', function ($scope, $mdBottomSheet) {
 
 			$scope.showOptions = function () {
+				
 				$mdBottomSheet.show({
 					templateUrl: 'directives/user_avatar.options.html',
-					controller: ['$scope', 'User', function ($scope, User) {
+					locals: {
+						user: $scope.user
+					},
+					controller: ['$scope', '$rootScope', 'user', function ($scope, $rootScope, user) {
 						$scope.optionItems = [
 							{
-								name: 'Profile Settings',
-								icon: 'ion-gear-b'
-							},
-							{
-								name: 'Logout',
-								icon: 'ion-gear-b'
-							}
+								name: 'Profile',
+								link: '#/users/' + user.id
+							},							
 						];
+						if(user.id == $rootScope.loggedInUser.id) {
+							$scope.optionItems.push({
+								name: 'Logout',
+								link: '#/logout'
+							});
+						}
 					}]
-				});
+				});				
 			};
 		}],
 		templateUrl: 'directives/user_avatar.html'
@@ -1534,6 +1659,14 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			templateUrl: 'templates/login.html',
 			controller: 'LoginController',
 			auth: false
+		}).state('logout', {
+			url: '/logout',			
+			controller: ['$scope', '$state', '$mdBottomSheet', 'User', function($scope, $state, $mdBottomSheet, User) {
+				User.removeUser();
+				$state.go('login');
+				$mdBottomSheet.hide();
+			}],
+			auth: true
 		}).state('dashboard.projects', {			
 			url: 'projects',
 			controller: 'ProjectListController',
@@ -1602,7 +1735,7 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 		cfpLoadingBarProvider.includeSpinner = false;
 		cfpLoadingBarProvider.parentSelector = 'body';
 	}])
-	.run(['$rootScope', '$state', '$timeout', '$mdToast', 'User', function ($rootScope, $state, $timeout, $mdToast, User) {
+	.run(['$rootScope', '$state', '$timeout', '$mdToast', 'User', 'Permission', function ($rootScope, $state, $timeout, $mdToast, User, Permission) {
 		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
 			if(toState.auth != false) {
 				if(! User.isLoggedIn()) {
@@ -1616,7 +1749,7 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 				if(User.isLoggedIn()) {
 					$timeout(function () {
 						$state.go('dashboard');
-						//$mdToast.show($mdToast.simple().content('You are already logged in.'));
+						$mdToast.show($mdToast.simple().content('You are already logged in.'));
 					});
 				}
 			}
@@ -1624,6 +1757,10 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 
 		if(User.isLoggedIn()) {
 			$rootScope.loggedInUser = User.getUser();
+		}
+
+		$rootScope.checkPermission = function(perm) {			
+			return Permission.checkPermission(perm);
 		}
 	}])
 	.constant('softjobConfig', {

@@ -12,11 +12,24 @@
 			md-card-content {
 				color: grey;				
 				text-align: center;
-				i {
-					font-size: 2em;
+				md-icon {
+					width: 10em;
+					height: 10em;
 				}
 				span {
 					font-size: 1em;
+				}
+			}
+		}
+		#project_completed {
+			md-toolbar {
+				background-color: $md-green;
+			}
+			md-card-content {				
+				text-align: center;
+				md-icon {
+					width: 10em;
+					height: 10em;
 				}
 			}
 		}

@@ -23,6 +23,16 @@ class CreateOrganizationModule extends Migration {
 			$table->timestamps();
 		});
 
+		Schema::create('settings', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->string('name')->unique();
+			$table->string('value');
+			$table->unsignedInteger('organization_id')->index();
+			$table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
+			$table->timestamps();
+		});
+
 	}
 
 	/**
@@ -33,6 +43,7 @@ class CreateOrganizationModule extends Migration {
 	public function down()
 	{
 		Schema::drop('organizations');
+		Schema::drop('settings');
 	}
 
 }

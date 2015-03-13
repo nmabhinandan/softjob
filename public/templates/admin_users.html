@@ -2,8 +2,8 @@
 	<md-toolbar-tools class="md-toolbar-tools">
 		<span>Users</span>
 		<span flex></span>
-		<md-button class="md-fab md-accent" ng-click="createUser($event)" aria-label="Create User">
-			<i class="ion-plus-round"></i>
+		<md-button ng-disabled="! checkPermission('user.create')" class="md-fab md-accent" ng-click="createUser($event)" aria-label="Create User">
+			<md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
 		</md-button>
 	</md-toolbar-tools>
 </md-toolbar>
@@ -11,8 +11,8 @@
 	<md-input-container>
 			<label>Filter</label>
 			<input type="text" ng-model="userFilter">
-	</md-input-container>				
-	<md-content>				
+	</md-input-container>
+	<md-content>
 		<div ng-repeat="role in usersdata">
 			<section>
 				<md-subheader class="md-primary">{{role.name}}</md-subheader>

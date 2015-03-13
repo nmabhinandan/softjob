@@ -4,26 +4,30 @@ interface PermissionRepoInterface {
 
 	/**
 	 * Create or update the given permission
+	 *
 	 * @param $permission
 	 *
 	 * @return mixed
 	 */
-	public function createOrUpdatePermission($permission);
+	public function createOrUpdatePermission( $permission );
 
 	/**
 	 * Get all of the permissions
 	 *
+	 * @param $userId
+	 *
 	 * @return mixed
 	 */
-	public function getAllPermissions();
+	public function getUserPermissions($userId);
 
 	/**
 	 * Set the permission to a user/role
+	 *
 	 * @param $data
 	 *
 	 * @return mixed
 	 */
-	public function setPermission($data);
+	public function setPermission( $data );
 
 	/**
 	 * Check whether the use has the permission or not
@@ -32,5 +36,14 @@ interface PermissionRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function checkPermission($permission);
+	public function checkPermission( $permission );
+
+	/**
+	 * Get permissions of the role
+	 *
+	 * @param $roleId
+	 *
+	 * @return mixed
+	 */
+	public function getRolePermission( $roleId );
 }

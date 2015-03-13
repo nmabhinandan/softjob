@@ -1,9 +1,8 @@
 <md-bottom-sheet>
     <md-list>
         <md-item ng-repeat="item in optionItems">
-            <md-button aria-label="{{item.name}}" ng-click="listItemClick($index)" class="md-padding">
-                <md-inline-list-icon icon="{{item.icon}}"></md-inline-list-icon>
-                <span class="md-inline-list-icon-label">{{item.name}}</span>
+            <md-button aria-label="{{item.name}}" ng-click="listItemClick($index)" class="md-padding">                
+                <a ng-href="{{item.link}}" class="md-inline-list-icon-label">{{item.name}}</a>
             </md-button>
         </md-item>
     </md-list>

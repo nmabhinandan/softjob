@@ -61,18 +61,18 @@ class CreateUserModule extends Migration {
 
 		Schema::create('permission_role', function(Blueprint $table) {
 			$table->increments('id');
-			$table->unsignedInteger('permission_id')->unique();
+			$table->unsignedInteger('permission_id');
 			$table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
-			$table->unsignedInteger('role_id')->unique();
+			$table->unsignedInteger('role_id')->index();
 			$table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
 			$table->timestamps();
 		});
 
 		Schema::create('permission_user', function(Blueprint $table) {
 			$table->increments('id');
-			$table->unsignedInteger('permission_id')->unique();
+			$table->unsignedInteger('permission_id');
 			$table->foreign('permission_id')->references('id')->on('permissions')->onDelete('cascade');
-			$table->unsignedInteger('user_id')->unique();
+			$table->unsignedInteger('user_id')->index();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 			$table->timestamps();
 		});

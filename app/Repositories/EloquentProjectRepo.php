@@ -88,9 +88,22 @@ class EloquentProjectRepo implements ProjectRepoInterface{
 	 */
 	public function getProjectBySlug( $slug )
 	{
-		$result = $this->model->whereSlug($slug)->with('tasks')->get()->toArray();
+		$result= $this->model->whereSlug($slug)->with('tasks')->get()->toArray();
+		$result = array_pop($result);
 
-		return array_pop($result);
+		if(! empty($result['tasks'])) {
+			$complete = true;
+
+			foreach ($result['tasks'] as $task) {
+				if($task['task_status'] == 0) {
+					$complete = false;
+				}
+			}
+			if($complete) {
+				$result['project_completed'] = true;
+			}
+		}
+		return $result;
 	}
 
 

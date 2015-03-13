@@ -12,8 +12,7 @@ class AddUsersToGroupRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return true
-			;
+		return true;
 	}
 
 	/**

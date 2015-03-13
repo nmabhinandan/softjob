@@ -6,15 +6,17 @@
 					<span>{{user.first_name}}  {{user.last_name}}</span>
 					<span flex></span>
 					<span id="deleteUser">
-						<md-button class="ion-android-delete" ng-click="deleteUser($event)" aria-label="Delete User"></md-button>
+						<md-button ng-disabled="! checkPermission('user.edit')" ng-click="deleteUser($event)" aria-label="Delete User">
+							<md-icon md-svg-src="img/icons/ic_delete_48px.svg"></md-icon>
+						</md-button>
 					</span>
-					<md-button ng-click="editUser($event)" aria-label="Edit User">Edit</md-button>
+					<md-button ng-disabled="! checkPermission('user.edit') && user.id != loggedInUser.id" ng-click="editUser($event)" aria-label="Edit User">Edit</md-button>
 				</md-toolbar-tools>
 			</md-toolbar>
 			<md-card-content>
 				<div layout="row">
 					<div class="avatar" flex>
-						<img class="md-whiteframe-z1" ng-src="img/avatars/{{user.avatar}}" alt="avatar" />
+						<img class="md-whiteframe-z1" class="img-resp" ng-src="img/avatars/{{user.avatar}}" alt="avatar" />
 					</div>				
 					<div flex>
 						<label for="">Name: </label>
@@ -46,9 +48,9 @@
 			</md-toolbar>
 			<md-card-content>
 				<md-list>
-					<md-item ng-repeat="group in user.groups">							
-						<md-item-content class="roleUser">							
-							<div class="md-tile-content md-padding">																
+					<md-item ng-repeat="group in user.groups">
+						<md-item-content class="roleUser">
+							<div class="md-tile-content md-padding">
 								<a ui-sref="dashboard.groupPage({groupId: group.id})">{{group.name}}</a>
 								<span flex></span>
 							</div>							
@@ -66,20 +68,19 @@
 				</md-toolbar-tools>
 			</md-toolbar>
 			<md-card-content>
-				<!-- <md-list>
-					<md-item ng-repeat="user in role.users">							
-						<md-item-content class="roleUser">
-							<div class="md-tile-left">
-								<sj-user-avatar class="face" user="user"></sj-user-avatar>
-							</div>
+				<md-list>
+					<md-item ng-disabled="true" ng-repeat="permission in permissions">
+						<md-item-content class="rolePermission">
 							<div class="md-tile-content md-padding">
-								<a href="#"><h5>{{user.first_name}} {{user.first_name}}</h5></a>
+								<md-checkbox ng-disabled="! checkPermission('user.edit')" ng-model="permission.granted" aria-label="Edit Permission {{permission.permission}}" ng-change="editPermission(permission.permission, permission.granted)" >
+									{{permission.permission}}
+  								</md-checkbox>
 								<span flex></span>
 							</div>							
 						</md-item-content>						
 						<md-divider md-inset ng-if="!$last"></md-divider>
 					</md-item>
-				</md-list> -->
+				</md-list>
 			</md-card-content>
 		</md-card>		
 	</div>

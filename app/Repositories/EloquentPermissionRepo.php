@@ -2,10 +2,11 @@
 
 
 
-use OpenCloud\Identity\Constants\User;
 use Softjob\Contracts\Repositories\PermissionRepoInterface;
 use Softjob\Permission;
+use Softjob\Role;
 use Softjob\Services\AuthService;
+use Softjob\User;
 
 class EloquentPermissionRepo implements PermissionRepoInterface {
 
@@ -27,33 +28,50 @@ class EloquentPermissionRepo implements PermissionRepoInterface {
 		]);
 	}
 
-	public function getPermissionsOfUser()
+	public function getPermissionsOfUser($userId)
 	{
-		return User::find(AuthService::$loggedInUser)->permissions()->get();
+		return User::find($userId)->permissions()->get()->toArray();
 	}
+
 
 	/**
 	 * Get all of the permissions
 	 *
+	 * @param $userId
+	 *
 	 * @return mixed
 	 */
-	public function getAllPermissions()
+	public function getUserPermissions($userId)
 	{
-		$permissions = $this->model->all()->toArray();
-		$usersPermissions = $this->getPermissionsOfUser();
+		/**
+		 * This should be extracted to SQL query
+		 */
+
+		$usersPermissions = $this->getPermissionsOfUser($userId);
+		$role = User::find($userId)->role()->get()->toArray();
+		$role = array_pop($role);
+		$rolePermissions = Role::find($role['id'])->permissions()->get()->toArray();
 		$result = [];
 
-		foreach ($permissions as $permission) {
+		$permissions = $this->model->all()->toArray();
+
+		foreach ($permissions as $perm) {
 			foreach ($usersPermissions as $up) {
-				if($permission == $up) {sssss
-					//todo
-					array_push($result, $permission);
+				if($perm['permission'] === $up['permission']) {
+					$perm['granted'] = true;
 				}
 			}
 
-		}
+			foreach ($rolePermissions as $rp) {
+				if($perm['permission'] === $rp['permission']) {
+					$perm['granted'] = true;
+				}
+			}
 
-		return $permissions;
+			$result[] = $perm;
+		};
+
+		return $result;
 	}
 
 	/**
@@ -65,6 +83,18 @@ class EloquentPermissionRepo implements PermissionRepoInterface {
 	 */
 	public function setPermission( $data )
 	{
+		if(array_has($data, 'userId')) {
+			$model = User::find($data['userId']);
+		} else if(array_has($data, 'roleId')) {
+			$model = Role::find($data['roleId']);
+		}
+
+		$permission = $this->model->where('permission', '=', $data['permission'])->first()->toArray();
+		if($data['granted']) {
+			$model->permissions()->attach($permission['id']);
+		} else {
+			$model->permissions()->detach($permission['id']);
+		}
 
 	}
 
@@ -78,5 +108,36 @@ class EloquentPermissionRepo implements PermissionRepoInterface {
 	public function checkPermission( $permission )
 	{
 		// TODO: Implement checkPermission() method.
+	}
+
+	/**
+	 * Get permissions of the role
+	 *
+	 * @param $roleId
+	 *
+	 * @return mixed
+	 */
+	public function getRolePermission( $roleId )
+	{
+		/**
+		 * This should be extracted to SQL query
+		 */
+
+		$rolePermissions = Role::find($roleId)->permissions()->get();
+		$result = [];
+
+		$permissions = $this->model->all()->toArray();
+
+		foreach ($permissions as $perm) {
+			foreach ($rolePermissions as $rp) {
+				if($perm['permission'] === $rp['permission']) {
+					$perm['granted'] = true;
+				}
+			}
+			$result[] = $perm;
+		};
+
+		return $result;
+
 	}
 }

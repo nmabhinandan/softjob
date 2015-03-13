@@ -1,5 +1,5 @@
-sjServices.factory('Auth', ['$http', '$window', '$q', '$rootScope', 'softjobConfig', 'User', '$mdToast', '$state',
-	function($http, $window, $q, $rootScope, softjobConfig, User, $mdToast, $state) {
+sjServices.factory('Auth', ['$http', '$window', '$q', '$rootScope', 'softjobConfig', 'User', 'Permission', '$mdToast', '$state',
+	function($http, $window, $q, $rootScope, softjobConfig, User, Permission, $mdToast, $state) {
 	'use strict';
 
 	var service = {};
@@ -13,7 +13,8 @@ sjServices.factory('Auth', ['$http', '$window', '$q', '$rootScope', 'softjobConf
 		}).success(function (data, status, headers, config) {
 			User.setToken(data.data.token);
 			User.setUser(data.data.user);
-			$rootScope.organization = data.data.organization;
+			Permission.cachePermissions(data.data.permissions);
+			$rootScope.organization = data.data.organization;			
 			$state.go('dashboard');
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));

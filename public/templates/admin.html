@@ -6,13 +6,23 @@
 	
 	<md-content class="content" layout="row" layout-sm="column" layout-align="center center">
 		<md-card flex>
-			<md-button class="md-raised" ui-sref="dashboard.roles">Edit Roles</md-button>
+			<md-button class="md-raised" ui-sref="dashboard.roles">Roles</md-button>
 		</md-card>
 		<md-card flex>
-			<md-button class="md-raised" ui-sref="dashboard.groups">Edit Groups</md-button>
-		</md-card>
-		<md-card flex>
-			<md-button class="md-raised" href="#/admin/mail">Mail settings</md-button>
-		</md-card>
+			<md-button class="md-raised" ui-sref="dashboard.groups">Groups</md-button>
+		</md-card>		
 </md-content>
-
+<md-toolbar class="md-padding">
+	<md-toolbar-tools class="md-toolbar-tools">
+		<span>Settings</span>
+		<span flex></span>		
+	</md-toolbar-tools>
+</md-toolbar>
+<md-content class="content" layout="row" layout-sm="column" layout-align="center center">
+	<md-card flex>
+		<md-button class="md-raised" href="#/admin/mail">Mail settings</md-button>
+	</md-card>
+	<md-card flex>
+		<md-button class="md-raised" href="/resetapp">Reset Application</md-button>
+	</md-card>
+</md-content>

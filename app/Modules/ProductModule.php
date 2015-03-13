@@ -26,9 +26,6 @@ class ProductModule implements Module, ExposesSidebarItems, ExposesPermissionsIn
 	 */
 	public function setPermissions()
 	{
-		return [
-			'product.create',
-		    'product.edit'
-		];
+
 	}
 }

@@ -4,11 +4,28 @@
             <h3 class="md-toolbar-tools">Login</h3>
         </md-toolbar>
         <form id="login-form" name="LoginForm" novalidate>
-            <md-text-float label="User Name" ng-model="user.username" required></md-text-float>
-            <md-text-float label="Password" ng-model="user.password" type="password" required></md-text-float>
-            <md-button class="md-fab md-fab-bottom-right md-primary" aria-label="Login" ng-click="submit(user)"><span class="ion-checkmark-round"></span></md-button>
+            <md-input-container>
+                <label>User Name</label>
+                <input type="text" ng-model="user.username" required>
+                <div ng-messages="createProjectForm.description.$error">
+                    <div ng-message="required">User Name is required</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label>Password</label>
+                <input type="password" ng-model="user.password" required>
+                <div ng-messages="createProjectForm.description.$error">
+                    <div ng-message="required">Password is required</div>
+                </div>  
+            </md-input-container>
+            
+            <md-button class="md-fab md-fab-bottom-right md-primary" aria-label="Login" ng-click="submit(user)">
+                <md-icon md-svg-src="img/icons/ic_check_48px.svg"></md-icon>
+            </md-button>
         </form>
-         <a href="javascript:void(0)" id="resend">Did not receive confirmation email?</a>
+        <div id="resend">
+            <a href="javascript:void(0)">Did not receive confirmation email?</a>    
+        </div>        
      </main>    
     <script>
         //alert(window.location.protocol + '//internal.' + window.location.hostname + ':' + window.location.port);

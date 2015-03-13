@@ -1,6 +1,7 @@
 <?php namespace Softjob\Http\Controllers;
 
 
+use Softjob\Contracts\Repositories\PermissionRepoInterface;
 use Softjob\Http\Requests\LoginRequest;
 use Softjob\Commands\LoginUserCommand;
 use Illuminate\Http\Response;
@@ -36,7 +37,8 @@ class AuthController extends Controller {
 				'status' => 'success',
 				'data' => [
 					'token' => $data['token'],
-					'user' => $data['user']
+					'user' => $data['user'],
+				    'permissions' => $data['permissions']
 				],
 				'message' => 'You have successfully logged in'
 			],200);

@@ -2,7 +2,7 @@
     <md-toolbar class="md-whiteframe-z1">        
         <div id="toolbar-tools" class="md-toolbar-tools">
             <md-button class="md-primary" ng-click="togSideNav()" style="color:white; font-size: inherit;" hide-gt-md flex="5" aria-label="Toggle Sidebar">
-                <i class="ion-android-menu"></i>
+                <md-icon md-svg-src="img/icons/ic_menu_48px.svg"></md-icon>
             </md-button>
             <span id="title" style="text-tranform: capitalize">
                 {{ pageTitle }}
@@ -25,10 +25,6 @@
         </md-sidenav>
         <div id="content" ui-view flex>
             <div id="user-dashboard" layout="row" layout-sm="column">
-
-                <md-card id="" flex>
-                    
-                </md-card>
                 <md-card id="todo" flex>
                     <md-toolbar>                    
                         <md-toolbar-tools class="md-toolbar-tools">
@@ -55,15 +51,24 @@
                                 </md-item-content>
                                 <md-divider md-inset ng-if="!$last"></md-divider>                                
                             </md-item>
-                            <div style="font-size: 72pt; text-align: center; color: grey" ng-if="!todos.length">                                
-                                <i class="ion-coffee"></i>                                
-                                <span style="font-size: 14pt">All done!</span>
+                            <div id="allDone" ng-if="!todos.length" layout="column">                                
+                                <md-icon md-svg-src="img/icons/coffee.svg" flex></md-icon>
+                                <span style="font-size: 14pt" flex>All done!</span>
                             </div>
                             <md-input-container ng-if="!todos.length">
                                 <label>Add New Todo</label>
                                 <input ng-model="newTodo" ui-keypress="{13:'addNewTodo($event, newTodo)'}">
                             </md-input-container>     
                         </md-list>
+                    </md-card-content>
+                </md-card>
+                <md-card id="" flex>
+                    <md-toolbar>                    
+                        <md-toolbar-tools class="md-toolbar-tools">
+                            <span>Activity</span>
+                        </md-toolbar-tools>
+                    </md-toolbar>
+                    <md-card-content>
                     </md-card-content>
                 </md-card>
             </div>

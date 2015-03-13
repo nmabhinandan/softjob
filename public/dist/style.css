@@ -5,6 +5,10 @@ body a {
 body a:active {
   color: #0000cc;
 }
+body .img-resp {
+  width: 100%;
+  height: auto;
+}
 body #globalProgress {
   top: auto;
   right: 25px;
@@ -56,14 +60,12 @@ body #main .login {
   margin-left: 0;
   margin-right: 0;
 }
-body #main .login main {
-  text-align: center;
-}
 body #main .login main md-toolbar h3 {
   color: white;
 }
 body #main .login main form {
   width: 200px;
+  height: auto;
   margin: 10% auto 0;
 }
 body #main .login main form * {
@@ -72,6 +74,9 @@ body #main .login main form * {
 }
 body #main .login main form label {
   float: left;
+}
+body #main .login main #resend {
+  text-align: center;
 }
 body #main:after {
   content: " ";
@@ -146,11 +151,22 @@ body #main #dashboard #page #content .projects-page .meta #deadline md-card-cont
   color: grey;
   text-align: center;
 }
-body #main #dashboard #page #content .projects-page .meta #deadline md-card-content i {
-  font-size: 2em;
+body #main #dashboard #page #content .projects-page .meta #deadline md-card-content md-icon {
+  width: 10em;
+  height: 10em;
 }
 body #main #dashboard #page #content .projects-page .meta #deadline md-card-content span {
   font-size: 1em;
+}
+body #main #dashboard #page #content .projects-page .meta #project_completed md-toolbar {
+  background-color: #4CAF50;
+}
+body #main #dashboard #page #content .projects-page .meta #project_completed md-card-content {
+  text-align: center;
+}
+body #main #dashboard #page #content .projects-page .meta #project_completed md-card-content md-icon {
+  width: 10em;
+  height: 10em;
 }
 body #main #dashboard #page #content .projects-page .meta #manager md-toolbar {
   background-color: #FFC107;
@@ -320,6 +336,14 @@ body #main #dashboard #page #content #user-dashboard #todo md-card-content {
 body #main #dashboard #page #content #user-dashboard #todo md-card-content .doneTodo {
   color: grey;
   text-decoration: line-through;
+}
+body #main #dashboard #page #content #user-dashboard #todo md-card-content #allDone {
+  text-align: center;
+  color: grey;
+}
+body #main #dashboard #page #content #user-dashboard #todo md-card-content #allDone md-icon {
+  width: 10em;
+  height: 10em;
 }
 body #main #dashboard #ajaxLoad {
   display: none;

@@ -94,6 +94,10 @@ class EloquentGroupRepo implements GroupRepoInterface{
 	 */
 	public function usersNotInGroup( $groupId )
 	{
+		/**
+		 * This should be extracted to SQL query
+		 */
+
 		$u1 = User::all()->toArray();
 
 		$result = array_filter($u1, function($elt) use ($groupId) {

@@ -1,13 +1,20 @@
-sjControllers.controller('RoleController', ['$scope', '$stateParams', '$state', '$rootScope', '$mdDialog', 'User', 
-	function($scope, $stateParams, $state, $rootScope, $mdDialog, User){
+sjControllers.controller('RoleController', ['$scope', '$stateParams', '$state', '$rootScope', '$mdDialog', 'User', 'Permission', 
+	function($scope, $stateParams, $state, $rootScope, $mdDialog, User, Permission){
 	$rootScope.pageTitle = 'Role'
-	
+	$rootScope.permissions = {};
+
 	function loadRole() {
 		User.getRole($stateParams.roleId).then(function(data) {
 			$scope.role = data;
+
+			Permission.getRolePermissions(data.id).then(function(roles) {
+				$scope.permissions = roles;
+			});
 		});
 	}
 	loadRole();
+
+	
 
 	$scope.editRole = function(ev) {
 		$mdDialog.show({
@@ -33,6 +40,21 @@ sjControllers.controller('RoleController', ['$scope', '$stateParams', '$state', 
 			loadRole();
 		});
 	};
+
+	$scope.editPermission = function(perm, grant) {
+		Permission.setPermission({
+			permission: perm,
+			roleId: $scope.role.id,
+			granted: grant
+		}).then(function(status) {
+			console.log(status);
+			Permission.getUserPermissions($rootScope.loggedInUser.id).then(function(perms) {				
+				console.log(perms);
+				Permission.cachePermissions(perms);
+			});
+			loadRole();			
+		});
+	}
 
 	$scope.deleteRole = function(ev) {
 		var confirm = $mdDialog.confirm()

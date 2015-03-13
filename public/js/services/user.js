@@ -37,6 +37,8 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		$rootScope.loggedInUser = null;
 		userToken = null;
 		$window.localStorage.removeItem('softjob.user');
+		$window.localStorage.removeItem('softjob.token');
+		$window.localStorage.removeItem('softjob.permissions');
 	};
 
 	service.getUserById = function(id) {
