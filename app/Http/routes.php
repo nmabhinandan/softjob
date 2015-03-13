@@ -9,9 +9,9 @@ Route::group([ 'domain' => 'internal.' . preg_replace('#^https?://#', '', Config
 	Route::get('auth/logout','AuthController@logout');
 	Route::post('auth/resend','AuthController@resend');
 
-	Route::get('/test', function() {
-		return 'test';
-	});
+	// Route::get('/test', function() {
+	// 	return 'test';
+	// });
 
 	Route::get('/resetapp', function() {
 		\Illuminate\Database\Eloquent\Model::unguard();
