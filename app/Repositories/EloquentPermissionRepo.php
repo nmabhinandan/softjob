@@ -1,11 +1,9 @@
-<?php  namespace Softjob\Repositories;
-
+<?php namespace Softjob\Repositories;
 
 
 use Softjob\Contracts\Repositories\PermissionRepoInterface;
 use Softjob\Permission;
 use Softjob\Role;
-use Softjob\Services\AuthService;
 use Softjob\User;
 
 class EloquentPermissionRepo implements PermissionRepoInterface {
@@ -16,19 +14,19 @@ class EloquentPermissionRepo implements PermissionRepoInterface {
 	 */
 	protected $model;
 
-	function __construct(Permission $model)
+	function __construct( Permission $model )
 	{
 		$this->model = $model;
 	}
 
-	public function createOrUpdatePermission($permission)
+	public function createOrUpdatePermission( $permission )
 	{
 		$this->model->updateOrCreate([
 			'permission' => $permission
 		]);
 	}
 
-	public function getPermissionsOfUser($userId)
+	public function getPermissionsOfUser( $userId )
 	{
 		return User::find($userId)->permissions()->get()->toArray();
 	}
@@ -41,29 +39,29 @@ class EloquentPermissionRepo implements PermissionRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getUserPermissions($userId)
+	public function getUserPermissions( $userId )
 	{
 		/**
 		 * This should be extracted to SQL query
 		 */
 
 		$usersPermissions = $this->getPermissionsOfUser($userId);
-		$role = User::find($userId)->role()->get()->toArray();
-		$role = array_pop($role);
-		$rolePermissions = Role::find($role['id'])->permissions()->get()->toArray();
-		$result = [];
+		$role             = User::find($userId)->role()->get()->toArray();
+		$role             = array_pop($role);
+		$rolePermissions  = Role::find($role['id'])->permissions()->get()->toArray();
+		$result           = [ ];
 
 		$permissions = $this->model->all()->toArray();
 
 		foreach ($permissions as $perm) {
 			foreach ($usersPermissions as $up) {
-				if($perm['permission'] === $up['permission']) {
+				if ($perm['permission'] == $up['permission']) {
 					$perm['granted'] = true;
 				}
 			}
 
 			foreach ($rolePermissions as $rp) {
-				if($perm['permission'] === $rp['permission']) {
+				if ($perm['permission'] == $rp['permission']) {
 					$perm['granted'] = true;
 				}
 			}
@@ -83,14 +81,14 @@ class EloquentPermissionRepo implements PermissionRepoInterface {
 	 */
 	public function setPermission( $data )
 	{
-		if(array_has($data, 'userId')) {
+		if (array_has($data, 'userId')) {
 			$model = User::find($data['userId']);
-		} else if(array_has($data, 'roleId')) {
+		} else if (array_has($data, 'roleId')) {
 			$model = Role::find($data['roleId']);
 		}
 
 		$permission = $this->model->where('permission', '=', $data['permission'])->first()->toArray();
-		if($data['granted']) {
+		if ($data['granted']) {
 			$model->permissions()->attach($permission['id']);
 		} else {
 			$model->permissions()->detach($permission['id']);
@@ -124,13 +122,13 @@ class EloquentPermissionRepo implements PermissionRepoInterface {
 		 */
 
 		$rolePermissions = Role::find($roleId)->permissions()->get();
-		$result = [];
+		$result          = [ ];
 
 		$permissions = $this->model->all()->toArray();
 
 		foreach ($permissions as $perm) {
 			foreach ($rolePermissions as $rp) {
-				if($perm['permission'] === $rp['permission']) {
+				if ($perm['permission'] === $rp['permission']) {
 					$perm['granted'] = true;
 				}
 			}

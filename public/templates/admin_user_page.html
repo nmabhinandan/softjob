@@ -1,87 +1,93 @@
 <md-content id="user_page" layout="column">
-	<div class="meta" layout="row" layout-sm="column" flex>
-		<md-card flex flex>
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>{{user.first_name}}  {{user.last_name}}</span>
-					<span flex></span>
+    <div class="meta" layout="row" layout-sm="column" flex>
+        <md-card flex flex>
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>{{user.first_name}}  {{user.last_name}}</span>
+                    <span flex></span>
 					<span id="deleteUser">
-						<md-button ng-disabled="! checkPermission('user.edit')" ng-click="deleteUser($event)" aria-label="Delete User">
-							<md-icon md-svg-src="img/icons/ic_delete_48px.svg"></md-icon>
-						</md-button>
+						<md-button ng-disabled="! checkPermission('user.edit')" ng-click="deleteUser($event)"
+                                   aria-label="Delete User">
+                            <md-icon md-svg-src="img/icons/ic_delete_48px.svg"></md-icon>
+                        </md-button>
 					</span>
-					<md-button ng-disabled="! checkPermission('user.edit') && user.id != loggedInUser.id" ng-click="editUser($event)" aria-label="Edit User">Edit</md-button>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content>
-				<div layout="row">
-					<div class="avatar" flex>
-						<img class="md-whiteframe-z1" class="img-resp" ng-src="img/avatars/{{user.avatar}}" alt="avatar" />
-					</div>				
-					<div flex>
-						<label for="">Name: </label>
-						{{user.first_name}}  {{user.last_name}}
-						<br>
-						<br>
-						<label for="">Email: </label>
-						{{user.email}}
-						<br>
-						<br>
-						<label for="">Username: </label>
-						{{user.username}}
-						<br>
-						<br>
-						<label for="">Role: </label>
-						{{user_role.name}}						
-					</div>
-				</div>
-			</md-card-content>
-		</md-card>
-	</div>
-	<div class="content" layout="row" flex>
-		<md-card flex id="groups">
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Groups</span>
-					<span flex></span>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content>
-				<md-list>
-					<md-item ng-repeat="group in user.groups">
-						<md-item-content class="roleUser">
-							<div class="md-tile-content md-padding">
-								<a ui-sref="dashboard.groupPage({groupId: group.id})">{{group.name}}</a>
-								<span flex></span>
-							</div>							
-						</md-item-content>						
-						<md-divider ng-if="!$last"></md-divider>
-					</md-item>
-				</md-list>
-			</md-card-content>
-		</md-card>
-		<md-card flex id="permissions">
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Permissions</span>
-					<span flex></span>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content>
-				<md-list>
-					<md-item ng-disabled="true" ng-repeat="permission in permissions">
-						<md-item-content class="rolePermission">
-							<div class="md-tile-content md-padding">
-								<md-checkbox ng-disabled="! checkPermission('user.edit')" ng-model="permission.granted" aria-label="Edit Permission {{permission.permission}}" ng-change="editPermission(permission.permission, permission.granted)" >
-									{{permission.permission}}
-  								</md-checkbox>
-								<span flex></span>
-							</div>							
-						</md-item-content>						
-						<md-divider md-inset ng-if="!$last"></md-divider>
-					</md-item>
-				</md-list>
-			</md-card-content>
-		</md-card>		
-	</div>
+                    <md-button ng-disabled="! checkPermission('user.edit') && user.id != loggedInUser.id"
+                               ng-click="editUser($event)" aria-label="Edit User">Edit
+                    </md-button>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content>
+                <div layout="row">
+                    <div class="avatar" flex>
+                        <img class="md-whiteframe-z1" class="img-resp" ng-src="img/avatars/{{user.avatar}}"
+                             alt="avatar"/>
+                    </div>
+                    <div flex>
+                        <label for="">Name: </label>
+                        {{user.first_name}} {{user.last_name}}
+                        <br>
+                        <br>
+                        <label for="">Email: </label>
+                        {{user.email}}
+                        <br>
+                        <br>
+                        <label for="">Username: </label>
+                        {{user.username}}
+                        <br>
+                        <br>
+                        <label for="">Role: </label>
+                        {{user_role.name}}
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="content" layout="row" flex>
+        <md-card flex id="groups">
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Groups</span>
+                    <span flex></span>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content>
+                <md-list>
+                    <md-item ng-repeat="group in user.groups">
+                        <md-item-content class="roleUser">
+                            <div class="md-tile-content md-padding">
+                                <a ui-sref="dashboard.groupPage({groupId: group.id})">{{group.name}}</a>
+                                <span flex></span>
+                            </div>
+                        </md-item-content>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+        <md-card flex id="permissions">
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Permissions</span>
+                    <span flex></span>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content>
+                <md-list>
+                    <md-item ng-disabled="true" ng-repeat="permission in permissions">
+                        <md-item-content class="rolePermission">
+                            <div class="md-tile-content md-padding">
+                                <md-checkbox ng-disabled="! checkPermission('user.edit')" ng-model="permission.granted"
+                                             aria-label="Edit Permission {{permission.permission}}"
+                                             ng-change="editPermission(permission.permission, permission.granted)">
+                                    {{permission.permission}}
+                                </md-checkbox>
+                                <span flex></span>
+                            </div>
+                        </md-item-content>
+                        <md-divider md-inset ng-if="!$last"></md-divider>
+                    </md-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+    </div>
 </md-content>

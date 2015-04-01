@@ -3,6 +3,7 @@
 
 use Softjob\Contracts\Modules\ExposesPermissionsInterface;
 use Softjob\Contracts\Modules\ExposesSidebarItems;
+use Softjob\Issue;
 
 class ModulesManager {
 

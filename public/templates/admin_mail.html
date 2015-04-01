@@ -1,0 +1,33 @@
+<md-content id="admin_mail">
+    <md-toolbar class="md-padding">
+        <md-toolbar-tools class="md-toolbar-tools">
+            <span>Mail Settings</span>
+            <span flex></span>
+            <md-button>
+                <md-icon md-svg-src="img/icons/ic_check_48px.svg"></md-icon>
+            </md-button>
+        </md-toolbar-tools>
+    </md-toolbar>
+    <md-content class="content" layout="row" layout-sm="column" layout-align="center center">
+        <form novalidate layout="column" name="editRoleForm" flex>
+            <div layout="row" flex>
+                <md-input-container flex>
+                    <label for="">SMTP Host</label>
+                    <input type="text" required>
+
+                    <div ng-messages="createProjectForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container flex>
+                    <label for="">SMTP Port</label>
+                    <input type="number" required>
+
+                    <div ng-messages="createProjectForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </form>
+    </md-content>
+</md-content>

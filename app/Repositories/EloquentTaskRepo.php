@@ -1,4 +1,4 @@
-<?php  namespace Softjob\Repositories;
+<?php namespace Softjob\Repositories;
 
 
 use Softjob\Contracts\Repositories\TaskRepoInterface;
@@ -17,7 +17,7 @@ class EloquentTaskRepo implements TaskRepoInterface {
 	 *
 	 * @internal param Task $task
 	 */
-	function __construct(Task $model)
+	function __construct( Task $model )
 	{
 		$this->model = $model;
 	}

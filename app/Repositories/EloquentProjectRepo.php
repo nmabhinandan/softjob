@@ -1,4 +1,4 @@
-<?php  namespace Softjob\Repositories;
+<?php namespace Softjob\Repositories;
 
 
 use Carbon\Carbon;
@@ -7,7 +7,7 @@ use Softjob\Project;
 use Softjob\ProjectTag;
 use Softjob\User;
 
-class EloquentProjectRepo implements ProjectRepoInterface{
+class EloquentProjectRepo implements ProjectRepoInterface {
 
 	/**
 	 * @var Project
@@ -19,15 +19,14 @@ class EloquentProjectRepo implements ProjectRepoInterface{
 	private $user;
 
 
-
 	/**
 	 * @param Project $project
 	 * @param User $user
 	 */
-	function __construct(Project $project, User $user)
+	function __construct( Project $project, User $user )
 	{
 		$this->model = $project;
-		$this->user = $user;
+		$this->user  = $user;
 	}
 
 	/**
@@ -52,7 +51,7 @@ class EloquentProjectRepo implements ProjectRepoInterface{
 	 */
 	public function projectsOfUser( $userId )
 	{
-		return $this->user->find($userId)->projects()->with('tasks','tags')->get();
+		return $this->user->find($userId)->projects()->with('tasks', 'tags')->get();
 	}
 
 	/**
@@ -88,21 +87,22 @@ class EloquentProjectRepo implements ProjectRepoInterface{
 	 */
 	public function getProjectBySlug( $slug )
 	{
-		$result= $this->model->whereSlug($slug)->with('tasks')->get()->toArray();
+		$result = $this->model->whereSlug($slug)->with('tasks')->get()->toArray();
 		$result = array_pop($result);
 
-		if(! empty($result['tasks'])) {
+		if ( ! empty($result['tasks'])) {
 			$complete = true;
 
 			foreach ($result['tasks'] as $task) {
-				if($task['task_status'] == 0) {
+				if ($task['task_status'] == 0) {
 					$complete = false;
 				}
 			}
-			if($complete) {
+			if ($complete) {
 				$result['project_completed'] = true;
 			}
 		}
+
 		return $result;
 	}
 
@@ -142,21 +142,21 @@ class EloquentProjectRepo implements ProjectRepoInterface{
 	{
 
 		$proj = $this->model->create([
-			'name' => $data['name'],
-		    'slug' => $data['slug'],
-		    'description' => $data['description'],
-		    'owner_type' => $data['owner_type'],
-		    'owner_id' => $data['owner_id'],
-		    'organization_id' => $data['organization_id'],
-		    'deadline' => Carbon::parse($data['deadline']),
-		    'project_manager_id' => $data['project_manager_id']
+			'name'               => $data['name'],
+			'slug'               => $data['slug'],
+			'description'        => $data['description'],
+			'owner_type'         => $data['owner_type'],
+			'owner_id'           => $data['owner_id'],
+			'organization_id'    => $data['organization_id'],
+			'deadline'           => Carbon::parse($data['deadline']),
+			'project_manager_id' => $data['project_manager_id']
 		]);
 
-		if($data['owner_type'] == 'user') {
+		if ($data['owner_type'] == 'user') {
 			$proj->users()->attach($data['owner_id']);
 		}
 
-		if(is_array($data['tags'])) {
+		if (is_array($data['tags'])) {
 			foreach ($data['tags'] as $tag) {
 				$t = ProjectTag::updateOrCreate([
 					'name' => trim($tag)

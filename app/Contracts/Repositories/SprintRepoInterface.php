@@ -18,7 +18,7 @@ interface SprintRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getSprintsOfProject($projectId);
+	public function getSprintsOfProject( $projectId );
 
 	/**
 	 * Create a new sprint
@@ -27,7 +27,7 @@ interface SprintRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function createSprint($sprint);
+	public function createSprint( $sprint );
 
 	/**
 	 * Get all workflows
@@ -44,7 +44,7 @@ interface SprintRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getWorkflowStageById($workflowStageId);
+	public function getWorkflowStageById( $workflowStageId );
 
 	/**
 	 * Get all stages of the workflow
@@ -53,5 +53,5 @@ interface SprintRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getWorkflowStages($workflowId);
+	public function getWorkflowStages( $workflowId );
 }

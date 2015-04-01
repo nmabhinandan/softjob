@@ -1,4 +1,4 @@
-<?php  namespace Softjob\Repositories;
+<?php namespace Softjob\Repositories;
 
 use Softjob\Contracts\Repositories\RoleRepoInterface;
 use Softjob\Role;
@@ -14,7 +14,7 @@ class EloquentRoleRepo implements RoleRepoInterface {
 	/**
 	 * @param Role $model
 	 */
-	function __construct(Role $model)
+	function __construct( Role $model )
 	{
 		$this->model = $model;
 	}
@@ -24,7 +24,7 @@ class EloquentRoleRepo implements RoleRepoInterface {
 		return $this->model->all();
 	}
 
-	public function getRoleById($roleId)
+	public function getRoleById( $roleId )
 	{
 		return $this->model->with('users')->find($roleId);
 	}
@@ -52,8 +52,8 @@ class EloquentRoleRepo implements RoleRepoInterface {
 	{
 		$r = $this->model->find($role['id']);
 		$r->update([
-			'name' => $role['name'],
-		    'description' => $role['description']
+			'name'        => $role['name'],
+			'description' => $role['description']
 		]);
 		$r->save();
 	}

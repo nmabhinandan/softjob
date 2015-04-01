@@ -1,32 +1,35 @@
 <md-dialog class="create-sprint">
-	<md-content>
-		<h3>Create new sprint</h3>
-		<form novalidate layout="column" name="createTaskForm">
-			<div layout="row" flex>
-				<md-input-container>
-	  				<label>Sprint Name</label>
-	  				<input type="text" ng-model="sprint.name" required>
-	  				<div ng-messages="createTaskForm.description.$error">
-	  					<div ng-message="required">This is required</div>
-	  				</div>
-				</md-input-container>								
-			</div>
-			<div layout="column" flex>								
-				<md-input-container flex>		
+    <md-content>
+        <h3>Create new sprint</h3>
 
-				<md-input-container flex>
-	  				<label>Deadline</label>
-					<input type="date" ng-model="sprint.deadline">
-	  				<div ng-messages="createProjectForm.description.$error">
-	  					<div ng-message="required">This is required</div>
-	  				</div>
-				</md-input-container>				
-			</div>			
-		</form>
-	</md-content>
-	<div class="md-actions" layout="row">
-		<md-button ng-click="cancel()">Cancel</md-button>
-		<span flex></span>
-		<md-button class="md-raised md-primary" ng-click="submit(sprint)">Create Sprint</md-button>
-	</div>
+        <form novalidate layout="column" name="createTaskForm">
+            <div layout="row" flex>
+                <md-input-container>
+                    <label>Sprint Name</label>
+                    <input type="text" ng-model="sprint.name" required>
+
+                    <div ng-messages="createTaskForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="column" flex>
+                <md-input-container flex>
+
+                    <md-input-container flex>
+                        <label>Deadline</label>
+                        <input type="date" ng-model="sprint.deadline">
+
+                        <div ng-messages="createProjectForm.description.$error">
+                            <div ng-message="required">This is required</div>
+                        </div>
+                    </md-input-container>
+            </div>
+        </form>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">Cancel</md-button>
+        <span flex></span>
+        <md-button class="md-raised md-primary" ng-click="submit(sprint)">Create Sprint</md-button>
+    </div>
 </md-dialog>

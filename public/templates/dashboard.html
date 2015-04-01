@@ -1,7 +1,8 @@
 <main id="dashboard">
-    <md-toolbar class="md-whiteframe-z1">        
+    <md-toolbar class="md-whiteframe-z1">
         <div id="toolbar-tools" class="md-toolbar-tools">
-            <md-button class="md-primary" ng-click="togSideNav()" style="color:white; font-size: inherit;" hide-gt-md flex="5" aria-label="Toggle Sidebar">
+            <md-button class="md-primary" ng-click="togSideNav()" style="color:white; font-size: inherit;" hide-gt-md
+                       flex="5" aria-label="Toggle Sidebar">
                 <md-icon md-svg-src="img/icons/ic_menu_48px.svg"></md-icon>
             </md-button>
             <span id="title" style="text-tranform: capitalize">
@@ -9,7 +10,7 @@
             </span>
             <span flex></span>
             <span id="msg-icon">
-                <i class="ion-android-chat"></i>                
+                <i class="ion-android-chat"></i>
             </span>
             <span id="notif-icon">
                 <i class="ion-android-notifications"></i>
@@ -17,16 +18,23 @@
             <span id="profile">
                 <sj-user-avatar user="loggedInUser"></sj-user-avatar>
             </span>
-        </div>        
-    </md-toolbar>        
-    <div id="page" layout="row">    
+        </div>
+    </md-toolbar>
+    <div id="page" layout="row">
         <md-sidenav id="sidebar" class="md-sidenav-left md-whiteframe-z1"
-                md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-include="'templates/sidebar.html'" flex="10">
+                    md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" ng-include="'templates/sidebar.html'"
+                    flex="10">
         </md-sidenav>
         <div id="content" ui-view flex>
+            <div layout="row" layout-sm="column">
+              <!-- <span flex hide-sm></span> -->
+              <span flex style="font-size: 2em;padding: 2em;">Welcome back, {{loggedInUser.first_name}}  {{loggedInUser.last_name}}</span>
+              <span flex hide-sm></span>
+            </div>
             <div id="user-dashboard" layout="row" layout-sm="column">
+                <span flex></span>
                 <md-card id="todo" flex>
-                    <md-toolbar>                    
+                    <md-toolbar>
                         <md-toolbar-tools class="md-toolbar-tools">
                             <span>Todo</span>
                             <span flex></span>
@@ -38,9 +46,11 @@
                     <md-card-content>
                         <md-list>
                             <md-item ng-repeat="todo in todos">
-                                <md-item-content class="todo">                                    
+                                <md-item-content class="todo">
                                     <div class="md-tile-content md-padding">
-                                        <md-checkbox ng-model="checkedTodo" ng-disabled="todo.done" ng-change="userSelected(todo.id, checkedTodo)" aria-label="Chcek todo as completed">
+                                        <md-checkbox ng-model="checkedTodo" ng-disabled="todo.done"
+                                                     ng-change="userSelected(todo.id, checkedTodo)"
+                                                     aria-label="Chcek todo as completed">
                                             <h3 ng-class="{'doneTodo': todo.done}">{{todo.name}}</h3>
                                         </md-checkbox>
                                         <md-input-container ng-if="$last">
@@ -49,29 +59,35 @@
                                         </md-input-container>
                                     </div>
                                 </md-item-content>
-                                <md-divider md-inset ng-if="!$last"></md-divider>                                
+                                <md-divider md-inset ng-if="!$last"></md-divider>
                             </md-item>
-                            <div id="allDone" ng-if="!todos.length" layout="column">                                
+                            <div id="allDone" ng-if="!todos.length" layout="column">
                                 <md-icon md-svg-src="img/icons/coffee.svg" flex></md-icon>
                                 <span style="font-size: 14pt" flex>All done!</span>
                             </div>
                             <md-input-container ng-if="!todos.length">
                                 <label>Add New Todo</label>
                                 <input ng-model="newTodo" ui-keypress="{13:'addNewTodo($event, newTodo)'}">
-                            </md-input-container>     
+                            </md-input-container>
                         </md-list>
                     </md-card-content>
                 </md-card>
-                <md-card id="" flex>
-                    <md-toolbar>                    
+                <span flex></span>
+                <!-- <md-card id="" flex>
+                    <md-toolbar>
                         <md-toolbar-tools class="md-toolbar-tools">
-                            <span>Activity</span>
+                            <span>Notifications</span>
                         </md-toolbar-tools>
                     </md-toolbar>
                     <md-card-content>
                     </md-card-content>
-                </md-card>
+                </md-card> -->
             </div>
-        </div>                
-    </div>         
+            <div layout="row" layout-sm="column">
+              <span flex="20" hide-sm></span>
+              <span flex style="font-size: 1.5em;padding: 2em;text-align:center;color:#727272;">{{quote}}</span>
+              <span flex="20" hide-sm></span>
+            </div>
+        </div>
+    </div>
 </main>

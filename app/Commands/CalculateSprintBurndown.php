@@ -1,7 +1,5 @@
 <?php namespace Softjob\Commands;
 
-use Softjob\Commands\Command;
-
 class CalculateSprintBurndown extends Command {
 
 	/**
@@ -14,7 +12,7 @@ class CalculateSprintBurndown extends Command {
 	 *
 	 * @param $sprintId
 	 */
-	public function __construct($sprintId)
+	public function __construct( $sprintId )
 	{
 		$this->sprintId = $sprintId;
 	}

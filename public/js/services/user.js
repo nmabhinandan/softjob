@@ -1,4 +1,4 @@
-sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootScope', '$http', '$mdToast', 
+sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootScope', '$http', '$mdToast',
 	function ($q, $window, $state, softjobConfig, $rootScope, $http, $mdToast) {
 	'use strict';
 	var service = {};
@@ -45,7 +45,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/users/' + id			
+			url: softjobConfig.APP_BACKEND + '/users/' + id
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
@@ -72,7 +72,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/users/project/' + projectId,			
+			url: softjobConfig.APP_BACKEND + '/users/project/' + projectId,
 			headers: { 'Content-Type': 'application/json' }
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
@@ -80,12 +80,12 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 	service.getUserAvatar = function () {
 		var user = JSON.parse($window.localStorage.getItem('softjob.user'));
 		return '/img/avatars/' + user.avatar;
 	};
-	
+
 	service.getOptionItems = function (user) {
 		if(user == User.getUser()) {
 			return [
@@ -96,6 +96,19 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			];
 		}
 	};
+
+	service.getQuote = function() {
+		var deferred = $q.defer();
+		$http({
+			method: 'get',
+			url: softjobConfig.APP_BACKEND + '/quote',
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	}
 
 	service.getTodods = function(userId) {
 		var deferred = $q.defer();
@@ -110,13 +123,13 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		return deferred.promise;
 	};
 
-	service.addTodo = function(formData) {		
+	service.addTodo = function(formData) {
 		$http({
 			method: 'post',
 			url: softjobConfig.APP_BACKEND + '/todos',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("New todo is added"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -130,7 +143,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/todos',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			deferred.resolve(status);
 		}).error(function (data, status, headers, config) {
 			deferred.reject(status);
@@ -143,7 +156,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		$http({
 			method: 'get',
 			url: softjobConfig.APP_BACKEND + '/todos/clear'
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			deferred.resolve(status);
 		}).error(function (data, status, headers, config) {
 			deferred.reject(status);
@@ -155,27 +168,27 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/users/all',						
+			url: softjobConfig.APP_BACKEND + '/users/all',
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 
 	service.getRawUsers = function() {
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/users/all/raw',						
+			url: softjobConfig.APP_BACKEND + '/users/all/raw',
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 
 	service.createUser = function (formData) {
 		$http({
@@ -183,7 +196,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/users',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("User created successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -196,7 +209,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/users/edit',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Changes saved successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -207,14 +220,14 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/roles/all',						
+			url: softjobConfig.APP_BACKEND + '/roles/all',
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 	service.getRole = function(roleId) {
 		var deferred = $q.defer();
 		$http({
@@ -225,7 +238,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
-		return deferred.promise;	
+		return deferred.promise;
 	};
 
 
@@ -235,7 +248,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/roles/edit',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Changes saved successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -248,7 +261,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/roles',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Role created successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -258,9 +271,9 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 	service.deleteRole = function(roleId) {
 		$http({
 			method: 'delete',
-			url: softjobConfig.APP_BACKEND + '/roles/' + roleId,	
+			url: softjobConfig.APP_BACKEND + '/roles/' + roleId,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Role deleted successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -271,14 +284,14 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/groups/all',						
+			url: softjobConfig.APP_BACKEND + '/groups/all',
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 	service.getGroup = function(groupId) {
 		var deferred = $q.defer();
 		$http({
@@ -289,7 +302,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
-		return deferred.promise;	
+		return deferred.promise;
 	};
 
 
@@ -299,7 +312,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/groups/edit',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Changes saved successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -312,7 +325,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/groups',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Group created successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -322,9 +335,9 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 	service.deleteGroup = function(groupId) {
 		$http({
 			method: 'delete',
-			url: softjobConfig.APP_BACKEND + '/groups/' + groupId,	
+			url: softjobConfig.APP_BACKEND + '/groups/' + groupId,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Group deleted successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -340,7 +353,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
-		return deferred.promise;	
+		return deferred.promise;
 	}
 
 	service.addUserToGroup = function(data) {
@@ -349,7 +362,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/groups/users',
 			data: data,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Users are added successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));

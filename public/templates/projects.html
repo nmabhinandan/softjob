@@ -1,33 +1,35 @@
 <md-content id="projects" layout="column">
-	<div class="meta" layout="row" layout-sm="column" flex>
-		<md-card id="user-projects" flex="33" flex-sm="100">
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Projects</span>
-					<span flex></span>
-					<md-button ng-disabled="! checkPermission('project.create')" class="md-fab md-accent" ng-click="createProject($event)" aria-label="Create Project">
-						<md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
-	        		</md-button>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content>
-				<sj-projects-list user="loggedInUser"></sj-projects-list>
-			</md-card-content>
-		</md-card>
-		<md-card id="user-projects-status" flex>
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Status</span>
-					<span flex></span>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content>
-				<div>
-					<canvas id="bar" class="chart chart-bar" data="chart.data" options="chart.options" labels="chart.labels">
-						
-					</canvas> 
-				</div>
-			</md-card-content>
-		</md-card>
-	</div>	
+    <div class="meta" layout="row" layout-sm="column" flex>
+        <md-card id="user-projects" flex="33" flex-sm="100">
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Projects</span>
+                    <span flex></span>
+                    <md-button ng-disabled="! checkPermission('project.create')" class="md-fab md-accent"
+                               ng-click="createProject($event)" aria-label="Create Project">
+                        <md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
+                    </md-button>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content>
+                <sj-projects-list user="loggedInUser"></sj-projects-list>
+            </md-card-content>
+        </md-card>
+        <md-card id="user-projects-status" flex>
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Status</span>
+                    <span flex></span>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content>
+                <div>
+                    <canvas id="bar" class="chart chart-bar" data="chart.data" options="chart.options"
+                            labels="chart.labels">
+
+                    </canvas>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
 </md-content>

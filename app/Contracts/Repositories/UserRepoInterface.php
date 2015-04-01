@@ -1,4 +1,4 @@
-<?php  namespace Softjob\Contracts\Repositories;
+<?php namespace Softjob\Contracts\Repositories;
 
 
 interface UserRepoInterface {
@@ -18,7 +18,7 @@ interface UserRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getUser($id);
+	public function getUser( $id );
 
 	/**
 	 * Create a user
@@ -27,7 +27,8 @@ interface UserRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function createUser($user);
+	public function createUser( $user );
+
 	/**
 	 * Get a User by its username
 	 *
@@ -35,7 +36,7 @@ interface UserRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getUserByUsername($username);
+	public function getUserByUsername( $username );
 
 	/**
 	 * Check whether the given username and password are valid or not
@@ -45,7 +46,7 @@ interface UserRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function checkUsernameAndPassword($username, $password);
+	public function checkUsernameAndPassword( $username, $password );
 
 	/**
 	 * Returns the avatar of the given user
@@ -54,7 +55,7 @@ interface UserRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getAvatar($id);
+	public function getAvatar( $id );
 
 	/**
 	 * Edit the user
@@ -63,7 +64,7 @@ interface UserRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function editUser($user);
+	public function editUser( $user );
 
 
 	/**
@@ -78,14 +79,14 @@ interface UserRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getTodos($userId);
+	public function getTodos( $userId );
 
 	/**
 	 * Store a todoitem to the database
 	 *
 	 * @return mixed
 	 */
-	public function storeTodos($todo);
+	public function storeTodos( $todo );
 
 	/**
 	 * Mark the todoItem as copleted
@@ -94,7 +95,7 @@ interface UserRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function completeTodo($todoId);
+	public function completeTodo( $todoId );
 
 	/**
 	 * Clear completed todos of the user

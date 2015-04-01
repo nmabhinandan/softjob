@@ -4,9 +4,6 @@ use Illuminate\Http\Response;
 use Softjob\Commands\CheckPermissionCommand;
 use Softjob\Contracts\Repositories\PermissionRepoInterface;
 use Softjob\Http\Requests;
-use Softjob\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
 use Softjob\Http\Requests\EditPermissionRequest;
 use Softjob\Services\AuthService;
 
@@ -26,7 +23,7 @@ class PermissionsController extends Controller {
 		$this->permissionRepo = $permissionRepo;
 	}
 
-	public function getUserPermissions($userId)
+	public function getUserPermissions( $userId )
 	{
 		$validator = \Validator::make([
 			'id' => $userId

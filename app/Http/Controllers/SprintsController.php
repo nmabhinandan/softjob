@@ -21,12 +21,12 @@ class SprintsController extends Controller {
 	/**
 	 * @param SprintRepoInterface $repo
 	 */
-	function __construct(SprintRepoInterface $repo)
+	function __construct( SprintRepoInterface $repo )
 	{
 		$this->repo = $repo;
 	}
 
-	public function getSprint($sprintId)
+	public function getSprint( $sprintId )
 	{
 		$validator = \Validator::make([
 			'id' => $sprintId
@@ -45,7 +45,7 @@ class SprintsController extends Controller {
 	}
 
 
-	public function getSprintsStatusOfProject($projectId)
+	public function getSprintsStatusOfProject( $projectId )
 	{
 		$validator = \Validator::make([
 			'id' => $projectId
@@ -63,7 +63,7 @@ class SprintsController extends Controller {
 		return $this->dispatch(new CalculateSprintsStatus($projectId));
 	}
 
-	public function createSprint( CreateSprintRequest $request)
+	public function createSprint( CreateSprintRequest $request )
 	{
 		$this->repo->createSprint($request->all());
 	}
@@ -73,7 +73,7 @@ class SprintsController extends Controller {
 		return $this->repo->getWorkflows();
 	}
 
-	public function getSprintBurndown($sprintId)
+	public function getSprintBurndown( $sprintId )
 	{
 		$validator = \Validator::make([
 			'id' => $sprintId
@@ -86,10 +86,11 @@ class SprintsController extends Controller {
 				'message' => 'Invalid sprint id'
 			], 400);
 		}
+
 		return $this->dispatch(new CalculateSprintBurndown($sprintId));
 	}
 
-	public function getWorkflowStages($workflowId)
+	public function getWorkflowStages( $workflowId )
 	{
 		$validator = \Validator::make([
 			'id' => $workflowId

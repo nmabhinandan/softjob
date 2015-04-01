@@ -1,4 +1,4 @@
-<?php  namespace Softjob\Repositories;
+<?php namespace Softjob\Repositories;
 
 
 use Carbon\Carbon;
@@ -9,7 +9,7 @@ use Softjob\Task;
 use Softjob\Workflow;
 use Softjob\WorkflowStage;
 
-class EloquentSprintRepo implements SprintRepoInterface{
+class EloquentSprintRepo implements SprintRepoInterface {
 
 	/**
 	 * @var Sprint
@@ -19,7 +19,7 @@ class EloquentSprintRepo implements SprintRepoInterface{
 	/**
 	 * @param Sprint $model
 	 */
-	function __construct(Sprint $model)
+	function __construct( Sprint $model )
 	{
 		$this->model = $model;
 	}
@@ -60,30 +60,30 @@ class EloquentSprintRepo implements SprintRepoInterface{
 	{
 
 		$s = $this->model->create([
-			'name' => $sprint['name'],
+			'name'       => $sprint['name'],
 			'project_id' => $sprint['project_id'],
-		    'deadline' => Carbon::parse($sprint['deadline'])
+			'deadline'   => Carbon::parse($sprint['deadline'])
 		]);
 
-		$w = Workflow::create([
-			'name' => $sprint['name'] . ' - Workflow',
-		    'sprint_id' => $s->id,
+		$w      = Workflow::create([
+			'name'      => $sprint['name'] . ' - Workflow',
+			'sprint_id' => $s->id,
 		]);
-		$stages = ['Backlog', 'In Progress', 'Done'];
-		foreach (range(0,2) as $key) {
+		$stages = [ 'Backlog', 'In Progress', 'Done' ];
+		foreach (range(0, 2) as $key) {
 			WorkflowStage::create([
-				'name' => $stages[$key],
-			    'order' => $key,
-			    'workflow_id' => $w->id
+				'name'        => $stages[ $key ],
+				'order'       => $key,
+				'workflow_id' => $w->id
 			]);
 		}
 
 
-		$tasks = [];
+		$tasks = [ ];
 
 		foreach ($sprint['tasks'] as $task) {
-			$t = Task::find($task);
-			$wstage = WorkflowStage::where('workflow_id', '=', $w->id)->where('order','=','o')->first();
+			$t      = Task::find($task);
+			$wstage = WorkflowStage::where('workflow_id', '=', $w->id)->where('order', '=', 'o')->first();
 			$t->workflowStage()->associate($wstage);
 			array_push($tasks, $t);
 		}
@@ -111,8 +111,9 @@ class EloquentSprintRepo implements SprintRepoInterface{
 	 */
 	public function getWorkflowStages( $workflowId )
 	{
-		$stages = Workflow::find($workflowId)->stages()->with('tasks')->get()->toArray();
-		$stages[(count($stages)-1)]['is_last'] = true;
+		$stages                                    = Workflow::find($workflowId)->stages()->with('tasks')->get()->toArray();
+		$stages[ (count($stages) - 1) ]['is_last'] = true;
+
 		return $stages;
 	}
 
@@ -125,10 +126,10 @@ class EloquentSprintRepo implements SprintRepoInterface{
 	 */
 	public function getWorkflowStageById( $workflowStageId )
 	{
-		$stage = WorkflowStage::find($workflowStageId)->toArray();
+		$stage     = WorkflowStage::find($workflowStageId)->toArray();
 		$allStages = $this->getWorkflowStages($stage['workflow_id']);
 		foreach ($allStages as $as) {
-			if($as['id'] == $stage['id']) {
+			if ($as['id'] == $stage['id']) {
 				return $as;
 			}
 		}

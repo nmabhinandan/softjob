@@ -1,7 +1,5 @@
 <?php namespace Softjob\Commands;
 
-use Softjob\Commands\Command;
-
 class CalculateSprintsStatus extends Command {
 
 	/**
@@ -14,7 +12,7 @@ class CalculateSprintsStatus extends Command {
 	 *
 	 * @param $projectId
 	 */
-	public function __construct($projectId)
+	public function __construct( $projectId )
 	{
 		//
 		$this->projectId = $projectId;

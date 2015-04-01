@@ -1,4 +1,4 @@
-<?php  namespace Softjob\Http\Controllers;
+<?php namespace Softjob\Http\Controllers;
 
 use Softjob\Contracts\Repositories\UserRepoInterface;
 use Softjob\Http\Requests\CompleteTodoRequest;
@@ -14,7 +14,7 @@ class UserController extends Controller {
 	/**
 	 * @param UserRepoInterface $user
 	 */
-	function __construct(UserRepoInterface $user)
+	function __construct( UserRepoInterface $user )
 	{
 
 		$this->user = $user;
@@ -25,12 +25,12 @@ class UserController extends Controller {
 		return $this->user->allUsers();
 	}
 
-	public function createUser(CreateUserRequest $request)
+	public function createUser( CreateUserRequest $request )
 	{
 		$this->user->createUser($request->all());
 	}
 
-	public function getUser($userId)
+	public function getUser( $userId )
 	{
 		$validator = \Validator::make([
 			'id' => $userId
@@ -48,7 +48,7 @@ class UserController extends Controller {
 		return $this->user->getUser($userId);
 	}
 
-	public function editUser(EditUserRequest $request)
+	public function editUser( EditUserRequest $request )
 	{
 		$this->user->editUser($request->all());
 	}
@@ -58,7 +58,7 @@ class UserController extends Controller {
 		return $this->user->rawUsers();
 	}
 
-	public function getTodos($userId)
+	public function getTodos( $userId )
 	{
 		$validator = \Validator::make([
 			'id' => $userId
@@ -76,12 +76,12 @@ class UserController extends Controller {
 		return $this->user->getTodos($userId);
 	}
 
-	public function createTodo(CreateTodoRequest $request)
+	public function createTodo( CreateTodoRequest $request )
 	{
 		$this->user->storeTodos($request->all());
 	}
 
-	public function completeTodo(CompleteTodoRequest $request)
+	public function completeTodo( CompleteTodoRequest $request )
 	{
 		$this->user->completeTodo($request->all());
 	}

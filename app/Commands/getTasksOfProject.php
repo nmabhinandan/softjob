@@ -1,10 +1,8 @@
 <?php namespace Softjob\Commands;
 
-use Softjob\Commands\Command;
-
 //use Illuminate\Contracts\Bus\SelfHandling;
 
-class getTasksOfProject extends Command{
+class getTasksOfProject extends Command {
 
 	/**
 	 * @var
@@ -16,7 +14,7 @@ class getTasksOfProject extends Command{
 	 *
 	 * @param $projectId
 	 */
-	public function __construct($projectId)
+	public function __construct( $projectId )
 	{
 		$this->projectId = $projectId;
 	}

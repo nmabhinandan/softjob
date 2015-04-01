@@ -1,7 +1,5 @@
 <?php namespace Softjob\Commands;
 
-use Softjob\Commands\Command;
-
 class GetSidebarItems extends Command {
 
 	/**

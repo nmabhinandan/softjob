@@ -1,56 +1,58 @@
 <md-dialog class="edit-project-users">
-	<md-title>
-		<md-title-content>
-			<h3>Edit users</h3>
-		</md-title-content>
-	</md-title>
-	<md-content layout="row" layout-sm="column">
-		<div id="all-users" flex>
-			All Users		
-			<md-input-container flex>
-					<label>Filter</label>
-					<input type="text" ng-model="userFilter">
-			</md-input-container>				
-			<md-list>				
-				<md-item ng-repeat="user in allUsers | filter: userFilter">
-					<md-item-content>
-						<div class="task" class="md-tile-content">
+    <md-title>
+        <md-title-content>
+            <h3>Edit users</h3>
+        </md-title-content>
+    </md-title>
+    <md-content layout="row" layout-sm="column">
+        <div id="all-users" flex>
+            All Users
+            <md-input-container flex>
+                <label>Filter</label>
+                <input type="text" ng-model="userFilter">
+            </md-input-container>
+            <md-list>
+                <md-item ng-repeat="user in allUsers | filter: userFilter">
+                    <md-item-content>
+                        <div class="task" class="md-tile-content">
 							<span layout="row">
-								<md-checkbox ng-model="s1" checked="true" ng-change="usersChanged(user, s1)" aria-label="Checkbox">
-									<h3>{{user.first_name}}  {{user.last_name}}</h3>
-								</md-checkbox>
+								<md-checkbox ng-model="s1" checked="true" ng-change="usersChanged(user, s1)"
+                                             aria-label="Checkbox">
+                                    <h3>{{user.first_name}} {{user.last_name}}</h3>
+                                </md-checkbox>
 							</span>
-						</div>
-					</md-item-content>
-					<md-divider ng-if="!$last"></md-divider>						
-				</md-item>					
-			</md-list>											
-		</div>
-		<div id="all-users" flex>
-			Project Users			
-			<md-input-container flex>
-					<label>Filter</label>
-					<input type="text" ng-model="userFilter">
-			</md-input-container>				
-			<md-list>				
-				<md-item ng-repeat="user in project.users | filter: userFilter">
-					<md-item-content>
-						<div class="task" class="md-tile-content">
+                        </div>
+                    </md-item-content>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-item>
+            </md-list>
+        </div>
+        <div id="all-users" flex>
+            Project Users
+            <md-input-container flex>
+                <label>Filter</label>
+                <input type="text" ng-model="userFilter">
+            </md-input-container>
+            <md-list>
+                <md-item ng-repeat="user in project.users | filter: userFilter">
+                    <md-item-content>
+                        <div class="task" class="md-tile-content">
 							<span layout="row">
-								<md-checkbox ng-model="s2" value="true" ng-change="usersChanged(user, s2)" aria-label="Checkbox">
-									<h3>{{user.first_name}}  {{user.last_name}}</h3>
-								</md-checkbox>
+								<md-checkbox ng-model="s2" value="true" ng-change="usersChanged(user, s2)"
+                                             aria-label="Checkbox">
+                                    <h3>{{user.first_name}} {{user.last_name}}</h3>
+                                </md-checkbox>
 							</span>
-						</div>
-					</md-item-content>
-					<md-divider ng-if="!$last"></md-divider>						
-				</md-item>					
-			</md-list>											
-		</div>
-	</md-content>
-	<div class="md-actions" layout="row">
-		<md-button ng-click="cancel()">Cancel</md-button>
-		<span flex></span>
-		<md-button class="md-raised md-primary" ng-click="submit()">Save</md-button>
-	</div>
+                        </div>
+                    </md-item-content>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-item>
+            </md-list>
+        </div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">Cancel</md-button>
+        <span flex></span>
+        <md-button class="md-raised md-primary" ng-click="submit()">Save</md-button>
+    </div>
 </md-dialog>

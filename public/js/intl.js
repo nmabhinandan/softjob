@@ -63,6 +63,10 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			url: 'groups/{groupId}',
 			controller: 'GroupController',
 			templateUrl: '/templates/admin_group_page.html'
+		}).state('dashboard.mail', {
+			url: 'admin/mail',		
+			controller: 'MailSettingController',
+			templateUrl: '/templates/admin_mail.html'
 		}).state('dashboard.workspace', {
 			url: 'workspace',
 			params: {
@@ -71,12 +75,19 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			controller: 'WorkspaceController',
 			templateUrl: '/templates/workspace.html'
 		}).state('dashboard.issues', {
-			url: 'issues/{productId}',
+			url: 'issues/',
 			params: {
 				productId: {value: null}
 			},
 			controller: 'IssuesController',
 			templateUrl: '/templates/issues.html'
+		}).state('dashboard.custIssueView', {
+			url: 'support/{productId}',
+			params: {
+				productId: {value: null}
+			},
+			controller: 'CustIssueViewController',
+			templateUrl: '/templates/cust_issue_view.html'
 		});
 
 		
@@ -84,7 +95,8 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 		$urlRouterProvider.otherwise('404');
 
 		$mdThemingProvider.theme('indigo')		
-			.primaryPalette('indigo');
+			.primaryPalette('indigo')
+			.accentPalette('purple');
 
 		
 		cfpLoadingBarProvider.loadingBarColor = '#BFFF00';
@@ -115,9 +127,9 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			$rootScope.loggedInUser = User.getUser();
 		}
 
-		$rootScope.checkPermission = function(perm) {			
+		$rootScope.checkPermission = function(perm) {						
 			return Permission.checkPermission(perm);
-		}
+		};
 	}])
 	.constant('softjobConfig', {
 		APP_BACKEND: window.location.protocol + '//internal.' + window.location.host

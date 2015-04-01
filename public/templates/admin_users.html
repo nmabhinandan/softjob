@@ -1,40 +1,43 @@
 <md-toolbar class="md-padding">
-	<md-toolbar-tools class="md-toolbar-tools">
-		<span>Users</span>
-		<span flex></span>
-		<md-button ng-disabled="! checkPermission('user.create')" class="md-fab md-accent" ng-click="createUser($event)" aria-label="Create User">
-			<md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
-		</md-button>
-	</md-toolbar-tools>
+    <md-toolbar-tools class="md-toolbar-tools">
+        <span>Users</span>
+        <span flex></span>
+        <md-button ng-disabled="! checkPermission('user.create')" class="md-fab md-accent" ng-click="createUser($event)"
+                   aria-label="Create User">
+            <md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
+        </md-button>
+    </md-toolbar-tools>
 </md-toolbar>
 <md-card-content>
-	<md-input-container>
-			<label>Filter</label>
-			<input type="text" ng-model="userFilter">
-	</md-input-container>
-	<md-content>
-		<div ng-repeat="role in usersdata">
-			<section>
-				<md-subheader class="md-primary">{{role.name}}</md-subheader>
-				<md-list>
-					<md-item ng-repeat="user in role.users | filter: userFilter">
-						<md-item-content>
-							<div class="md-tile-left">
-								<sj-user-avatar class="face" user="user"></sj-user-avatar>
-							</div>
-							<div class="user" class="md-tile-content">
-								<a ui-sref="dashboard.userPage({userId: user.id})"><h4>{{user.first_name}} {{user.last_name}}</h4></a>								
-								<div ng-repeat="group in user.groups" flex>
+    <md-input-container>
+        <label>Filter</label>
+        <input type="text" ng-model="userFilter">
+    </md-input-container>
+    <md-content>
+        <div ng-repeat="role in usersdata">
+            <section>
+                <md-subheader class="md-primary"><a ui-sref="dashboard.rolePage({roleId: role.id})">{{role.name}}</a></md-subheader>
+                <md-list>
+                    <md-item ng-repeat="user in role.users | filter: userFilter">
+                        <md-item-content>
+                            <div class="md-tile-left">
+                                <sj-user-avatar class="face" user="user"></sj-user-avatar>
+                            </div>
+                            <div class="user" class="md-tile-content">
+                                <a ui-sref="dashboard.userPage({userId: user.id})"><h4>{{user.first_name}}
+                                    {{user.last_name}}</h4></a>
+
+                                <div ng-repeat="group in user.groups" flex>
 									<span style="margin-right: 3px" class="group">
-										{{group.name}}
+										<a ui-sref="dashboard.groupPage({groupId: group.id})">{{group.name}}</a>
 									</span>
-								</div>								
-							</div>
-						</md-item-content>
-						<md-divider md-inset ng-if="!$last"></md-divider>
-					</md-item>
-				</md-list>
-			</section>
-		</div>
-	</md-content>
+                                </div>
+                            </div>
+                        </md-item-content>
+                        <md-divider md-inset ng-if="!$last"></md-divider>
+                    </md-item>
+                </md-list>
+            </section>
+        </div>
+    </md-content>
 </md-card-content>

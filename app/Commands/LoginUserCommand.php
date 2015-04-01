@@ -1,7 +1,5 @@
 <?php namespace Softjob\Commands;
 
-use Softjob\Commands\Command;
-
 class LoginUserCommand extends Command {
 
 	public $username;
@@ -13,7 +11,7 @@ class LoginUserCommand extends Command {
 	 * @param $username
 	 * @param $password
 	 */
-	public function __construct($username, $password)
+	public function __construct( $username, $password )
 	{
 		$this->username = $username;
 		$this->password = $password;

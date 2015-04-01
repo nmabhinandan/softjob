@@ -1,7 +1,5 @@
 <?php namespace Softjob\Commands;
 
-use Softjob\Commands\Command;
-
 class GetUserContextOptionsCommand extends Command {
 
 	/**
@@ -14,7 +12,7 @@ class GetUserContextOptionsCommand extends Command {
 	 *
 	 * @param $userId
 	 */
-	public function __construct($userId)
+	public function __construct( $userId )
 	{
 		$this->userId = $userId;
 	}

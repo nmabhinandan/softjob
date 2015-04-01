@@ -1,7 +1,5 @@
 <?php namespace Softjob\Commands;
 
-use Softjob\Commands\Command;
-
 class CheckPermissionCommand extends Command {
 
 	/**
@@ -19,10 +17,10 @@ class CheckPermissionCommand extends Command {
 	 * @param $permission
 	 * @param $userId
 	 */
-	public function __construct($permission, $userId)
+	public function __construct( $permission, $userId )
 	{
 		$this->permission = $permission;
-		$this->userId = $userId;
+		$this->userId     = $userId;
 	}
 
 }

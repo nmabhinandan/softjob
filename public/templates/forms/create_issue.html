@@ -1,0 +1,46 @@
+<md-dialog class="create-issue">
+    <md-content>
+        <h3>Create new Issue</h3>
+
+        <form novalidate layout="column" name="createIssueForm">
+            <div layout="row" flex>
+                <md-input-container>
+                    <label>Issue Name</label>
+                    <input type="text" name="name" ng-model="issue.name" ng-change="makeSlug(issue.name)" required>
+
+                    <div ng-messages="createIssueForm.name.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+                <!-- <md-input-container>
+                      <label>Slug</label>
+                    <input type="text" name="slug" ng-model="issue.slug" disabled required>
+                    <div ng-messages="createIssueForm.slug.$error">
+                          <div ng-message="required">This is required</div>
+                      </div>
+                </md-input-container> -->
+            </div>
+            <div layout="column" flex>
+                <md-input-container>
+                    <label>Description</label>
+                    <textarea name="description" ng-model="issue.description" columns="1" md-maxlength="500"
+                              required></textarea>
+
+                    <div ng-messages="createIssueForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="column" flex>
+                <md-select ng-model="issue.productId" placeholder="Select Product" required>
+                    <md-option ng-value="product.id" ng-repeat="product in products">{{ product.name }}</md-option>
+                </md-select>
+            </div>
+        </form>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">Cancel</md-button>
+        <span flex></span>
+        <md-button class="md-raised md-primary" ng-click="submit(issue)">Create Issue</md-button>
+    </div>
+</md-dialog>

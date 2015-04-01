@@ -2,18 +2,19 @@
 @import "susy";
 @import "compass/utilities";
 @import "compass/css3";
-$text_color: #333;
-
-//$susy: layout(12 1/4 fluid float inside);
 
 body {
+
 	@import "variables";
 	@import "misc";
 	@import "typography";
 	@import "directives";
+
+	color: $primary-text;
+
 	#main {
 		@include container;
 		@import "login";
-		@import "dashboard";		
+		@import "dashboard";
 	}
 }

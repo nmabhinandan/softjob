@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Softjob\IssueStage;
 use Softjob\WorkflowStage;
 
 class WorkflowStagesTableSeeder extends Seeder {
@@ -38,5 +39,17 @@ class WorkflowStagesTableSeeder extends Seeder {
 			]);
 			$workflowId++;
 		}
+
+		IssueStage::create([
+			'id' => 1,
+		    'name' => 'Unsolved',
+		    'order' => 0
+		]);
+
+		Softjob\IssueStage::create([
+			'id' => 2,
+			'name' => 'Solved',
+			'order' => 1
+		]);
 	}
 }

@@ -1,11 +1,11 @@
-<?php  namespace Softjob\Repositories;
+<?php namespace Softjob\Repositories;
 
 
 use Softjob\Contracts\Repositories\GroupRepoInterface;
 use Softjob\Group;
 use Softjob\User;
 
-class EloquentGroupRepo implements GroupRepoInterface{
+class EloquentGroupRepo implements GroupRepoInterface {
 
 	/**
 	 * @var Group
@@ -15,7 +15,7 @@ class EloquentGroupRepo implements GroupRepoInterface{
 	/**
 	 * @param Group $model
 	 */
-	function __construct(Group $model)
+	function __construct( Group $model )
 	{
 		$this->model = $model;
 	}
@@ -66,7 +66,7 @@ class EloquentGroupRepo implements GroupRepoInterface{
 	{
 		$g = $this->model->find($group['id']);
 		$g->update([
-			'name' => $group['name'],
+			'name'        => $group['name'],
 			'description' => $group['description']
 		]);
 		$g->save();
@@ -100,15 +100,17 @@ class EloquentGroupRepo implements GroupRepoInterface{
 
 		$u1 = User::all()->toArray();
 
-		$result = array_filter($u1, function($elt) use ($groupId) {
+		$result = array_filter($u1, function ( $elt ) use ( $groupId ) {
 			$u2 = Group::find($groupId)->users()->get()->toArray();
 			foreach ($u2 as $user) {
-				if($elt['id'] == $user['id']) {
+				if ($elt['id'] == $user['id']) {
 					return false;
 				}
 			}
+
 			return true;
 		});
+
 		return $result;
 	}
 

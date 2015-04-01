@@ -47,22 +47,22 @@ sjServices.factory('Permission', ['$http', '$state', '$rootScope', '$mdToast', '
 		return deferred.promise;
 	};
 
-	instance.checkPermission = function(permission) {
-
+	instance.checkPermission = function(permission) {		
 		if(userPermissions == null) {			
-			if($window.localStorage.getItem('softjob.permissions') === null) {				
-				instance.getUserPermissions().then(function(data) {
+			if($window.localStorage.getItem('softjob.permissions') == null) {
 
+				instance.getUserPermissions().then(function(data) {
 					instance.cachePermissions(data);
-					return instance.checkPermission(permission);
+					return $rootScope.checkPermission(permission);
 				});
-			} else {				
+			} else {
 				userPermissions = JSON.parse($window.localStorage.getItem('softjob.permissions'));
-			}			
+			}
 		}
 		var flag = false;
-		angular.forEach(userPermissions, function(perm) {			
-			if(perm.permission === permission && perm.granted === true) {
+		
+		angular.forEach(userPermissions, function(perm) {					
+			if(perm.permission == permission && perm.granted == true) {				
 				flag = true;
 			}
 		});

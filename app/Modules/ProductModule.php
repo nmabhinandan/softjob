@@ -15,7 +15,7 @@ class ProductModule implements Module, ExposesSidebarItems, ExposesPermissionsIn
 	public function sideBarItems()
 	{
 		return [
-//			'Issues' => 'dashboard.issues'
+			'Issues' => 'dashboard.issues'
 		];
 	}
 
@@ -26,6 +26,10 @@ class ProductModule implements Module, ExposesSidebarItems, ExposesPermissionsIn
 	 */
 	public function setPermissions()
 	{
-
+		return [
+			'product.create',
+		    'issue.create',
+		    'issue.edit'
+		];
 	}
 }

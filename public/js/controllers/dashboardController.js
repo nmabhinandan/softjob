@@ -1,4 +1,4 @@
-sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state', '$mdSidenav', 'Task', 'Auth', 'User', 'UI', 
+sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state', '$mdSidenav', 'Task', 'Auth', 'User', 'UI',
 	function ($scope, $rootScope, $state, $mdSidenav, Task, Auth, User, UI) {
 	'use strict';
 
@@ -7,6 +7,10 @@ sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state
 
 	UI.getSidebarItems().then(function(data) {
 		$scope.sidebarItems = data;
+	});
+
+	User.getQuote().then(function(data) {
+		$scope.quote = data;
 	});
 
 	function loadTodo() {
@@ -29,9 +33,9 @@ sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state
 			todo: newTodo
 		});
 		loadTodo();
-		$state.go($state.current, {}, {reload: true});
+		// $state.go($state.current, {}, {reload: true});
 		ev.preventDefault();
-	};	
+	};
 
 	$scope.userSelected = function(id, checkedTodo) {
 		if(checkedTodo) {
@@ -39,14 +43,14 @@ sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state
 				userId: $rootScope.loggedInUser.id,
 				todoId: id
 			}).then(function(statusCode) {
-				$state.go($state.current, {}, {reload: true});				
-			});			
+				$state.go($state.current, {}, {reload: true});
+			});
 		}
 	};
 
 	$scope.clearTodos = function() {
 		User.clearTodos().then(function(statusCode) {
-			$state.go($state.current, {}, {reload: true});				
-		});	
+			$state.go($state.current, {}, {reload: true});
+		});
 	};
 }]);

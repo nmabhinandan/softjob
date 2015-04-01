@@ -7,5 +7,5 @@ interface ExposesSidebarItems {
 	 *
 	 * @return array
 	 */
-	public function sideBarItems( );
+	public function sideBarItems();
 }

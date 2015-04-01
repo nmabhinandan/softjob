@@ -2,7 +2,7 @@
 	.meta {
 		#users {
 			md-toolbar {
-				background-color: $md-deep-purple;
+				background-color: $md-blue-grey;
 			}
 			md-content {
 				max-height: 50vh;				
@@ -38,6 +38,11 @@
 
 	}
 }
+
+md-toolbar {
+	background-color: $md-blue-grey;
+}
+
 
 #user_page {
 	.meta {
@@ -135,10 +140,11 @@
 				padding-left: 10px;
 				md-item {
 					md-item-content {
+						color: $secondary-text;
 						margin: 15px;
 						padding: 5px;
 						a {
-							color: black;
+							color: $primary-text;
 						}
 					}
 				}
@@ -156,7 +162,7 @@
 			md-toolbar {
 				background-color: $md-deep-orange;				
 			}
-			md-content {
+			md-content {				
 				padding-left: 10px;
 				md-item {
 					md-item-content {

@@ -1,0 +1,42 @@
+<md-dialog class="create-product">
+    <md-content>
+        <h3>Create new Product</h3>
+
+        <form novalidate layout="column" name="createProductForm">
+            <div layout="row" flex>
+                <md-input-container>
+                    <label>Product Name</label>
+                    <input type="text" name="name" ng-model="product.name" ng-change="makeSlug(product.name)" required>
+
+                    <div ng-messages="createProductForm.name.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Slug</label>
+                    <input type="text" name="slug" ng-model="product.slug" disabled required>
+
+                    <div ng-messages="createProductForm.slug.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="column" flex>
+                <md-input-container>
+                    <label>Description</label>
+                    <textarea name="description" ng-model="product.description" columns="1" md-maxlength="150"
+                              required></textarea>
+
+                    <div ng-messages="createProductForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+        </form>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">Cancel</md-button>
+        <span flex></span>
+        <md-button class="md-raised md-primary" ng-click="submit(product)">Create Product</md-button>
+    </div>
+</md-dialog>

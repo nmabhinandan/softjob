@@ -2,7 +2,6 @@
 
 use Softjob\Commands\CalculateProjectsStatus;
 use Softjob\Contracts\Repositories\ProjectRepoInterface;
-use Softjob\Contracts\Repositories\UserRepoInterface;
 
 class CalculateProjectsStatusHandler {
 

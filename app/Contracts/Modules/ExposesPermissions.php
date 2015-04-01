@@ -7,5 +7,5 @@ interface ExposesPermissionsInterface {
 	 *
 	 * @return mixed
 	 */
-	public function setPermissions( );
+	public function setPermissions();
 }

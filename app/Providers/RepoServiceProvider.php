@@ -15,6 +15,8 @@ class RepoServiceProvider extends ServiceProvider{
 		    'Project',
 		    'Task',
 		    'Sprint',
+			'Product',
+			'Issue',
 		    'Role',
 		    'Group'
 		];

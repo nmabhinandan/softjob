@@ -124,22 +124,22 @@ sjServices.factory('Permission', ['$http', '$state', '$rootScope', '$mdToast', '
 		return deferred.promise;
 	};
 
-	instance.checkPermission = function(permission) {
-
+	instance.checkPermission = function(permission) {		
 		if(userPermissions == null) {			
-			if($window.localStorage.getItem('softjob.permissions') === null) {				
-				instance.getUserPermissions().then(function(data) {
+			if($window.localStorage.getItem('softjob.permissions') == null) {
 
+				instance.getUserPermissions().then(function(data) {
 					instance.cachePermissions(data);
-					return instance.checkPermission(permission);
+					return $rootScope.checkPermission(permission);
 				});
-			} else {				
+			} else {
 				userPermissions = JSON.parse($window.localStorage.getItem('softjob.permissions'));
-			}			
+			}
 		}
 		var flag = false;
-		angular.forEach(userPermissions, function(perm) {			
-			if(perm.permission === permission && perm.granted === true) {
+		
+		angular.forEach(userPermissions, function(perm) {					
+			if(perm.permission == permission && perm.granted == true) {				
 				flag = true;
 			}
 		});
@@ -153,6 +153,99 @@ sjServices.factory('Permission', ['$http', '$state', '$rootScope', '$mdToast', '
 
 	return instance;
 }]);
+sjServices.factory('Product', ['$http', '$q', '$state', '$mdToast', 'softjobConfig', function($http, $q, $state, $mdToast, softjobConfig){
+	var serviceInstance = {};
+
+	serviceInstance.getAllProducts = function() {
+		var deferred = $q.defer();
+		$http({
+			method: 'get',
+			url: softjobConfig.APP_BACKEND + '/products'
+		}).success(function(data, status, headers, config) {
+			deferred.resolve(data);
+		}).error(function(data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject(status);
+		});
+
+		return deferred.promise;
+	};
+
+	serviceInstance.getProductById = function(productId) {
+		var deferred = $q.defer();
+		$http({
+			method: 'get',
+			url: softjobConfig.APP_BACKEND + '/product/' + productId
+		}).success(function(data, status, headers, config) {
+			deferred.resolve(data);
+		}).error(function(data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject(status);
+		});
+
+		return deferred.promise;
+	}
+
+	serviceInstance.createProduct = function(formData) {
+		$http({
+			method: 'post',
+			url: softjobConfig.APP_BACKEND + '/products',
+			data: formData,
+			headers: { 'Content-Type': 'application/json' }
+		}).success(function (data, status, headers, config) {			
+			$mdToast.show($mdToast.simple().content("New product is created"));			
+		}).error(function (data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+		});
+	};
+
+	serviceInstance.createIssue = function(formData) {
+		$http({
+			method: 'post',
+			url: softjobConfig.APP_BACKEND + '/issues',
+			data: formData,
+			headers: { 'Content-Type': 'application/json' }
+		}).success(function (data, status, headers, config) {			
+			$mdToast.show($mdToast.simple().content("New product is created"));			
+		}).error(function (data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+		});
+	}
+
+	serviceInstance.getIssueStages = function() {
+		var deferred = $q.defer();
+		$http({
+			method: 'get',
+			url: softjobConfig.APP_BACKEND + '/issues/stages'
+		}).success(function(data, status, headers, config) {
+			deferred.resolve(data);
+		}).error(function(data, status, headers, config) {
+			$mdToast.show($mdToast.simple().content(data.message));
+			deferred.reject(status);
+		});
+
+		return deferred.promise;
+	}
+
+	serviceInstance.tranferIssue = function(formData) {
+		var deferred = $q.defer();
+		$http({
+			method: 'patch',
+			url: softjobConfig.APP_BACKEND + '/issue/tranfer',
+			data: formData,
+			headers: { 'Content-Type': 'application/json' }
+		}).success(function (data, status, headers, config) {
+			deferred.resolve(status);
+			$mdToast.show($mdToast.simple().content("Issue state changed"));			
+		}).error(function (data, status, headers, config) {
+			deferred.resolve(status);
+			$mdToast.show($mdToast.simple().content(data.message));
+		});
+		return deferred.promise;
+	}
+
+	return serviceInstance;
+}])
 sjServices.factory('Project', ['User', '$http', '$q', '$state', '$mdToast', 'softjobConfig', function(User, $http, $q, $state, $mdToast, softjobConfig){
 	var instance = {};
 	instance.getProjects = function (userId) {
@@ -272,6 +365,16 @@ sjServices.factory('Project', ['User', '$http', '$q', '$state', '$mdToast', 'sof
 	};
 	return instance;
 }]);
+sjServices.factory('Setting', ['$http', '$q', '$state', function($http, $q, $state) {
+	var serviceInstance = {};
+
+	serviceInstance.getSettings = function() {
+		
+	};
+
+
+	return serviceInstance;
+}])
 sjServices.factory('Sprint', ['$http', '$q', '$mdToast', '$state', 'softjobConfig', 'User', function ($http, $q, $mdToast, $state, softjobConfig, User) {
 	'use strict';
 	var service = {};
@@ -455,7 +558,7 @@ sjServices.factory('UI', ['$http', 'softjobConfig', '$q', function($http, softjo
 	};
 	return serviceInstance;
 }]);
-sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootScope', '$http', '$mdToast', 
+sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootScope', '$http', '$mdToast',
 	function ($q, $window, $state, softjobConfig, $rootScope, $http, $mdToast) {
 	'use strict';
 	var service = {};
@@ -502,7 +605,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/users/' + id			
+			url: softjobConfig.APP_BACKEND + '/users/' + id
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
@@ -529,7 +632,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/users/project/' + projectId,			
+			url: softjobConfig.APP_BACKEND + '/users/project/' + projectId,
 			headers: { 'Content-Type': 'application/json' }
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
@@ -537,12 +640,12 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 	service.getUserAvatar = function () {
 		var user = JSON.parse($window.localStorage.getItem('softjob.user'));
 		return '/img/avatars/' + user.avatar;
 	};
-	
+
 	service.getOptionItems = function (user) {
 		if(user == User.getUser()) {
 			return [
@@ -553,6 +656,19 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			];
 		}
 	};
+
+	service.getQuote = function() {
+		var deferred = $q.defer();
+		$http({
+			method: 'get',
+			url: softjobConfig.APP_BACKEND + '/quote',
+		}).success(function (data,status,headers,config) {
+			deferred.resolve(data);
+		}).error(function (data,status,headers,config) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	}
 
 	service.getTodods = function(userId) {
 		var deferred = $q.defer();
@@ -567,13 +683,13 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		return deferred.promise;
 	};
 
-	service.addTodo = function(formData) {		
+	service.addTodo = function(formData) {
 		$http({
 			method: 'post',
 			url: softjobConfig.APP_BACKEND + '/todos',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("New todo is added"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -587,7 +703,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/todos',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			deferred.resolve(status);
 		}).error(function (data, status, headers, config) {
 			deferred.reject(status);
@@ -600,7 +716,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		$http({
 			method: 'get',
 			url: softjobConfig.APP_BACKEND + '/todos/clear'
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			deferred.resolve(status);
 		}).error(function (data, status, headers, config) {
 			deferred.reject(status);
@@ -612,27 +728,27 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/users/all',						
+			url: softjobConfig.APP_BACKEND + '/users/all',
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 
 	service.getRawUsers = function() {
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/users/all/raw',						
+			url: softjobConfig.APP_BACKEND + '/users/all/raw',
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 
 	service.createUser = function (formData) {
 		$http({
@@ -640,7 +756,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/users',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("User created successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -653,7 +769,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/users/edit',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Changes saved successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -664,14 +780,14 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/roles/all',						
+			url: softjobConfig.APP_BACKEND + '/roles/all',
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 	service.getRole = function(roleId) {
 		var deferred = $q.defer();
 		$http({
@@ -682,7 +798,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
-		return deferred.promise;	
+		return deferred.promise;
 	};
 
 
@@ -692,7 +808,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/roles/edit',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Changes saved successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -705,7 +821,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/roles',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Role created successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -715,9 +831,9 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 	service.deleteRole = function(roleId) {
 		$http({
 			method: 'delete',
-			url: softjobConfig.APP_BACKEND + '/roles/' + roleId,	
+			url: softjobConfig.APP_BACKEND + '/roles/' + roleId,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Role deleted successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -728,14 +844,14 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		var deferred = $q.defer();
 		$http({
 			method: 'get',
-			url: softjobConfig.APP_BACKEND + '/groups/all',						
+			url: softjobConfig.APP_BACKEND + '/groups/all',
 		}).success(function (data,status,headers,config) {
 			deferred.resolve(data);
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
-	};			
+	};
 	service.getGroup = function(groupId) {
 		var deferred = $q.defer();
 		$http({
@@ -746,7 +862,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
-		return deferred.promise;	
+		return deferred.promise;
 	};
 
 
@@ -756,7 +872,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/groups/edit',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Changes saved successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -769,7 +885,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/groups',
 			data: formData,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Group created successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -779,9 +895,9 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 	service.deleteGroup = function(groupId) {
 		$http({
 			method: 'delete',
-			url: softjobConfig.APP_BACKEND + '/groups/' + groupId,	
+			url: softjobConfig.APP_BACKEND + '/groups/' + groupId,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Group deleted successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -797,7 +913,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 		}).error(function (data,status,headers,config) {
 			deferred.reject(data);
 		});
-		return deferred.promise;	
+		return deferred.promise;
 	}
 
 	service.addUserToGroup = function(data) {
@@ -806,7 +922,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 			url: softjobConfig.APP_BACKEND + '/groups/users',
 			data: data,
 			headers: { 'Content-Type': 'application/json' }
-		}).success(function (data, status, headers, config) {			
+		}).success(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content("Users are added successfully"));
 		}).error(function (data, status, headers, config) {
 			$mdToast.show($mdToast.simple().content(data.message));
@@ -814,6 +930,7 @@ sjServices.factory('User', ['$q', '$window', '$state', 'softjobConfig', '$rootSc
 	};
 	return service;
 }]);
+
 sjControllers.controller('AdminController', ['$scope', '$rootScope', '$mdDialog', 'User', function($scope, $rootScope, $mdDialog, User) {
 	$rootScope.pageTitle = "Admin";
 	function loadUsers() {
@@ -918,7 +1035,7 @@ sjControllers.controller('AdminRolesController', ['$scope', '$rootScope', '$mdDi
 	}
 }]);
 
-sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state', '$mdSidenav', 'Task', 'Auth', 'User', 'UI', 
+sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state', '$mdSidenav', 'Task', 'Auth', 'User', 'UI',
 	function ($scope, $rootScope, $state, $mdSidenav, Task, Auth, User, UI) {
 	'use strict';
 
@@ -927,6 +1044,10 @@ sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state
 
 	UI.getSidebarItems().then(function(data) {
 		$scope.sidebarItems = data;
+	});
+
+	User.getQuote().then(function(data) {
+		$scope.quote = data;
 	});
 
 	function loadTodo() {
@@ -949,9 +1070,9 @@ sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state
 			todo: newTodo
 		});
 		loadTodo();
-		$state.go($state.current, {}, {reload: true});
+		// $state.go($state.current, {}, {reload: true});
 		ev.preventDefault();
-	};	
+	};
 
 	$scope.userSelected = function(id, checkedTodo) {
 		if(checkedTodo) {
@@ -959,17 +1080,18 @@ sjControllers.controller('DashboardController', ['$scope', '$rootScope', '$state
 				userId: $rootScope.loggedInUser.id,
 				todoId: id
 			}).then(function(statusCode) {
-				$state.go($state.current, {}, {reload: true});				
-			});			
+				$state.go($state.current, {}, {reload: true});
+			});
 		}
 	};
 
 	$scope.clearTodos = function() {
 		User.clearTodos().then(function(statusCode) {
-			$state.go($state.current, {}, {reload: true});				
-		});	
+			$state.go($state.current, {}, {reload: true});
+		});
 	};
 }]);
+
 sjControllers.controller('GroupController', ['$scope', '$stateParams', '$state', '$rootScope', '$mdDialog', 'User', 
 	function($scope, $stateParams, $state, $rootScope, $mdDialog, User){
 	$rootScope.pageTitle = 'Group'
@@ -1070,11 +1192,125 @@ sjControllers.controller('HomeController', ['$scope', function ($scope) {
 	'use strict';
 
 }]);
+sjControllers.controller('IssuesController', ['$scope', '$state', '$rootScope', '$mdDialog', 'Product', '$stateParams',
+ function($scope, $state, $rootScope, $mdDialog, Product, $stateParams){
+
+ 	$scope.products = {};
+ 	$scope.issues = {};
+ 	$scope.currentProduct = {};
+ 	$scope.issueStages = {};
+ 	
+ 	function loadProducts() {
+ 		Product.getAllProducts().then(function(data) {
+ 			$scope.products = data;
+ 			angular.forEach(data, function(prod) {
+ 				if(prod.id == $stateParams.productId) {
+ 					Product.getProductById($stateParams.productId).then(function(cp) {
+ 						console.log(cp);
+ 						$scope.currentProduct = cp;
+ 					});
+ 					$scope.currentProduct = prod;
+ 				}
+ 			});
+ 		});
+ 	}
+
+ 	if($stateParams.productId != null) {
+ 		Product.getIssueStages().then(function(data) {
+	 		$scope.issueStages = data;
+	 	});
+ 	}
+
+ 	loadProducts();
+
+ 	$scope.productSelected = function(prod) { 		
+ 		$state.go($state.current, {productId: prod});
+ 		//, {reload: true}
+ 	}
+
+ 	$scope.creaetProduct = function(ev) {
+ 		$mdDialog.show({			
+			controller: ['$scope','$mdDialog', 'User', function($scope, $mdDialog) {								
+				
+				$scope.cancel = function() {
+					loadProducts();
+					$mdDialog.cancel();					
+				}
+
+				$scope.submit = function(data) {					
+					loadProducts();
+					$mdDialog.hide(data);
+				}
+
+				$scope.makeSlug = function(str) {
+					if(str) {
+						$scope.product.slug = str.toLowerCase()
+											.replace(/[^\w ]+/g,'')
+											.replace(/ +/g,'-');
+					}
+				}; 
+			}],
+      		templateUrl: 'templates/forms/create_product.html',
+      		targetEvent: ev
+		}).then(function(data) {
+			Product.createProduct(data);
+			$state.go($state.current, {productId: $stateParams.productId});			
+		});
+ 	};
+
+ 	$scope.createIssue = function(ev) {
+ 		$mdDialog.show({			
+ 			locals: {
+ 				Prods: $scope.products
+ 			},
+			controller: ['$scope','$mdDialog', 'Prods', function($scope, $mdDialog, Prods) {								
+				$scope.products = Prods;
+				$scope.cancel = function() {
+					loadProducts();
+					$mdDialog.cancel();					
+				}
+
+				$scope.submit = function(data) {					
+					loadProducts();
+					$mdDialog.hide(data);
+				}
+
+				$scope.makeSlug = function(str) {
+					if(str) {
+						$scope.issue.slug = str.toLowerCase()
+											.replace(/[^\w ]+/g,'')
+											.replace(/ +/g,'-');
+					}
+				}; 
+			}],
+      		templateUrl: 'templates/forms/create_issue.html',
+      		targetEvent: ev
+		}).then(function(data) {
+			Product.createIssue(data);
+			loadProducts();
+		});
+ 	};
+
+ 	$scope.tranferIssue = function(stageId, issueId) {
+ 		Product.tranferIssue({
+ 			stageId: stageId,
+ 			issueId: issueId
+ 		}).then(function(data) {
+ 			$state.go($state.current, {productId: $stateParams.productId}, {reload: true});
+ 		});
+ 	}
+}]);
 sjControllers.controller('LoginController', ['$scope', 'Auth', function ($scope, Auth) {
 	'use strict';
 	$scope.submit = function(user) {
 		Auth.login(user);
 	};
+}]);
+sjControllers.controller('MailSettingController', ['$scope', '$rootScope', '$state', 'Setting',
+ function($scope, $rootScope, $state, Setting) {
+
+ 	
+	
 }]);
 sjControllers.controller('ProjectListController', ['$scope', '$rootScope', '$mdDialog', '$mdToast', 'Project', '$state', 
 	function($scope, $rootScope, $mdDialog, $mdToast, Project, $state){
@@ -1306,7 +1542,7 @@ sjControllers.controller('SprintController', ['$scope', '$rootScope', '$statePar
 
 	$scope.chart = {
 		labels: [],
-		series: ['Ideal velocity', 'Current velocity'],
+		// series: ['Ideal remaining complexity', 'Current remaining complexity'],
 		data: [],
 		options: {
 			responsive: true,											
@@ -1707,6 +1943,10 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			url: 'groups/{groupId}',
 			controller: 'GroupController',
 			templateUrl: '/templates/admin_group_page.html'
+		}).state('dashboard.mail', {
+			url: 'admin/mail',		
+			controller: 'MailSettingController',
+			templateUrl: '/templates/admin_mail.html'
 		}).state('dashboard.workspace', {
 			url: 'workspace',
 			params: {
@@ -1715,12 +1955,19 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			controller: 'WorkspaceController',
 			templateUrl: '/templates/workspace.html'
 		}).state('dashboard.issues', {
-			url: 'issues/{productId}',
+			url: 'issues/',
 			params: {
 				productId: {value: null}
 			},
 			controller: 'IssuesController',
 			templateUrl: '/templates/issues.html'
+		}).state('dashboard.custIssueView', {
+			url: 'support/{productId}',
+			params: {
+				productId: {value: null}
+			},
+			controller: 'CustIssueViewController',
+			templateUrl: '/templates/cust_issue_view.html'
 		});
 
 		
@@ -1728,7 +1975,8 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 		$urlRouterProvider.otherwise('404');
 
 		$mdThemingProvider.theme('indigo')		
-			.primaryPalette('indigo');
+			.primaryPalette('indigo')
+			.accentPalette('purple');
 
 		
 		cfpLoadingBarProvider.loadingBarColor = '#BFFF00';
@@ -1759,9 +2007,9 @@ softjob.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$mdThe
 			$rootScope.loggedInUser = User.getUser();
 		}
 
-		$rootScope.checkPermission = function(perm) {			
+		$rootScope.checkPermission = function(perm) {						
 			return Permission.checkPermission(perm);
-		}
+		};
 	}])
 	.constant('softjobConfig', {
 		APP_BACKEND: window.location.protocol + '//internal.' + window.location.host

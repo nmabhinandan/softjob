@@ -2,9 +2,6 @@
 
 use Softjob\Contracts\Repositories\GroupRepoInterface;
 use Softjob\Http\Requests;
-use Softjob\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
 use Softjob\Http\Requests\AddUsersToGroupRequest;
 use Softjob\Http\Requests\CreateGroupRequest;
 use Softjob\Http\Requests\EditGroupRequest;
@@ -20,7 +17,7 @@ class GroupsController extends Controller {
 	/**
 	 * @param GroupRepoInterface $groupRepo
 	 */
-	function __construct(GroupRepoInterface $groupRepo)
+	function __construct( GroupRepoInterface $groupRepo )
 	{
 		$this->groupRepo = $groupRepo;
 	}
@@ -76,7 +73,7 @@ class GroupsController extends Controller {
 		$this->groupRepo->deleteGroup($groupId);
 	}
 
-	public function usersNotInGroup($groupId)
+	public function usersNotInGroup( $groupId )
 	{
 		$validator = \Validator::make([
 			'id' => $groupId
@@ -94,7 +91,7 @@ class GroupsController extends Controller {
 		return $this->groupRepo->usersNotInGroup($groupId);
 	}
 
-	public function addUsers( AddUsersToGroupRequest $request)
+	public function addUsers( AddUsersToGroupRequest $request )
 	{
 		$this->groupRepo->addUsers($request->get('groupId'), $request->get('users'));
 	}

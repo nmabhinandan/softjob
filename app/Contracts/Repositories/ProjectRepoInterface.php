@@ -20,7 +20,7 @@ interface ProjectRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function getProjectById($id);
+	public function getProjectById( $id );
 
 	/**
 	 * Return the project by slug
@@ -84,5 +84,5 @@ interface ProjectRepoInterface {
 	 *
 	 * @return mixed
 	 */
-	public function addUsers($data);
+	public function addUsers( $data );
 }

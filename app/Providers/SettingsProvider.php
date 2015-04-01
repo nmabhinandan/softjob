@@ -13,8 +13,8 @@ class SettingsProvider extends ServiceProvider {
 	public function boot()
 	{
 		if(! $this->app->runningInConsole()) {
-			$settingService = new SettingsService();
-			$settingService->initialize();
+//			$settingService = new SettingsService();
+//			$settingService->initialize();
 		}
 		
 	}

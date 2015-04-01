@@ -19,7 +19,7 @@ class CalculateSprintsStatusHandler {
 	 *
 	 * @param ProjectRepoInterface $projectRepo
 	 */
-	public function __construct(ProjectRepoInterface $projectRepo)
+	public function __construct( ProjectRepoInterface $projectRepo )
 	{
 		$this->projectRepo = $projectRepo;
 	}
@@ -27,24 +27,25 @@ class CalculateSprintsStatusHandler {
 	/**
 	 * Handle the command.
 	 *
-	 * @param  CalculateSprintsStatus  $command
+	 * @param  CalculateSprintsStatus $command
+	 *
 	 * @return void
 	 */
-	public function handle(CalculateSprintsStatus $command)
+	public function handle( CalculateSprintsStatus $command )
 	{
 		$sprints = Project::find($command->projectId)->sprints();
-		$status = [];
+		$status  = [ ];
 		foreach ($sprints->with('tasks')->get()->toArray() as $sprint) {
-			$totalComplexity = 0;
+			$totalComplexity  = 0;
 			$solvedComplexity = 0;
 			foreach ($sprint['tasks'] as $task) {
 				$totalComplexity += $task['complexity_point'];
-				if($task['task_status'] == 1) {
+				if ($task['task_status'] == 1) {
 					$solvedComplexity += $task['complexity_point'];
 				}
 			}
-			if($totalComplexity != 0) {
-				$status[$sprint['name']] = floor(($solvedComplexity/$totalComplexity)*100);
+			if ($totalComplexity != 0) {
+				$status[ $sprint['name'] ] = floor(($solvedComplexity / $totalComplexity) * 100);
 			}
 		}
 

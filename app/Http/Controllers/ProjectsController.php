@@ -5,7 +5,6 @@ use Softjob\Commands\CalculateProjectsStatus;
 use Softjob\Commands\CalculateProjectsVelocity;
 use Softjob\Commands\getProjectBySlug;
 use Softjob\Commands\getProjectsOfUser;
-use Softjob\Commands\getTasksOfProject;
 use Softjob\Contracts\Repositories\ProjectRepoInterface;
 use Softjob\Http\Requests\AddUsersToProjectRequest;
 use Softjob\Http\Requests\CreateProjectRequest;
@@ -22,7 +21,7 @@ class ProjectsController extends Controller {
 	/**
 	 * @param ProjectRepoInterface $projectModel
 	 */
-	function __construct(ProjectRepoInterface $projectModel)
+	function __construct( ProjectRepoInterface $projectModel )
 	{
 		$this->projectModel = $projectModel;
 	}
@@ -97,12 +96,12 @@ class ProjectsController extends Controller {
 		return $this->projectModel->tasksOfProject($projectId);
 	}
 
-	public function createProject(CreateProjectRequest $request)
+	public function createProject( CreateProjectRequest $request )
 	{
 		$this->projectModel->createProject($request->all());
 	}
 
-	public function getProjectsStatusOfUser($userId)
+	public function getProjectsStatusOfUser( $userId )
 	{
 		$validator = \Validator::make([
 			'id' => $userId
@@ -138,7 +137,7 @@ class ProjectsController extends Controller {
 		return $this->projectModel->availableTasksOfProject($projectId);
 	}
 
-	public function getProjectVelocity($projectId)
+	public function getProjectVelocity( $projectId )
 	{
 		$validator = \Validator::make([
 			'id' => $projectId
@@ -174,7 +173,7 @@ class ProjectsController extends Controller {
 		return $this->projectModel->sprintsOfProject($projectId);
 	}
 
-	public function addUsersToProject(AddUsersToProjectRequest $request)
+	public function addUsersToProject( AddUsersToProjectRequest $request )
 	{
 		$this->projectModel->addUsers($request->all());
 	}

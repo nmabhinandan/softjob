@@ -3,17 +3,17 @@
 /**
  * Login isn't required
  */
-Route::group([ 'domain' => 'internal.' . preg_replace('#^https?://#', '', Config::get('app.url')) ], function() {
+Route::group([ 'domain' => 'internal.' . preg_replace('#^https?://#', '', Config::get('app.url')) ], function () {
 
-	Route::post('auth/login','AuthController@login');
-	Route::get('auth/logout','AuthController@logout');
-	Route::post('auth/resend','AuthController@resend');
+	Route::post('auth/login', 'AuthController@login');
+	Route::get('auth/logout', 'AuthController@logout');
+	Route::post('auth/resend', 'AuthController@resend');
 
 	// Route::get('/test', function() {
 	// 	return 'test';
 	// });
 
-	Route::get('/resetapp', function() {
+	Route::get('/resetapp', function () {
 		\Illuminate\Database\Eloquent\Model::unguard();
 		DB::table('organizations')->delete();
 		Softjob\Organization::create([
@@ -25,33 +25,37 @@ Route::group([ 'domain' => 'internal.' . preg_replace('#^https?://#', '', Config
 		]);
 		DB::table('users')->delete();
 		Softjob\User::create([
-			'id' => 21,
+			'id'              => 1,
 			'organization_id' => 1,
-			'email' => 'admin@email.com',
-			'username' => 'admin',
-			'password' => Hash::make('secret'),
-			'first_name' => 'TestFirstName',
-			'last_name' => 'TestLastName',
-			'avatar' => 'default.jpg',
-			'role_id' => 1
+			'email'           => 'admin@email.com',
+			'username'        => 'admin',
+			'password'        => Hash::make('secret'),
+			'first_name'      => 'TestFirstName',
+			'last_name'       => 'TestLastName',
+			'avatar'          => 'default.jpg',
+			'role_id'         => 1
 		]);
 		Db::table('roles')->delete();
-		Role::create([
-			'id' => 1,
-			'name' => 'AdminRole',
+		Softjob\Role::create([
+			'id'          => 1,
+			'name'        => 'AdminRole',
 			'description' => 'Admin Role description'
 		]);
-		$p = \Softjob\Permission::where('permission', '=' ,'role.edit')->get()->toArray();
+		$p = \Softjob\Permission::where('permission', '=', 'role.edit')->get()->toArray();
 		$p = array_pop($p);
 		\Softjob\Role::find(1)->permissions()->attach($p['id']);
 	});
+
+
 
 });
 
 /**
  * Login is required
  */
-Route::group(['domain' => 'internal.' . preg_replace('#^https?://#', '', Config::get('app.url')), 'middleware' => 'jwt'], function() {
+Route::group([ 'domain'     => 'internal.' . preg_replace('#^https?://#', '', Config::get('app.url')),
+               'middleware' => 'jwt'
+], function () {
 
 	Route::get('/ui/sidebar/items', 'SidebarItemsController@get');
 
@@ -111,18 +115,32 @@ Route::group(['domain' => 'internal.' . preg_replace('#^https?://#', '', Config:
 	Route::post('groups/users', 'GroupsController@addUsers');
 	Route::delete('groups/{groupId}', 'GroupsController@deleteGroup');
 
-	Route::get('settings/{setting}', 'SettingsController@getSetting');
-	Route::post('settings', 'SettingsController@setSetting');
+	Route::post('settings/get', 'SettingsController@getSetting');
+	Route::post('settings/set', 'SettingsController@setSetting');
+
+	Route::get('products', 'ProductsController@getProducts');
+	Route::get('product/{productId}', 'ProductsController@getProductById');
+	Route::post('products', 'ProductsController@createProduct');
+	Route::get('products/{productId}/isssues', 'ProductsController@getIssues');
+
+	Route::post('issues', 'IssuesController@createIssue');
+	Route::get('issues/stages', 'IssuesController@getIssueStages');
+	Route::patch('issue/tranfer', 'IssuesController@tranferIssue');
+	Route::post('issues/cust', 'IssuesController@createIssueFromCustomer');
+
+	Route::get('quote', function() {
+		return Inspiring::quote();
+	});
 });
 
 /**
  * Home page
  */
-Route::get('/', function() {
+Route::get('/', function () {
 	return View::make('home');
 });
 
-Route::options('{all}', function() {
+Route::options('{all}', function () {
 
 	$response = Response::make(null, 200);
 	$response->headers->set('Access-Control-Allow-Origin', Config::get('app.url'));
@@ -130,5 +148,4 @@ Route::options('{all}', function() {
 	$response->headers->set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
 
 	return $response;
-})->where(['all' => '.*']);
-
+})->where([ 'all' => '.*' ]);

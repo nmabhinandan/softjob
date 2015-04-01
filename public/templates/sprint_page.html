@@ -1,66 +1,72 @@
 <md-content class="sprints-page" layout="column">
-	<div class="meta" layout="row" flex>
-		<md-card id="tasks" flex>
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Backlog</span>
-					<span flex></span>
-					<md-button class="md-fab md-accent" ng-disabled="! checkPermission('project.edit') || (project.owner_type == 'user' && project.owner_id != loggedInUser.id) || project.project_manager_id != loggedInUser.id" ng-click="createTask($event)" aria-label="Create Task">
-						<md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
-	        		</md-button>
-				</md-toolbar-tools>
-			</md-toolbar>
+    <div class="meta" layout="row" flex>
+        <md-card id="tasks" flex>
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Backlog</span>
+                    <span flex></span>
+                    <md-button class="md-fab md-accent"
+                               ng-disabled="! checkPermission('project.edit') || (project.owner_type == 'user' && project.owner_id != loggedInUser.id) || project.project_manager_id != loggedInUser.id"
+                               ng-click="createTask($event)" aria-label="Create Task">
+                        <md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
+                    </md-button>
+                </md-toolbar-tools>
+            </md-toolbar>
 
-			<md-card-content>	
-				<md-input-container flex>
-						<label>Filter</label>
-						<input type="text" ng-model="taskFilter">
-				</md-input-container>				
-				<md-list>				
-					<md-item ng-repeat="task in project.freeTasks | filter: taskFilter">
-						<md-item-content>
-							<div class="task" class="md-tile-content">
+            <md-card-content>
+                <md-input-container flex>
+                    <label>Filter</label>
+                    <input type="text" ng-model="taskFilter">
+                </md-input-container>
+                <md-list>
+                    <md-item ng-repeat="task in project.freeTasks | filter: taskFilter">
+                        <md-item-content>
+                            <div class="task" class="md-tile-content">
 								<span layout="row">
-									<md-checkbox ng-model="selectedTask" ng-change="backlogChanged(task.id, selectedTask)" aria-label="Checkbox">
-										<h3>{{task.name}}</h3>
-									</md-checkbox>
+									<md-checkbox ng-model="selectedTask"
+                                                 ng-change="backlogChanged(task.id, selectedTask)"
+                                                 aria-label="Checkbox">
+                                        <h3>{{task.name}}</h3>
+                                    </md-checkbox>
 								</span>
-							</div>
-						</md-item-content>
-						<md-divider ng-if="!$last"></md-divider>
-					</md-item>
-				</md-list>
-			</md-card-content>
-		</md-card>
-		<md-card id="sprints" flex>
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Sprints</span>
-					<span flex></span>
-					<md-button ng-click="createSprint($event)" ng-disabled="! checkPermission('project.edit') || (project.owner_type == 'user' && project.owner_id != loggedInUser.id) || project.project_manager_id != loggedInUser.id" class="md-fab md-accent" aria-label="Create Sprint" ng-show="isBacklogChecked()">
-	            		<md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
-	        		</md-button>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content>
-				<md-input-container>
-						<label>Filter</label>
-						<input type="text" ng-model="sprintFilter">
-				</md-input-container>
-				<div ng-repeat="sprint in sprints | filter: sprintFilter">
-					<md-card class="sprint" class="md-tile-content">
-						<md-card-content>
-							<a ui-sref="dashboard.sprint({sprintId: sprint.id})"><h2>{{sprint.name}}</h2></a>
-							<!-- <md-divider></md-divider> -->
-							<!-- Tasks: {{}} -->
-							<label for="">Deadline: </label><span>{{sprint.deadline | date}}</span>
-						</md-card-content>
-					</md-card>					
-				</div>									
-			</md-card-content>
-		</md-card>
-	</div>
-	<div class="content" layout="row" flex>
-			
-	</div>
+                            </div>
+                        </md-item-content>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+        <md-card id="sprints" flex>
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Sprints</span>
+                    <span flex></span>
+                    <md-button ng-click="createSprint($event)"
+                               ng-disabled="! checkPermission('project.edit') || (project.owner_type == 'user' && project.owner_id != loggedInUser.id) || project.project_manager_id != loggedInUser.id"
+                               class="md-fab md-accent" aria-label="Create Sprint" ng-show="isBacklogChecked()">
+                        <md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
+                    </md-button>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content>
+                <md-input-container>
+                    <label>Filter</label>
+                    <input type="text" ng-model="sprintFilter">
+                </md-input-container>
+                <div ng-repeat="sprint in sprints | filter: sprintFilter">
+                    <md-card class="sprint" class="md-tile-content">
+                        <md-card-content>
+                            <a ui-sref="dashboard.sprint({sprintId: sprint.id})"><h2>{{sprint.name}}</h2></a>
+                            <!-- <md-divider></md-divider> -->
+                            <!-- Tasks: {{}} -->
+                            <label for="">Deadline: </label><span>{{sprint.deadline | date}}</span>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="content" layout="row" flex>
+
+    </div>
 </md-content>

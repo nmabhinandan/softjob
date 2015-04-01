@@ -6,7 +6,7 @@ sjControllers.controller('SprintController', ['$scope', '$rootScope', '$statePar
 
 	$scope.chart = {
 		labels: [],
-		series: ['Ideal velocity', 'Current velocity'],
+		// series: ['Ideal remaining complexity', 'Current remaining complexity'],
 		data: [],
 		options: {
 			responsive: true,											

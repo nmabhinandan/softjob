@@ -2,9 +2,6 @@
 
 use Softjob\Contracts\Repositories\SettingRepoInterface;
 use Softjob\Http\Requests;
-use Softjob\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
 use Softjob\Http\Requests\SetSettingsRequest;
 
 class SettinsController extends Controller {
@@ -18,13 +15,16 @@ class SettinsController extends Controller {
 	/**
 	 * @param SettingRepoInterface $settingRepo
 	 */
-	function __construct(SettingRepoInterface $settingRepo)
+	function __construct( SettingRepoInterface $settingRepo )
 	{
 		$this->settingRepo = $settingRepo;
 	}
 
-	public function getSetting($setting)
+	public function getSetting( $setting )
 	{
+		if (is_array($setting)) {
+
+		}
 		$validator = \Validator::make([
 			'name' => $setting
 		], [
@@ -41,7 +41,7 @@ class SettinsController extends Controller {
 		return $this->settingRepo->get($setting);
 	}
 
-	public function setSetting( SetSettingsRequest $request)
+	public function setSetting( SetSettingsRequest $request )
 	{
 		$this->settingRepo->set($request->all());
 	}

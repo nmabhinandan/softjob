@@ -4,14 +4,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model {
 
-	protected $guarded = ['id'];
+	protected $guarded = [ 'id' ];
 
 	/**
 	 * Get all the users who belong to the project
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	 */
-	public function users( )
+	public function users()
 	{
 		return $this->belongsToMany('Softjob\User');
 	}
@@ -21,7 +21,7 @@ class Project extends Model {
 	 *
 	 * @return \Illuminate\Support\Collection|null|static
 	 */
-	public function manager( )
+	public function manager()
 	{
 		return User::find($this->project_manager_id);
 	}
@@ -31,30 +31,31 @@ class Project extends Model {
 	 *
 	 * @return \Illuminate\Support\Collection|null|static
 	 */
-	public function owner( )
+	public function owner()
 	{
-		if($this->owner_type == 'user') {
+		if ($this->owner_type == 'user') {
 			return User::find($this->owner_id);
-		} else if($this->owner_type == 'group') {
+		} else if ($this->owner_type == 'group') {
 			return Group::find($this->owner_id);
 		} else {
-			$model = ucwords($this->owner_type);
+			$model         = ucwords($this->owner_type);
 			$modelInstance = new $model;
+
 			return $modelInstance->find($this->owner_id);
 		}
 	}
 
-	public function tags( )
+	public function tags()
 	{
 		return $this->belongsToMany('Softjob\ProjectTag');
 	}
 
-	public function sprints( )
+	public function sprints()
 	{
 		return $this->hasMany('Softjob\Sprint');
 	}
 
-	public function tasks( )
+	public function tasks()
 	{
 		return $this->hasMany('Softjob\Task');
 	}

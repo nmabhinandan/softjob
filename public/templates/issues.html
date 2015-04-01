@@ -1,0 +1,66 @@
+<md-content id="issues" layout="column">
+    <div class="meta" flex layout="column">
+        <md-card id="options" flex>
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Options</span>
+                    <span flex></span>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content layout="row">
+                <div>
+                    <md-select ng-model="selectedProduct" placeholder="Select Product"
+                               ng-change="productSelected(selectedProduct)">
+                        <md-option ng-value="product.id" ng-repeat="product in products">{{ product.name }}</md-option>
+                    </md-select>
+                </div>
+                <span flex></span>
+
+                <div>
+                    <md-button ng-disabled="! checkPermission('product.create')" class="md-raised md-primary"
+                               ng-click="creaetProduct($event)" aria-label="Create Product">Create Product
+                    </md-button>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="content" layout="column" flex>
+        <md-card id="desk">
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Support Desk ( {{ currentProduct.name || 'Please select a product'}} )</span>
+                    <span flex></span>
+                    <md-button ng-disabled="! checkPermission('issue.create')" class="md-fab md-accent"
+                               ng-click="createIssue($event)" aria-label="Create Issue">
+                        <md-icon md-svg-src="img/icons/ic_add_48px.svg"></md-icon>
+                    </md-button>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content layout="row" layout-sm="column">
+                <md-card id="stage" ng-repeat="stage in issueStages" flex>
+                    <md-toolbar>
+                        <md-toolbar-tools class="md-toolbar-tools">
+                            <span>{{stage.name}}</span>
+                            <span flex></span>
+                        </md-toolbar-tools>
+                    </md-toolbar>
+                    <md-card-content class="stage" layout="column">
+                        <div ng-repeat="issue in currentProduct.issues">
+                            <md-card class="issue md-padding" ng-if="stage.id == issue.issue_stage_id">
+                                <md-card-content layout="row">
+                                    <span flex><a href="#">{{issue.name}}</a></span>
+                                    <md-button ng-hide="stage.is_last" class="md-accent"
+                                               ng-click="tranferIssue(stage.id, issue.id)" aria-label="Tranfer Issue">
+                                        <md-icon md-svg-src="img/icons/ic_chevron_right_48px.svg"></md-icon>
+                                    </md-button>
+                                    <md-icon ng-if="stage.is_last" md-svg-src="img/icons/ic_check_48px.svg"
+                                             style="color: green"></md-icon>
+                                </md-card-content>
+                            </md-card>
+                        </div>
+                    </md-card-content>
+                </md-card>
+            </md-card-content>
+        </md-card>
+    </div>
+</md-content>

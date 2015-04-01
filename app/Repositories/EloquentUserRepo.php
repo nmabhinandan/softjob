@@ -10,7 +10,7 @@ use Softjob\User;
 use Softjob\UserTodo;
 use Symfony\Component\Debug\Exception\FatalErrorException;
 
-class EloquentUserRepo implements  UserRepoInterface{
+class EloquentUserRepo implements UserRepoInterface {
 
 	/**
 	 * @var \Softjob\User
@@ -31,8 +31,7 @@ class EloquentUserRepo implements  UserRepoInterface{
 	public function getUser($id)
 	{
 		try {
-			return $this->user->with('groups')->
-			find($id)->toArray();
+			return $this->user->with('groups')->find($id)->toArray();
 		} catch(\Exception $e) {
 			return false;
 		}
@@ -124,6 +123,7 @@ class EloquentUserRepo implements  UserRepoInterface{
 			'first_name' => $user['first_name'],
 		    'last_name' => $user['last_name'],
 		    'email' => $user['last_name'],
+		    'avatar' => 'default.jpg',
 		    'password' => $user['password'],
 		    'role_id' => $user['role_id']
 		]);

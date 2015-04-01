@@ -12,19 +12,31 @@ class CreateIssueModule extends Migration {
 	 */
 	public function up()
 	{
-//		Schema::create('issues', function(Blueprint $table)
-//		{
-//			$table->increments('id');
-//			$table->string('name');
-//			$table->string('slug')->unique();
-//			$table->text('description');
-//			$table->unsignedInteger('product_id')->index();
-//			$table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+		Schema::create('issue_stages', function ( Blueprint $table ) {
+			$table->increments('id');
+			$table->string('name');
+			$table->unsignedInteger('order')->index();
+			$table->timestamps();
+		});
+
+		Schema::create('issues', function(Blueprint $table)
+		{
+			$table->increments('id');
+			$table->string('name');
+			$table->string('slug')->unique();
+			$table->text('description');
+			$table->unsignedInteger('product_id')->index();
+			$table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+			$table->unsignedInteger('issue_stage_id')->index()->nullable();
+			$table->foreign('issue_stage_id')->references('id')->on('issue_stages')->onDelete('cascade');
+			$table->tinyInteger('issue_status', false, true)->index();
+			$table->unsignedInteger('solved_by')->index()->nullable();
+			$table->foreign('solved_by')->references('id')->on('users');
 //			$table->string('priority')->index();
 //			$table->timestamp('deadline');
-//			$table->timestamps();
-//		});
-//
+			$table->timestamps();
+		});
+
 //		Schema::create('task_issue', function(Blueprint $table)
 //		{
 //			$table->increments('id');
@@ -76,7 +88,7 @@ class CreateIssueModule extends Migration {
 	 */
 	public function down()
 	{
-//		Schema::drop('issues');
+		Schema::drop('issues');
 //		Schema::drop('task_issue');
 //		Schema::drop('issue_tags');
 //		Schema::drop('issue_comments');

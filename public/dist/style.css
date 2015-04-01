@@ -1,3 +1,6 @@
+body {
+  color: #212121;
+}
 body a {
   text-decoration: none;
   color: #0000ed;
@@ -213,7 +216,7 @@ body #main #dashboard #page #content #sprint_page .content #burndown md-toolbar 
   background-color: #607D8B;
 }
 body #main #dashboard #page #content #admin .meta #users md-toolbar {
-  background-color: #673AB7;
+  background-color: #607D8B;
 }
 body #main #dashboard #page #content #admin .meta #users md-content {
   max-height: 50vh;
@@ -238,6 +241,9 @@ body #main #dashboard #page #content #admin .meta #users md-content md-list md-i
   margin: 5px 10px;
   padding: 2px;
   background-color: #fefefe;
+}
+body #main #dashboard #page #content md-toolbar {
+  background-color: #607D8B;
 }
 body #main #dashboard #page #content #user_page .meta md-card md-toolbar {
   background-color: #FFC107;
@@ -287,11 +293,12 @@ body #main #dashboard #page #content #admin_groups .meta #groups md-content {
   padding-left: 10px;
 }
 body #main #dashboard #page #content #admin_groups .meta #groups md-content md-item md-item-content {
+  color: #727272;
   margin: 15px;
   padding: 5px;
 }
 body #main #dashboard #page #content #admin_groups .meta #groups md-content md-item md-item-content a {
-  color: black;
+  color: #212121;
 }
 body #main #dashboard #page #content #group_page .meta md-card md-toolbar {
   background-color: #FF5722;

@@ -1,7 +1,5 @@
 <?php namespace Softjob\Commands;
 
-use Softjob\Commands\Command;
-
 class TranferTask extends Command {
 
 	/**
@@ -14,7 +12,7 @@ class TranferTask extends Command {
 	 *
 	 * @param $data
 	 */
-	public function __construct($data)
+	public function __construct( $data )
 	{
 		$this->data = $data;
 	}

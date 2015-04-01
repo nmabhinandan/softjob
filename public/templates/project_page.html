@@ -1,73 +1,81 @@
 <md-content class="projects-page" layout="column">
-	<div class="meta" layout="row" flex layout-md="column">
-		<md-card id="velocity" flex>
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Project velocity</span>
-					<span flex></span>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content>				
-				<div>
-					<canvas id="bar" legend="true" options="chart.options" class="chart chart-bar" data="chart.chartData" labels="chart.labels" series="chart.series"></canvas> 
-				</div>
-			</md-card-content>
-		</md-card>
-		<div flex="20" layout="column" flex-md="100">
-			<md-card ng-show="project.project_completed" id="project_completed" flex>
-				<md-toolbar>
-					<md-toolbar-tools class="md-toolbar-tools">
-						<span>Project Status</span>
-						<span flex></span>
-					</md-toolbar-tools>
-				</md-toolbar>
-				<md-card-content layout="column">
-					<md-icon md-svg-src="img/icons/ic_check_48px.svg" flex></md-icon>					
-					<span flex>Completed</span>
-				</md-card-content>
-			</md-card>
+    <div class="meta" layout="row" flex layout-md="column">
+        <md-card id="velocity" flex>
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Project velocity</span>
+                    <span flex></span>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content>
+                <div>
+                    <canvas id="bar" legend="true" options="chart.options" class="chart chart-bar"
+                            data="chart.chartData" labels="chart.labels" series="chart.series"></canvas>
+                </div>
+            </md-card-content>
+        </md-card>
+        <div flex="20" layout="column" flex-md="100">
+            <md-card ng-show="project.project_completed" id="project_completed" flex>
+                <md-toolbar>
+                    <md-toolbar-tools class="md-toolbar-tools">
+                        <span>Project Status</span>
+                        <span flex></span>
+                    </md-toolbar-tools>
+                </md-toolbar>
+                <md-card-content layout="column">
+                    <md-icon md-svg-src="img/icons/ic_check_48px.svg" flex></md-icon>
+                    <span flex>Completed</span>
+                </md-card-content>
+            </md-card>
 
-			<md-card ng-hide="project.project_completed" id="deadline" flex>
-				<md-toolbar>
-					<md-toolbar-tools class="md-toolbar-tools">
-						<span>Deadline</span>
-						<span flex></span>
-					</md-toolbar-tools>
-				</md-toolbar>
-				<md-card-content>
-					<md-icon md-svg-src="img/icons/ic_alarm_48px.svg"></md-icon><br />
-					<span>{{deadline}}</span>					
-				</md-card-content>
-			</md-card>
-			<md-card id="manager" flex>
-				<md-toolbar>
-					<md-toolbar-tools class="md-toolbar-tools">
-						<span>Project Manager</span>
-						<span flex></span>
-						<md-button ng-disabled="! checkPermission('project.edit') || (project.owner_type == 'user' && project.owner_id != loggedInUser.id)" ng-click="editUsers($event)">Edit Users</md-button>
-					</md-toolbar-tools>
-				</md-toolbar>
-				<md-card-content layout="column">
-					<img class="md-whiteframe-z1 img-resp" title="{{project_manager.first_name}} {{project_manager.last_name}}" ng-src="img/avatars/{{project_manager.avatar}}" alt="avatar" flex>
-					<a ui-sref="dashboard.userPage({userId: project_manager.id})" flex>{{project_manager.first_name}} {{project_manager.last_name}}</a>
-				</md-card-content>
-			</md-card>
-		</div>
-	</div>
-	<div class="content" layout="row" flex layout-sm="column">
-		<md-card id="sprint-status" flex>
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Sprints</span>
-					<span flex></span>
-					<span><md-button ui-sref="dashboard.sprintPage({projectId: project.id})">Sprints & tasks</md-button></span>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content ng-repeat="(sprintName, sprintValue) in sprints">
-				{{sprintName}} :
-				<md-progress-linear md-mode="determinate" value="{{sprintValue}}"></md-progress-linear>
-				<br />
-			</md-card-content>
-		</md-card>
-	</div>
+            <md-card ng-hide="project.project_completed" id="deadline" flex>
+                <md-toolbar>
+                    <md-toolbar-tools class="md-toolbar-tools">
+                        <span>Deadline</span>
+                        <span flex></span>
+                    </md-toolbar-tools>
+                </md-toolbar>
+                <md-card-content>
+                    <md-icon md-svg-src="img/icons/ic_alarm_48px.svg"></md-icon>
+                    <br/>
+                    <span>{{deadline}}</span>
+                </md-card-content>
+            </md-card>
+            <md-card id="manager" flex>
+                <md-toolbar>
+                    <md-toolbar-tools class="md-toolbar-tools">
+                        <span>Project Manager</span>
+                        <span flex></span>
+                        <md-button
+                                ng-disabled="! checkPermission('project.edit') || (project.owner_type == 'user' && project.owner_id != loggedInUser.id)"
+                                ng-click="editUsers($event)">Edit Users
+                        </md-button>
+                    </md-toolbar-tools>
+                </md-toolbar>
+                <md-card-content layout="column">
+                    <img class="md-whiteframe-z1 img-resp"
+                         title="{{project_manager.first_name}} {{project_manager.last_name}}"
+                         ng-src="img/avatars/{{project_manager.avatar}}" alt="avatar" flex>
+                    <a ui-sref="dashboard.userPage({userId: project_manager.id})" flex>{{project_manager.first_name}}
+                        {{project_manager.last_name}}</a>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+    <div class="content" layout="row" flex layout-sm="column">
+        <md-card id="sprint-status" flex>
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Sprints</span>
+                    <span flex></span>
+                    <span><md-button ui-sref="dashboard.sprintPage({projectId: project.id})">Sprints & tasks</md-button></span>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content ng-repeat="(sprintName, sprintValue) in sprints">
+                {{sprintName}} :
+                <md-progress-linear md-mode="determinate" value="{{sprintValue}}"></md-progress-linear>
+                <br/>
+            </md-card-content>
+        </md-card>
+    </div>
 </md-content>

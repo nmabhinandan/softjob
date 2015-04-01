@@ -22,21 +22,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $guarded = ['id'];
+	protected $guarded = [ 'id' ];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
 	 * @var array
 	 */
-	protected $hidden = ['password', 'remember_token'];
+	protected $hidden = [ 'password', 'remember_token' ];
 
 	/**
 	 * Get the role to which the user belong to
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function role( )
+	public function role()
 	{
 		return $this->belongsTo('Softjob\Role');
 	}
@@ -46,7 +46,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
-	public function organization( )
+	public function organization()
 	{
 		return $this->belongsTo('Softjob\Organization');
 	}
@@ -66,7 +66,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	 */
-	public function projects( )
+	public function projects()
 	{
 		return $this->belongsToMany('Softjob\Project');
 	}
@@ -76,7 +76,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @return array
 	 */
-	public function ownProjects( )
+	public function ownProjects()
 	{
 		return Project::where('owner_type', '=', 'user')->where('owner_id', '=', $this->id)->get();
 	}
@@ -86,7 +86,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @return array
 	 */
-	public function managesProjects( )
+	public function managesProjects()
 	{
 		return Project::where('project_manager_id', '=', $this->id)->get();
 	}

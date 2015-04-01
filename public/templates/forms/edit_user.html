@@ -1,54 +1,60 @@
 <md-dialog class="edit-role">
-	<md-content>
-		<h3>Edit {{user.name}}</h3>
-		<form novalidate layout="column" name="editRoleForm">
-			<div layout="row" flex>
-				<md-input-container>
-	  				<label>First Name</label>
-	  				<input type="text" ng-model="user.first_name" required>
-	  				<div ng-messages="createProjectForm.description.$error">
-	  					<div ng-message="required">This is required</div>
-	  				</div>
-				</md-input-container>						
-				<md-input-container>
-	  				<label>Last Name</label>
-	  				<input type="text" ng-model="user.last_name" required>
-	  				<div ng-messages="createProjectForm.description.$error">
-	  					<div ng-message="required">This is required</div>
-	  				</div>
-				</md-input-container>								
-			</div>
-			<div layout="column" flex>
-				<md-input-container>
-	  				<label>Username</label>
-	  				<input type="email" ng-model="user.username" required>
-	  				<div ng-messages="createProjectForm.description.$error">
-	  					<div ng-message="required">This is required</div>
-	  				</div>
-				</md-input-container>
-				<md-input-container>
-	  				<label>Email</label>
-	  				<input type="email" ng-model="user.email" required>
-	  				<div ng-messages="createProjectForm.description.$error">
-	  					<div ng-message="required">This is required</div>
-	  				</div>
-				</md-input-container>						
-				<md-input-container>
-	  				<label>Password</label>
-	  				<input type="password" ng-model="user.password" required>
-	  				<div ng-messages="createProjectForm.description.$error">
-	  					<div ng-message="required">This is required</div>
-	  				</div>
-				</md-input-container>
-				<md-select ng-model="user.role_id" placeholder="Role" required>
-					<md-option ng-value="role.id" ng-repeat="role in allRoles">{{ role.name }}</md-option>
-				</md-select>														
-			</div>			
-		</form>
-	</md-content>
-	<div class="md-actions" layout="row">
-		<md-button ng-click="cancel()">Cancel</md-button>
-		<span flex></span>
-		<md-button class="md-raised md-primary" ng-click="submit(user)">Save</md-button>
-	</div>
+    <md-content>
+        <h3>Edit {{user.name}}</h3>
+
+        <form novalidate layout="column" name="editRoleForm">
+            <div layout="row" flex>
+                <md-input-container>
+                    <label>First Name</label>
+                    <input type="text" ng-model="user.first_name" required>
+
+                    <div ng-messages="createProjectForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Last Name</label>
+                    <input type="text" ng-model="user.last_name" required>
+
+                    <div ng-messages="createProjectForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="column" flex>
+                <md-input-container>
+                    <label>Username</label>
+                    <input type="email" ng-model="user.username" required>
+
+                    <div ng-messages="createProjectForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Email</label>
+                    <input type="email" ng-model="user.email" required>
+
+                    <div ng-messages="createProjectForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Password</label>
+                    <input type="password" ng-model="user.password" required>
+
+                    <div ng-messages="createProjectForm.description.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+                <md-select ng-model="user.role_id" placeholder="Role" required>
+                    <md-option ng-value="role.id" ng-repeat="role in allRoles">{{ role.name }}</md-option>
+                </md-select>
+            </div>
+        </form>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button ng-click="cancel()">Cancel</md-button>
+        <span flex></span>
+        <md-button class="md-raised md-primary" ng-click="submit(user)">Save</md-button>
+    </div>
 </md-dialog>

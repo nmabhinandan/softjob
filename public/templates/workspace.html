@@ -1,55 +1,59 @@
 <md-content id="workspace" layout="column">
-	<div class="meta" flex layout="column">
-		<md-card id="options" flex>
-			<md-toolbar>
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Options</span>
-					<span flex></span>					
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content layout="row">
-				<div flex>
-					<md-select ng-model="selectedProject" placeholder="Select Project" ng-change="projectSelected(selectedProject)">
-						<md-option ng-value="project.id" ng-repeat="project in projects">{{ project.name }}</md-option>
-					</md-select>
-				</div>
-				<div flex>
-					<md-select ng-model="selectedSprint" placeholder="Select Sprint" ng-change="sprintChanged(selectedSprint)">
-						<md-option ng-value="sprint.id" ng-repeat="sprint in sprints">{{ sprint.name }}</md-option>
-					</md-select>
-				</div>
-			</md-card-content> 
-		</md-card>
-	</div>
-	<div class="content" layout="column" flex>
-		<md-card id="workboard">
-			<md-toolbar>			
-				<md-toolbar-tools class="md-toolbar-tools">
-					<span>Workboard ( {{currentSprint.name || 'Please select a sprint'}} )</span>
-					<span flex></span>
-				</md-toolbar-tools>
-			</md-toolbar>
-			<md-card-content layout="row" layout-sm="column">
-					<md-card id="stage" ng-repeat="stage in workflowStages" flex>
-						<md-toolbar>
-							<md-toolbar-tools class="md-toolbar-tools">
-								<span>{{stage.name}}</span>
-								<span flex></span>
-							</md-toolbar-tools>							
-						</md-toolbar>
-						<md-card-content class="stage" layout="column">
-							<md-card class="task md-padding" ng-repeat="task in stage.tasks">
-								<md-card-content layout="row">
-									<span flex><a href="#">{{task.name}}</a></span>
-									<md-button ng-hide="isLast(task.task_status)" class="md-accent" ng-click="tranferTask(stage.id, task.id)" aria-label="Tranfer Task">										
-					            		<md-icon md-svg-src="img/icons/ic_chevron_right_48px.svg"></md-icon>	
-					        		</md-button>
-					        		<md-icon ng-show="isLast(task.task_status)" md-svg-src="img/icons/ic_check_48px.svg" style="color: green"></md-icon>
-								</md-card-content>
-							</md-card>
-						</md-card-content>	
-					</md-card>
-			</md-card-content>
-		</md-card>		
-	</div>
+    <div class="meta" flex layout="column">
+        <md-card id="options" flex>
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Options</span>
+                    <span flex></span>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content layout="row">
+                <div flex>
+                    <md-select ng-model="selectedProject" placeholder="Select Project"
+                               ng-change="projectSelected(selectedProject)">
+                        <md-option ng-value="project.id" ng-repeat="project in projects">{{ project.name }}</md-option>
+                    </md-select>
+                </div>
+                <div flex>
+                    <md-select ng-model="selectedSprint" placeholder="Select Sprint"
+                               ng-change="sprintChanged(selectedSprint)">
+                        <md-option ng-value="sprint.id" ng-repeat="sprint in sprints">{{ sprint.name }}</md-option>
+                    </md-select>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div class="content" layout="column" flex>
+        <md-card id="workboard">
+            <md-toolbar>
+                <md-toolbar-tools class="md-toolbar-tools">
+                    <span>Workboard ( {{currentSprint.name || 'Please select a sprint'}} )</span>
+                    <span flex></span>
+                </md-toolbar-tools>
+            </md-toolbar>
+            <md-card-content layout="row" layout-sm="column">
+                <md-card id="stage" ng-repeat="stage in workflowStages" flex>
+                    <md-toolbar>
+                        <md-toolbar-tools class="md-toolbar-tools">
+                            <span>{{stage.name}}</span>
+                            <span flex></span>
+                        </md-toolbar-tools>
+                    </md-toolbar>
+                    <md-card-content class="stage" layout="column">
+                        <md-card class="task md-padding" ng-repeat="task in stage.tasks">
+                            <md-card-content layout="row">
+                                <span flex><a href="#">{{task.name}}</a></span>
+                                <md-button ng-hide="isLast(task.task_status)" class="md-accent"
+                                           ng-click="tranferTask(stage.id, task.id)" aria-label="Tranfer Task">
+                                    <md-icon md-svg-src="img/icons/ic_chevron_right_48px.svg"></md-icon>
+                                </md-button>
+                                <md-icon ng-show="isLast(task.task_status)" md-svg-src="img/icons/ic_check_48px.svg"
+                                         style="color: green"></md-icon>
+                            </md-card-content>
+                        </md-card>
+                    </md-card-content>
+                </md-card>
+            </md-card-content>
+        </md-card>
+    </div>
 </md-content>
